@@ -7,7 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class RaceIt extends ApplicationAdapter {
-	SpriteBatch batch;
+	
+        public static final int WIDTH = 1200;
+        public static final int HEIGHT = 800;
+        
+        SpriteBatch batch;
 	Texture img;
 	
 	@Override

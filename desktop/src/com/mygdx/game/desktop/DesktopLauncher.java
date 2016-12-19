@@ -7,6 +7,10 @@ import com.mygdx.game.RaceIt;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+//                config.width = RaceIt.WIDTH;
+//                config.height = RaceIt.HEIGHT;
+                config.title = "Race It!";
+                config.fullscreen = true;
 		new LwjglApplication(new RaceIt(), config);
 	}
 }
