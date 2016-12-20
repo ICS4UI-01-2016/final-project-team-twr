@@ -5,18 +5,19 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Car;
 
 /**
  *
  * @author tatad6701
  */
-public class RaceState {
+public class RaceState extends State {
 
     // Create the constant variables
     private Car[] cars;
 
     /**
-     * Contructor for the race state
+     * Constructor for the race state
      *
      * @param sm
      */
@@ -30,5 +31,20 @@ public class RaceState {
         // Begin he drawing 
         batch.begin();
 
+    }
+
+    @Override
+    public void update(float DeltaTime) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void handleInput() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void dispose() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

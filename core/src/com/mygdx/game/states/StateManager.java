@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 public class StateManager {
 
-    private Stack<states> states;
+    private Stack<State> states;
 
     public StateManager() {
         states = new Stack<State>();
