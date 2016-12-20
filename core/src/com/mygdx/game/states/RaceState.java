@@ -25,6 +25,7 @@ public class RaceState extends State {
         super(sm);
     }
 
+    // Comment this!
     public void render(SpriteBatch batch) {
         // Draw the screen 
         batch.setProjectionMatrix(getCombinedCamera());
