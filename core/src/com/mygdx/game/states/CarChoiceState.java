@@ -8,6 +8,6 @@ package com.mygdx.game.states;
  *
  * @author tatad6701
  */
-public class PlayState {
+public class CarChoiceState {
     
 }
