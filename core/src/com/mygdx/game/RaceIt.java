@@ -11,27 +11,36 @@ public class RaceIt extends ApplicationAdapter {
         public static final int WIDTH = 1200;
         public static final int HEIGHT = 800;
         
-        SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+    
+        private SpriteBatch batch; // to draw stuffs
+        private StateManager stateManager; // look after the different states
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+        // Initial Setup
+        @Override
+        public void create() {
+            batch = new SpriteBatch();
+            Gdx.gl.glClearColor(1, 0, 0, 1); // colour to clear the screen with
+
+            stateManager = new StateManager();
+            State firstScreen = new MenuState(stateManager);
+            stateManager.push(firstScreen); // load the first screen
+        }
+
+        // Game Loop
+        @Override
+        public void render() {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            // handle input
+            stateManager.handleInput();
+            // update the game states
+            stateManager.update(Gdx.graphics.getDeltaTime());
+            // draw the screen
+            stateManager.render(batch);
+        }
+
+        // End Section
+        @Override
+        public void dispose() {
+            batch.dispose();
+        }
 }
