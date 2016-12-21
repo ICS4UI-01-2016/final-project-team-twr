@@ -41,10 +41,10 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
-        if(Gdx.input.justTouched()){
-            StateManager sm = getStateManager();
-            sm.push(new ChooseAmountPlayersState(sm));
-        }
+//        if(Gdx.input.justTouched()){
+//            StateManager sm = getStateManager();
+//            sm.push(new ChooseAmountPlayersState(sm));
+//        }
     }
 
     @Override
