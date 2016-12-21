@@ -7,6 +7,7 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.RaceIt;
 
 /**
  *
@@ -21,11 +22,12 @@ public class MenuState extends State {
     public MenuState(StateManager sm) {
         super(sm);
         bg = new Texture("bg.jpg");
-        
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
+       
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
