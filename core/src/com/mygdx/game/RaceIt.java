@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.states.MenuState;
+import com.mygdx.game.states.State;
+import com.mygdx.game.states.StateManager;
 
 public class RaceIt extends ApplicationAdapter {
 	
@@ -19,7 +22,7 @@ public class RaceIt extends ApplicationAdapter {
         @Override
         public void create() {
             batch = new SpriteBatch();
-            Gdx.gl.glClearColor(1, 0, 0, 1); // colour to clear the screen with
+            Gdx.gl.glClearColor(1, 1, 1, 1); // colour to clear the screen with
 
             stateManager = new StateManager();
             State firstScreen = new MenuState(stateManager);
