@@ -75,5 +75,31 @@ public abstract class State {
         return cam.combined;
     }
     
+    public void moveCameraX(float x){
+        cam.position.x = x;
+        cam.update();
+    }
+    
+    public void moveCameraY(float y){
+        cam.position.y = y;
+        cam.update();
+    }
+    
+    public float getCameraX(){
+        return cam.position.x;
+    }
+    
+    public float getCameraY(){
+        return cam.position.y;
+    }
+    
+    public float getViewWidth(){
+        return cam.viewportWidth;
+    }
+    
+    public float getViewHeight(){
+        return cam.viewportHeight;
+    }
+    
     
 }
