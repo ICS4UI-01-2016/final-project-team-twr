@@ -4,6 +4,7 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -11,29 +12,39 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @author tatad6701
  */
 public class ChooseAmountPlayersState extends State {
-    
-    public ChooseAmountPlayersState(StateManager sm){
+
+    private StateManager sm;
+    private Texture bg;
+    private Texture next;
+
+    public ChooseAmountPlayersState(StateManager sm) {
+
         super(sm);
+        bg = new Texture("MenuScreen.jpg");
+
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        batch.setProjectionMatrix(getCombinedCamera());
+        batch.begin();
+        batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
+        batch.end();
     }
 
     @Override
     public void update(float DeltaTime) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
     public void handleInput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
     public void dispose() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
-    
+
 }

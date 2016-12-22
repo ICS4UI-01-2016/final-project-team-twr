@@ -11,7 +11,7 @@ import java.util.Stack;
  *
  * @author tatad6701
  */
-public class StateManager {
+public class StateManager { 
 
     private Stack<State> states;
 

@@ -22,6 +22,7 @@ public class MenuState extends State {
     public MenuState(StateManager sm) {
         super(sm);
         bg = new Texture("bg.jpg");
+        
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
@@ -41,10 +42,10 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
-//        if(Gdx.input.justTouched()){
-//            StateManager sm = getStateManager();
-//            sm.push(new ChooseAmountPlayersState(sm));
-//        }
+        if(Gdx.input.justTouched()){
+            StateManager sm = getStateManager();
+            sm.push(new ChooseAmountPlayersState(sm));
+        }
     }
 
     @Override
