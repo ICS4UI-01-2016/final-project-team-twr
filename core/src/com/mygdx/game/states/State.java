@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Matrix4;
 
 /**
  *
- * @author tatad6701
+ * @author whitb0039, richj0985, and tatad6701
  */
 public abstract class State {
     

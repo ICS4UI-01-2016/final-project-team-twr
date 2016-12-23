@@ -10,6 +10,11 @@ import com.mygdx.game.states.RaceState;
 import com.mygdx.game.states.State;
 import com.mygdx.game.states.StateManager;
 
+/**
+ *
+ * @author whitb0039, richj0985, and tatad6701
+ */
+
 public class RaceIt extends ApplicationAdapter {
 	
         public static final int WIDTH = 1200;

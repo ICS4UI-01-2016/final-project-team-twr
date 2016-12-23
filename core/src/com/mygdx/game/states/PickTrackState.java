@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author tatad6701
+ * @author whitb0039, richj0985, and tatad6701
  */
 public class PickTrackState extends State {
 

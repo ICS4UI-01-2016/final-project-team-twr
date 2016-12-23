@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  *
- * @author tatad6701
+ * @author whitb0039, richj0985, and tatad6701
  */
 public class ChooseAmountPlayersState extends State {
 
