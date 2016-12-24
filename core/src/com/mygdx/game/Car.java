@@ -21,10 +21,6 @@ public class Car {
     private Vector3 velocity;
     private TextureRegion carPic;
     private Rectangle bounds;
-    private int moveHorizontal;
-    private int moveVertical;
-//    private final float HORIZONTAL = 100;
-//    private final float VERTICAL = 100;
     
     public Car(int x, int y){
         position = new Vector3(x,y,0);
@@ -34,20 +30,11 @@ public class Car {
     }
     
     public void update(float deltaTime){
-//        // add gravity
-//        velocity.y += HORIZONTAL;
-//        // scaling velocity by time
-//        velocity.scl(deltaTime);
-//        // adding velocity to position
-//        position.add(velocity);
-//        // unscale velocity
-//        velocity.scl(1/deltaTime);
-        
         bounds.setPosition(position.x, position.y);
     }
     
     public void render(SpriteBatch batch){
-        batch.draw(carPic, position.x + moveHorizontal, position.y + moveVertical, carPic.getRegionWidth() / 5, carPic.getRegionHeight() / 5, carPic.getRegionWidth() / 3, carPic.getRegionHeight() / 3, 1, 1, rotation);
+        batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 5, carPic.getRegionHeight() / 5, carPic.getRegionWidth() / 4, carPic.getRegionHeight() / 4, 1, 1, rotation);
     }
     
     public float getX(){
@@ -66,16 +53,8 @@ public class Car {
         carPic.getTexture().dispose();
     }
     
-    public void rotate(float degree){
+    public void turn (float degree){
         rotation += degree;
-    }
-    
-    public void moveHorizontal(int speed){
-        moveHorizontal += speed;
-    }
-    
-    public void moveVertical(int speed){
-        moveVertical += speed;
     }
     
     public float getRotation(){
@@ -87,6 +66,11 @@ public class Car {
             rotation = rotation + 360;
         }
         return rotation;
+    }
+    
+    public void drive(float xSpeed, float ySpeed){
+        position.x += xSpeed;
+        position.y += ySpeed;
     }
     
 }
