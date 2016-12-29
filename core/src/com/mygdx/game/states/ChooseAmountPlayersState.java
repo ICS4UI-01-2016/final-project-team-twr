@@ -6,6 +6,7 @@ package com.mygdx.game.states;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.RaceIt;
 
 /**
  *
@@ -22,6 +23,7 @@ public class ChooseAmountPlayersState extends State {
         super(sm);
         bg = new Texture("MenuScreen.jpg");
 
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class ChooseAmountPlayersState extends State {
 
     @Override
     public void dispose() {
-
+        bg.dispose();
     }
 
 }

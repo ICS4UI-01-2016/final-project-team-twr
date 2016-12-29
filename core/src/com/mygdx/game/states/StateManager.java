@@ -43,6 +43,7 @@ public class StateManager {
 
     public void handleInput() {
         states.peek().handleInput();
+        
     }
 
 }

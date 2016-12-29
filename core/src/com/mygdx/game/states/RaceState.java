@@ -18,7 +18,7 @@ public class RaceState extends State {
 
     // Create the constant variables
     private Car[] cars;
-    private final Car car;
+    private final Car car;   
 
     /**
      * Constructor for the race state
@@ -73,7 +73,7 @@ public class RaceState extends State {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             degreeTurned = 4;
         }
-
+        
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             degreeTurned = -4;
         }
@@ -82,7 +82,7 @@ public class RaceState extends State {
             car.drive(xCoordinateSpeed, yCoordinateSpeed);
             car.turn(degreeTurned);
         }
-
+        
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             xCoordinateSpeed = xCoordinateSpeed * -1;
             yCoordinateSpeed = yCoordinateSpeed * -1;
