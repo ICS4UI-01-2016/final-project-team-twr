@@ -31,8 +31,8 @@ public class Map {
      */
     public Map(float x, float y) {
         position = new Vector2(x, y);
-        raceTrack = new Texture("");
-        raceTrack2 = new Texture("");
+        raceTrack = new Texture("Track1.jpg");
+        raceTrack2 = new Texture("Track2.jpg");
         raceTrack3 = new Texture("");
         raceTrack4 = new Texture("");
     }
@@ -64,13 +64,15 @@ public class Map {
     /**
      * Method that gets the X coordinate of the image, the race track
      *
-     * @return
+     * @return the x position of the image
      */
     public float getX() {
         return position.x;
     }
 
-    // Getting rid of the images! Saves space!
+    /**
+     * Method that disposes the images to save more space!
+     */
     public void dispose() {
         raceTrack.dispose();
     }
