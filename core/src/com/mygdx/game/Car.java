@@ -34,7 +34,7 @@ public class Car {
     }
     
     public void render(SpriteBatch batch){
-        batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 5, carPic.getRegionHeight() / 5, carPic.getRegionWidth() / 5, carPic.getRegionHeight() / 5, 1, 1, rotation);
+        batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 5, carPic.getRegionHeight() / 5, carPic.getRegionWidth() / 6, carPic.getRegionHeight() / 6, 1, 1, rotation);
     }
     
     public float getX(){
