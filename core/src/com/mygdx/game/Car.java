@@ -18,7 +18,6 @@ public class Car {
     private float rotation;
     private Vector3 origin;
     private Vector3 position;
-    private Vector3 velocity;
     private TextureRegion carPic;
     private Rectangle bounds;
     
@@ -34,7 +33,7 @@ public class Car {
     }
     
     public void render(SpriteBatch batch){
-        batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 5, carPic.getRegionHeight() / 5, carPic.getRegionWidth() / 6, carPic.getRegionHeight() / 6, 1, 1, rotation);
+        batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 10, carPic.getRegionHeight() / 10, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
     }
     
     public float getX(){
