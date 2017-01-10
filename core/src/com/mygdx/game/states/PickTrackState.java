@@ -24,6 +24,7 @@ public class PickTrackState extends State {
     private Texture Track1;
     private Texture Track2;
     private Texture Track3;
+    private Texture button;
 
     /**
      * Constructor for the pick track screen
@@ -54,6 +55,9 @@ public class PickTrackState extends State {
         Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         // Convert the point to game coordinates
         unproject(touch);
+        // Button location
+        float buttonX = getViewWidth() / 2 - button.getWidth() / 2;
+        float buttonY = getViewHeight() / 2;
     }
 
     @Override
