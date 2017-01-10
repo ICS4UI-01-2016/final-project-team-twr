@@ -4,6 +4,7 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.RaceIt;
@@ -22,6 +23,7 @@ public class ChooseAmountPlayersState extends State {
 
         super(sm);
         bg = new Texture("MenuScreen.jpg");
+        next = new Texture("NEXT.png");
 
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
@@ -31,6 +33,7 @@ public class ChooseAmountPlayersState extends State {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
+        batch.draw(next, 0, -100,  100, 300);
         batch.end();
     }
 
@@ -41,12 +44,16 @@ public class ChooseAmountPlayersState extends State {
 
     @Override
     public void handleInput() {
+        if(Gdx.input.justTouched()){
+            
+        }
 
     }
 
     @Override
     public void dispose() {
         bg.dispose();
+        next.dispose();
     }
 
 }
