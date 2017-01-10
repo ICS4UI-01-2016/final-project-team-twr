@@ -20,6 +20,8 @@ public class RaceState extends State {
 
     // Create the constant variables
     private final Car lambo;
+    private final Car acura;
+    private final Car lambo2;
     private Texture bg;
     private boolean accelerate;
     private boolean stop;
@@ -37,6 +39,8 @@ public class RaceState extends State {
         super(sm);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         lambo = new Car(600, 400, 1);
+        acura = new Car(600, 400, 2);
+        lambo2 = new Car(600, 400, 3);
         bg = new Texture("Track1.jpg");
     }
 
@@ -48,12 +52,16 @@ public class RaceState extends State {
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
         lambo.render(batch);
+        acura.render(batch);
+        lambo2.render(batch);
         batch.end();
     }
 
     @Override
     public void update(float deltaTime) {
         lambo.update(deltaTime);
+        acura.update(deltaTime);
+        lambo2.update(deltaTime);
     }
 
     @Override
@@ -78,14 +86,64 @@ public class RaceState extends State {
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            lambo.brakePedal(true);
+            lambo2.brakePedal(true);
         } else{
-            lambo.brakePedal(false);
+            lambo2.brakePedal(false);
+        }
+        
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            lambo2.acceleratorPedal(true);
+        } else{
+            lambo2.acceleratorPedal(false);
+        }
+    
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            lambo2.turnLeft(true);
+        }else{
+            lambo2.turnLeft(false);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            lambo2.turnRight(true);
+        }else{
+            lambo2.turnRight(false);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            lambo2.brakePedal(true);
+        } else{
+            lambo2.brakePedal(false);
+        }
+        
+        if(Gdx.input.isKeyPressed(Input.Keys.NUM_5)){
+            lambo2.acceleratorPedal(true);
+        } else{
+            lambo2.acceleratorPedal(false);
+        }
+    
+        if(Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
+            lambo2.turnLeft(true);
+        }else{
+            lambo2.turnLeft(false);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
+            lambo2.turnRight(true);
+        }else{
+            lambo2.turnRight(false);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
+            lambo2.brakePedal(true);
+        } else{
+            lambo2.brakePedal(false);
         }
     }
         
     @Override
     public void dispose() {
         lambo.dispose();
+        acura.dispose();
+        lambo2.dispose();
     }
 }

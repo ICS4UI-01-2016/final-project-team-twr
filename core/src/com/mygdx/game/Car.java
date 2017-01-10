@@ -34,11 +34,11 @@ public class Car {
         if(carType == 1){
             carPic = new TextureRegion(new Texture("lamborghiniblack.png"));
         } else if(carType == 2){
-            carPic = new TextureRegion(new Texture(""));
+            carPic = new TextureRegion(new Texture("acura.png"));
         } else if(carType == 3){
-            carPic = new TextureRegion(new Texture(""));
+            carPic = new TextureRegion(new Texture("lamborghini2.png"));
         } else if(carType == 4){
-            carPic = new TextureRegion(new Texture(""));
+            carPic = new TextureRegion(new Texture("Bentley2.png"));
         }
         tempCarType = carType;
         bounds = new Rectangle(position.x,position.y, carPic.getRegionWidth(), carPic.getRegionHeight());
@@ -112,7 +112,7 @@ public class Car {
         } else if(tempCarType == 2){
             batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
         } else if(tempCarType == 3){
-            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
+            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 22, carPic.getRegionHeight() / 22, carPic.getRegionWidth() / 11, carPic.getRegionHeight() / 11, 1, 1, rotation);
         } else if (tempCarType == 4){
             batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
         }
