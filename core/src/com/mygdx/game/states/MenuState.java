@@ -14,6 +14,7 @@ import com.mygdx.game.RaceIt;
  * @author whitb0039, richj0985, and tatad6701
  */
 public class MenuState extends State {
+    // Create the instance variables 
 
     private StateManager sm;
     private Texture bg;
@@ -21,7 +22,6 @@ public class MenuState extends State {
     public MenuState(StateManager sm) {
         super(sm);
         bg = new Texture("bg.jpg");
-
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
