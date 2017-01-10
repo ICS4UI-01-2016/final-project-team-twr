@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Car;
 import com.mygdx.game.RaceIt;
 
@@ -21,7 +22,13 @@ public class RaceState extends State {
     private Car[] cars;
     private final Car car;
     private Texture bg;
-
+    private boolean accelerate;
+    private boolean stop;
+    private boolean turnLeft;
+    private boolean turnRight;
+    private float velocity;
+    private float speedX;
+    private float speedY;
     /**
      * Constructor for the race state
      *
@@ -52,50 +59,29 @@ public class RaceState extends State {
 
     @Override
     public void handleInput() {
-        float xCoordinateSpeed = 0;
-        float yCoordinateSpeed = 0;
-        float degreeTurned = 0;
         
-        if(car.getRotation() >= 0 && car.getRotation() <= 90){
-            float rotation = car.getRotation();
-            xCoordinateSpeed = 0 - (rotation / 15);
-            yCoordinateSpeed = 6 - (rotation / 15); 
-        } else if (car.getRotation() >= 90 && car.getRotation() <= 180){
-            float rotation = car.getRotation() - 90;
-            xCoordinateSpeed = -6 + (rotation / 15);
-            yCoordinateSpeed = 0 - (rotation / 15); 
-        } else if (car.getRotation() >= 180 && car.getRotation() <= 270){
-            float rotation = car.getRotation() - 180;
-            xCoordinateSpeed = 0 + (rotation / 15);
-            yCoordinateSpeed = -6 + (rotation / 15); 
-        } else if (car.getRotation() >= 270 && car.getRotation() <= 360){
-            float rotation = car.getRotation() - 270;
-            xCoordinateSpeed = 6 - (rotation / 15);
-            yCoordinateSpeed = 0 + (rotation / 15); 
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            car.acceleratorPedal(true);
+        } else{
+            car.acceleratorPedal(false);
         }
-        
-        xCoordinateSpeed = xCoordinateSpeed;
-        yCoordinateSpeed = yCoordinateSpeed;
-        
+    
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            degreeTurned = 2;
+            car.turnLeft(true);
+        }else{
+            car.turnLeft(false);
         }
-        
+
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            degreeTurned = -2;
+            car.turnRight(true);
+        }else{
+            car.turnRight(false);
         }
-        
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){        
-            car.drive(xCoordinateSpeed, yCoordinateSpeed);
-            car.turn(degreeTurned);
-        }
-        
+
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            xCoordinateSpeed = xCoordinateSpeed * -1;
-            yCoordinateSpeed = yCoordinateSpeed * -1;
-            degreeTurned = degreeTurned * -1;
-            car.drive(xCoordinateSpeed, yCoordinateSpeed);
-            car.turn(degreeTurned);
+            car.brakePedal(true);
+        } else{
+            car.brakePedal(false);
         }
     }
         
