@@ -19,8 +19,7 @@ import com.mygdx.game.RaceIt;
 public class RaceState extends State {
 
     // Create the constant variables
-    private Car[] cars;
-    private final Car car;
+    private final Car lambo;
     private Texture bg;
     private boolean accelerate;
     private boolean stop;
@@ -37,7 +36,7 @@ public class RaceState extends State {
     public RaceState(StateManager sm) {
         super(sm);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        car = new Car(600, 400);
+        lambo = new Car(600, 400, 1);
         bg = new Texture("Track1.jpg");
     }
 
@@ -48,45 +47,45 @@ public class RaceState extends State {
         // Begin he drawing 
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
-        car.render(batch);
+        lambo.render(batch);
         batch.end();
     }
 
     @Override
     public void update(float deltaTime) {
-        car.update(deltaTime);
+        lambo.update(deltaTime);
     }
 
     @Override
     public void handleInput() {
         
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            car.acceleratorPedal(true);
+            lambo.acceleratorPedal(true);
         } else{
-            car.acceleratorPedal(false);
+            lambo.acceleratorPedal(false);
         }
     
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            car.turnLeft(true);
+            lambo.turnLeft(true);
         }else{
-            car.turnLeft(false);
+            lambo.turnLeft(false);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            car.turnRight(true);
+            lambo.turnRight(true);
         }else{
-            car.turnRight(false);
+            lambo.turnRight(false);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            car.brakePedal(true);
+            lambo.brakePedal(true);
         } else{
-            car.brakePedal(false);
+            lambo.brakePedal(false);
         }
     }
         
     @Override
     public void dispose() {
-        car.dispose();
+        lambo.dispose();
     }
 }
