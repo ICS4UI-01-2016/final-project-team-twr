@@ -22,9 +22,13 @@ public class RaceState extends State {
     private Car[] cars;
     private final Car car;
     private Texture bg;
-    private boolean acceleration;
-    private Vector3 accelerate;
-
+    private boolean accelerate;
+    private boolean stop;
+    private boolean turnLeft;
+    private boolean turnRight;
+    private float velocity;
+    private float speedX;
+    private float speedY;
     /**
      * Constructor for the race state
      *
@@ -35,7 +39,6 @@ public class RaceState extends State {
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         car = new Car(600, 400);
         bg = new Texture("Track1.jpg");
-        accelerate = new Vector3(-1,0,0);
     }
 
     // Comment this!
@@ -52,63 +55,33 @@ public class RaceState extends State {
     @Override
     public void update(float deltaTime) {
         car.update(deltaTime);
-        float xCoordinateSpeed = 0;
-        float yCoordinateSpeed = 0;
-        
-        if(acceleration){
-            if(car.getRotation() >= 0 && car.getRotation() <= 90){
-                float rotation = car.getRotation();
-                xCoordinateSpeed = 0 - (rotation / 18);
-                yCoordinateSpeed = 5 - (rotation / 18); 
-            } else if (car.getRotation() >= 90 && car.getRotation() <= 180){
-                float rotation = car.getRotation() - 90;
-                xCoordinateSpeed = -5 + (rotation / 18);
-                yCoordinateSpeed = 0 - (rotation / 18); 
-            } else if (car.getRotation() >= 180 && car.getRotation() <= 270){
-                float rotation = car.getRotation() - 180;
-                xCoordinateSpeed = 0 + (rotation / 18);
-                yCoordinateSpeed = -5 + (rotation / 18); 
-            } else if (car.getRotation() >= 270 && car.getRotation() <= 360){
-                float rotation = car.getRotation() - 270;
-                xCoordinateSpeed = 5 - (rotation / 18);
-                yCoordinateSpeed = 0 + (rotation / 18); 
-            }
-            car.drive(xCoordinateSpeed, yCoordinateSpeed);
-        } else{
-//            deceleration.y += 1;
-//            deceleration.scl(deltaTime);
-//            position.add(deceleration);
-//            deceleration.scl(1/deltaTime);
-        }
     }
 
     @Override
     public void handleInput() {
-        float degreeTurned = 0;
-        
-        
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            degreeTurned = 3;
-        }
-        
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            degreeTurned = -3;
-        }
         
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            acceleration = true;
-            car.turn(degreeTurned);
+            car.acceleratorPedal(true);
         } else{
-            acceleration = false;
-        
+            car.acceleratorPedal(false);
         }
-        
+    
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            car.turnLeft(true);
+        }else{
+            car.turnLeft(false);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            car.turnRight(true);
+        }else{
+            car.turnRight(false);
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-//            xCoordinateSpeed = xCoordinateSpeed * -1;
-//            yCoordinateSpeed = yCoordinateSpeed * -1;
-//            degreeTurned = degreeTurned * -1;
-//            car.drive(xCoordinateSpeed, yCoordinateSpeed);
-//            car.turn(degreeTurned);
+            car.brakePedal(true);
+        } else{
+            car.brakePedal(false);
         }
     }
         
