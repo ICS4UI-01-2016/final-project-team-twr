@@ -27,10 +27,20 @@ public class Car {
     private boolean stop;
     private boolean turnLeft;
     private boolean turnRight;
+    private int tempCarType;
     
-    public Car(int x, int y){
+    public Car(int x, int y, int carType){
         position = new Vector3(x,y,0);
-        carPic = new TextureRegion(new Texture("lamborghiniblack.png"));
+        if(carType == 1){
+            carPic = new TextureRegion(new Texture("lamborghiniblack.png"));
+        } else if(carType == 2){
+            carPic = new TextureRegion(new Texture("acura.png"));
+        } else if(carType == 3){
+            carPic = new TextureRegion(new Texture("lamborghini2.png"));
+        } else if(carType == 4){
+            carPic = new TextureRegion(new Texture("Bentley2.png"));
+        }
+        tempCarType = carType;
         bounds = new Rectangle(position.x,position.y, carPic.getRegionWidth(), carPic.getRegionHeight());
     }
     
@@ -86,18 +96,26 @@ public class Car {
         // only allow the car to turn when in motion
         if ( velocity > 0 ) {
             if(turnLeft){
-                rotation += 3;
+                rotation += 4;
             }
 
             if(turnRight){
-                rotation -= 3;
+                rotation -= 4;
             }
         }
         bounds.setPosition(position.x, position.y);
     }
     
     public void render(SpriteBatch batch){
-        batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
+        if(tempCarType == 1){
+            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
+        } else if(tempCarType == 2){
+            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
+        } else if(tempCarType == 3){
+            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 22, carPic.getRegionHeight() / 22, carPic.getRegionWidth() / 11, carPic.getRegionHeight() / 11, 1, 1, rotation);
+        } else if (tempCarType == 4){
+            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
+        }
     }
     
     public float getX(){
