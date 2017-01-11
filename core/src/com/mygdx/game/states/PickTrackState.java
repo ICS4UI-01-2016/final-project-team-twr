@@ -42,7 +42,7 @@ public class PickTrackState extends State {
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
-        batch.draw(Track1, 20, 20, 400, 400);
+        batch.draw(Track1, 20, 20, 10, 10);
     }
 
     @Override
