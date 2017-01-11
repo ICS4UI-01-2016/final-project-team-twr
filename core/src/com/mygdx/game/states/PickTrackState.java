@@ -27,13 +27,13 @@ public class PickTrackState extends State {
     private Texture button;
 
     /**
-     * Constructor for the pick track screen
+     * Constructor for the pick track screen for the players
      *
      * @param sm the state manager
      */
     public PickTrackState(StateManager sm) {
         super(sm);
-        PickTrackBackground = new Texture("");
+        //PickTrackBackground = new Texture("");
         Track1 = new Texture("Track1.jpg");
         Track2 = new Texture("Track2.jpg");
     }
@@ -42,7 +42,8 @@ public class PickTrackState extends State {
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
-        batch.draw(Track1, 20, 20, 10, 10);
+        batch.draw(Track1, 0, 0, 1000, 1000);
+        batch.end();
     }
 
     @Override
@@ -56,11 +57,13 @@ public class PickTrackState extends State {
         // Convert the point to game coordinates
         unproject(touch);
         // Button location
-        float buttonX = getViewWidth() / 2 - button.getWidth() / 2;
-        float buttonY = getViewHeight() / 2;
+        //float buttonX = getViewWidth() / 2 - button.getWidth() / 2;
+        //float buttonY = getViewHeight() / 2;
     }
 
     @Override
     public void dispose() {
+        Track1.dispose();
+        Track2.dispose();
     }
 }

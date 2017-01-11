@@ -21,7 +21,7 @@ public abstract class State {
 
     public State(StateManager sm) {
         // Assign the state manager and create the camera
-        sm = sm;
+        this.sm = sm;
         cam = new OrthographicCamera();
     }
 
