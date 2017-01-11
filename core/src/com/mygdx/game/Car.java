@@ -19,8 +19,18 @@ public class Car {
     private Vector3 origin;
     private Vector3 position;
     private TextureRegion carPic;
-    private Rectangle bounds;
+    private TextureRegion blackBox;
+    private TextureRegion blackBox2;
+    private TextureRegion blackBox3;
+    private TextureRegion blackBox4;
+    private Rectangle bounds;    
+    private Rectangle front;
+    private Rectangle back;
+    private Rectangle left;
+    private Rectangle right;
     private float velocity;
+    private float damageX;
+    private float damageY;
     private float speedX;
     private float speedY;
     private boolean accelerate;
@@ -28,9 +38,17 @@ public class Car {
     private boolean turnLeft;
     private boolean turnRight;
     private int tempCarType;
+    private boolean frontHit;
+    private boolean backHit;
+    private boolean leftHit;
+    private boolean rightHit;
+    private boolean crash;
     
-    public Car(int x, int y, int carType){
+    public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY){
         position = new Vector3(x,y,0);
+        rotation = initialRotation;
+        position.x = initialPositionX;
+        position.y = initialPositionY;
         if(carType == 1){
             carPic = new TextureRegion(new Texture("lamborghiniblack.png"));
         } else if(carType == 2){
@@ -40,8 +58,13 @@ public class Car {
         } else if(carType == 4){
             carPic = new TextureRegion(new Texture("Bentley2.png"));
         }
+        
         tempCarType = carType;
-        bounds = new Rectangle(position.x,position.y, carPic.getRegionWidth(), carPic.getRegionHeight());
+        bounds = new Rectangle(position.x, position.y, carPic.getRegionWidth(), carPic.getRegionHeight());
+        front = new Rectangle(position.x, position.y + 50, 50, 1);
+        back = new Rectangle(position.x, position.y, 50, 1);
+        right = new Rectangle(position.x + 50, position.y, 1, 50);
+        left = new Rectangle(position.x, position.y, 1, 50);
     }
     
     public void update(float deltaTime){
@@ -65,7 +88,7 @@ public class Car {
         }
         
         if(stop){
-            velocity = velocity - 0.025f * 2;
+            velocity = velocity - 0.025f * 2f;
             if(velocity < 0){
                 velocity = 0;
             }
@@ -103,7 +126,42 @@ public class Car {
                 rotation -= 4;
             }
         }
+        
+        if(crash){
+            if(frontHit){
+                speedX = 0;
+                speedY = 0;
+                crash = true;
+                damageY = damageY + 0.1f;
+                if(damageY == 1){
+                    frontHit = false;
+                    crash = false;
+                    damageY = 0;
+                }
+                System.out.println("HERE");
+            }
+
+            if(backHit){
+                speedX = 0;
+                speedY = 0;
+                crash = true;
+                damageY = damageY - 0.1f;
+                if(damageY == -1){
+                    backHit = false;
+                    crash = false;
+                    damageY = 0;
+                }
+                System.out.println("HERE");
+            }
+
+            position.y = position.y + damageY;
+        }
+        
         bounds.setPosition(position.x, position.y);
+        front.setPosition(position.x, position.y + 50);
+        back.setPosition(position.x, position.y);
+        left.setPosition(position.x, position.y);
+        right.setPosition(position.x + 50, position.y);
     }
     
     public void render(SpriteBatch batch){
@@ -130,6 +188,22 @@ public class Car {
         return bounds;
     }
     
+    public Rectangle rightBounds(){
+        return right;
+    }
+    
+    public Rectangle leftBounds(){
+        return left;
+    }
+    
+    public Rectangle frontBounds(){
+        return front;
+    }
+    
+    public Rectangle backBounds(){
+        return bounds;
+    }
+    
     public void dispose(){
         carPic.getTexture().dispose();
     }
@@ -148,5 +222,43 @@ public class Car {
     
     public void turnRight(boolean turningRight){
         turnRight = turningRight;
+    }
+    
+    public void collides(Car b){
+        if(front.overlaps(b.getBounds())){
+            System.out.println(tempCarType + ": FRONT");
+            frontHit = true;
+            crash = true;
+        } else{
+            frontHit = false;
+        }
+        
+        if(back.overlaps(b.getBounds())){
+            System.out.println(tempCarType + ": BACK");
+            backHit = true;
+            crash = true;
+        } else{
+            backHit = false;
+        }
+        
+        if(left.overlaps(b.getBounds())){
+            System.out.println(tempCarType + ": LEFT");
+            leftHit = true;
+            crash = true;
+        } else{
+            leftHit = false;
+        }
+        
+        if(right.overlaps(b.getBounds())){
+            System.out.println(tempCarType + ": RIGHT");
+            rightHit = true;
+            crash = true;
+        } else{
+            rightHit = false;
+        }
+    }
+    
+    public boolean crashed(){
+        return crash;
     }
 }

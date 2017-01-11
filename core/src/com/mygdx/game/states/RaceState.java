@@ -19,9 +19,8 @@ import com.mygdx.game.RaceIt;
 public class RaceState extends State {
 
     // Create the constant variables
-    private final Car lambo;
-    private final Car acura;
-    private final Car lambo2;
+    private final Car car1;
+    private final Car car2;
     private Texture bg;
     private boolean accelerate;
     private boolean stop;
@@ -30,6 +29,7 @@ public class RaceState extends State {
     private float velocity;
     private float speedX;
     private float speedY;
+    private int track = 1;
     /**
      * Constructor for the race state
      *
@@ -38,10 +38,14 @@ public class RaceState extends State {
     public RaceState(StateManager sm) {
         super(sm);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        lambo = new Car(600, 400, 1);
-        acura = new Car(600, 400, 2);
-        lambo2 = new Car(600, 400, 3);
-        bg = new Texture("Track1.jpg");
+        if(track == 1){
+            car1 = new Car(600, 400, 1, 270, 207, RaceIt.HEIGHT - 190);
+            car2 = new Car(600, 400, 3, 270, 160, RaceIt.HEIGHT - 145);
+            bg = new Texture("Track1.jpg");
+        } else{
+            car1 = new Car(0, 0, 0, 0, 0, 0);
+            car2 = new Car(0, 0, 0, 0, 0, 0);
+        }
     }
 
     // Comment this!
@@ -51,99 +55,78 @@ public class RaceState extends State {
         // Begin he drawing 
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
-        lambo.render(batch);
-        acura.render(batch);
-        lambo2.render(batch);
+        car1.render(batch);
+        car2.render(batch);
         batch.end();
     }
 
     @Override
     public void update(float deltaTime) {
-        lambo.update(deltaTime);
-        acura.update(deltaTime);
-        lambo2.update(deltaTime);
+        car1.update(deltaTime);
+        car2.update(deltaTime);
+        
+        if(!car1.crashed() && !car2.crashed()){
+            car1.collides(car2);
+            car2.collides(car1);
+        }
+            
     }
 
     @Override
     public void handleInput() {
         
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            lambo.acceleratorPedal(true);
+            car1.acceleratorPedal(true);
         } else{
-            lambo.acceleratorPedal(false);
+            car1.acceleratorPedal(false);
         }
     
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            lambo.turnLeft(true);
+            car1.turnLeft(true);
         }else{
-            lambo.turnLeft(false);
+            car1.turnLeft(false);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            lambo.turnRight(true);
+            car1.turnRight(true);
         }else{
-            lambo.turnRight(false);
+            car1.turnRight(false);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            lambo2.brakePedal(true);
+            car1.brakePedal(true);
         } else{
-            lambo2.brakePedal(false);
+            car1.brakePedal(false);
         }
         
         if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            lambo2.acceleratorPedal(true);
+            car2.acceleratorPedal(true);
         } else{
-            lambo2.acceleratorPedal(false);
+            car2.acceleratorPedal(false);
         }
     
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            lambo2.turnLeft(true);
+            car2.turnLeft(true);
         }else{
-            lambo2.turnLeft(false);
+            car2.turnLeft(false);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            lambo2.turnRight(true);
+            car2.turnRight(true);
         }else{
-            lambo2.turnRight(false);
+            car2.turnRight(false);
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            lambo2.brakePedal(true);
+            car2.brakePedal(true);
         } else{
-            lambo2.brakePedal(false);
-        }
-        
-        if(Gdx.input.isKeyPressed(Input.Keys.NUM_5)){
-            lambo2.acceleratorPedal(true);
-        } else{
-            lambo2.acceleratorPedal(false);
-        }
-    
-        if(Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
-            lambo2.turnLeft(true);
-        }else{
-            lambo2.turnLeft(false);
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
-            lambo2.turnRight(true);
-        }else{
-            lambo2.turnRight(false);
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
-            lambo2.brakePedal(true);
-        } else{
-            lambo2.brakePedal(false);
+            car2.brakePedal(false);
         }
     }
         
     @Override
     public void dispose() {
-        lambo.dispose();
-        acura.dispose();
-        lambo2.dispose();
+        car1.dispose();
+        car2.dispose();
     }
 }
