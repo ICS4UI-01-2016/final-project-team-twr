@@ -18,8 +18,8 @@ import com.mygdx.game.states.StateManager;
  */
 public class RaceIt extends ApplicationAdapter {
 
-    public static final int WIDTH = 900;
-    public static final int HEIGHT = 900;
+    public static final int WIDTH = 1200;
+    public static final int HEIGHT = 1000;
 
     private SpriteBatch batch; // to draw stuffs
     private StateManager stateManager; // look after the different states

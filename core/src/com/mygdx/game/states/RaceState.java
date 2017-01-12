@@ -37,7 +37,7 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm) {
         super(sm);
-        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+        setCameraView(RaceIt.WIDTH /2, RaceIt.HEIGHT / 2);
         if(track == 1){
             car1 = new Car(600, 400, 1, 270, 207, RaceIt.HEIGHT - 190);
             car2 = new Car(600, 400, 3, 270, 160, RaceIt.HEIGHT - 145);
@@ -46,6 +46,7 @@ public class RaceState extends State {
             car1 = new Car(0, 0, 0, 0, 0, 0);
             car2 = new Car(0, 0, 0, 0, 0, 0);
         }
+        
     }
 
     // Comment this!
@@ -54,20 +55,47 @@ public class RaceState extends State {
         batch.setProjectionMatrix(getCombinedCamera());
         // Begin he drawing 
         batch.begin();
-        batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
+        batch.draw(bg, 0, 0, getViewWidth() * 2, getViewHeight() * 2);
         car1.render(batch);
         car2.render(batch);
         batch.end();
+        
+        setCameraPosition(300, 750);
     }
 
     @Override
     public void update(float deltaTime) {
+        System.out.println(getCameraX());
+        System.out.println(getCameraY());
+        
+        if(car1.getSpeedX() != 0){
+            moveCameraX(car1.getX());
+            if(getCameraX() < 300){
+                System.out.println("HIT BOUNDARY");
+                moveCameraX(300);
+            } else if(getCameraX() == RaceIt.WIDTH){
+                System.out.println("HIT BOUNDARY");
+                moveCameraX(RaceIt.WIDTH);
+            }
+        }
+        
+        if(car1.getSpeedY() != 0){
+            if(getCameraY() == 0){
+                System.out.println("HIT BOUNDARY");
+                moveCameraY(0);
+            } else if(getCameraY() == RaceIt.HEIGHT){
+                System.out.println("HIT BOUNDARY");
+                moveCameraY(RaceIt.HEIGHT);
+            } else{
+                moveCameraY(car1.getY());
+            }
+        }
         car1.update(deltaTime);
         car2.update(deltaTime);
         
         if(!car1.crashed() && !car2.crashed()){
-            car1.collides(car2);
-            car2.collides(car1);
+//            car1.collides(car2);
+//            car2.collides(car1);
         }
             
     }

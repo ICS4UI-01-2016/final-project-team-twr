@@ -119,11 +119,11 @@ public class Car {
         // only allow the car to turn when in motion
         if ( velocity > 0 ) {
             if(turnLeft){
-                rotation += 4;
+                rotation += 3.5f;
             }
 
             if(turnRight){
-                rotation -= 4;
+                rotation -= 3.5f;
             }
         }
         
@@ -278,5 +278,13 @@ public class Car {
     
     public boolean crashed(){
         return crash;
+    }
+    
+    public float getSpeedX(){
+        return speedX;
+    }
+    
+    public float getSpeedY(){
+        return speedY;
     }
 }
