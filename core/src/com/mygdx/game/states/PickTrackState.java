@@ -35,14 +35,14 @@ public class PickTrackState extends State {
         super(sm);
         //PickTrackBackground = new Texture("");
         Track1 = new Texture("Track1.jpg");
-        Track2 = new Texture("Track2.jpg");
+        Track2 = new Texture("Description.jpg");
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
-        batch.draw(Track1, 0, 0, 1000, 1000);
+        batch.draw(Track2, 0, 0, getViewWidth(), getViewHeight());
         batch.end();
     }
 
@@ -63,7 +63,6 @@ public class PickTrackState extends State {
 
     @Override
     public void dispose() {
-        Track1.dispose();
         Track2.dispose();
     }
 }
