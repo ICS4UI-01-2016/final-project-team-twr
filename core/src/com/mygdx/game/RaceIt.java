@@ -18,7 +18,7 @@ import com.mygdx.game.states.StateManager;
  */
 public class RaceIt extends ApplicationAdapter {
 
-    public static final int WIDTH = 1200;
+    public static final int WIDTH = 1000;
     public static final int HEIGHT = 1000;
 
     private SpriteBatch batch; // to draw stuffs
@@ -31,7 +31,7 @@ public class RaceIt extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1); // colour to clear the screen with
 
         stateManager = new StateManager();
-        State firstScreen = new RaceState(stateManager);
+        State firstScreen = new DescriptionState(stateManager);
 //            State firstScreen = new RaceState(stateManager);
         stateManager.push(firstScreen); // load the first screen
     }

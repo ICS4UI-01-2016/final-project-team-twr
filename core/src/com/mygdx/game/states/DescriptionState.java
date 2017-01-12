@@ -21,6 +21,7 @@ public class DescriptionState extends State {
     // Creating instant variables
     private Texture description;
     private Rectangle backButton;
+    private Texture backButtonBox;
     //
     private Texture Extra1;
     private Texture Extra2;
@@ -30,10 +31,11 @@ public class DescriptionState extends State {
         description = new Texture("Description.jpg");
         Extra1 = new Texture("Track1.jpg");
         Extra2 = new Texture("Track2.jpg");
-        backButton = new Rectangle(100, 350, 200, 200);
+        backButton = new Rectangle(10, 10, 200, 200);
+        backButtonBox = new Texture("blackrectangle.png");
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
- 
+
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
@@ -41,11 +43,12 @@ public class DescriptionState extends State {
         batch.draw(description, 55, 350, 200, 200);
         batch.draw(Extra1, 350, 350, 200, 200);
         batch.draw(Extra2, 650, 350, 200, 200);
+        batch.draw(backButtonBox, backButton.x, backButton.y, backButton.width, backButton.height);
         batch.end();
-        batch.begin();
-        batch.setColor(Color.BLACK);
-        backButton.setPosition(10, 10);
-        batch.end();
+        //batch.begin();
+
+        //
+        //batch.end();
     }
 
     @Override
@@ -71,5 +74,4 @@ public class DescriptionState extends State {
     public void dispose() {
         description.dispose();
     }
-
 }
