@@ -58,7 +58,6 @@ public class MenuState extends State {
 
     @Override
     public void update(float DeltaTime) {
-
     }
 
     @Override
@@ -75,10 +74,11 @@ public class MenuState extends State {
                     music.pause();
                     mute = true;
                 }
-            } 
+            }
         }
-        sm = getStateManager();
-        sm.push(new ChooseAmountPlayersState(sm));
+
+        //sm = getStateManager();
+        //sm.push(new ChooseAmountPlayersState(sm));
 
     }
 

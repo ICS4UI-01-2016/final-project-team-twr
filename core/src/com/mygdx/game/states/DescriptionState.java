@@ -20,9 +20,8 @@ public class DescriptionState extends State {
 
     // Creating instant variables
     private Texture description;
-    //private Rectangle backButtonRectangle;
+    private Rectangle backButtonRectangle;
     private Texture button;
-    //
     private Texture Extra1;
     private Texture Extra2;
 
@@ -33,6 +32,7 @@ public class DescriptionState extends State {
         Extra2 = new Texture("Track2.jpg");
         //backButtonRectangle = new Rectangle(10, 10, 200, 50);
         button = new Texture("blackrectangle.png");
+        backButtonRectangle = new Rectangle(-22, 15, 265, 54);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
@@ -40,16 +40,11 @@ public class DescriptionState extends State {
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
-        batch.draw(description, 55, 350, 200, 200);
-        batch.draw(Extra1, 350, 350, 200, 200);
-        batch.draw(Extra2, 650, 350, 200, 200);
-        batch.draw(button, 10, 10, 200, 50);
-        //batch.draw(backButtonBox, backButton.x, backButton.y, backButton.width, backButton.height);
+        batch.draw(button, backButtonRectangle.x, backButtonRectangle.y, backButtonRectangle.width, backButtonRectangle.height);
+        batch.draw(description, 0, 0, getViewWidth(), getViewHeight());
+        //batch.draw(Extra1, 350, 350, 200, 200);
+        //batch.draw(Extra2, 650, 350, 200, 200);
         batch.end();
-        //batch.begin();
-
-        //
-        //batch.end();
     }
 
     @Override
@@ -58,17 +53,18 @@ public class DescriptionState extends State {
 
     @Override
     public void handleInput() {
-        // Get the mouse click/touch position
-        Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        // Convert the point to game coordinates
-        unproject(touch);
-        // If the "Back" button is touched, then go back to menustate
-        float buttonX = getViewWidth() / 2 - button.getWidth() / 2;
-        float buttonY = getViewHeight() / 2;
-        if (touch.x > buttonX && touch.x < buttonX + button.getWidth()
-                && touch.y > buttonY && touch.y < buttonY + button.getHeight()) {
-            StateManager gsm = getStateManager();
-            gsm.push(new MenuState(gsm));
+        if (Gdx.input.justTouched()) {
+            // Get the mouse click/touch position
+            Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            // Convert the point to game coordinates
+            unproject(touch);
+            // If the "Back" button is touched, then go back to DescriptionState
+            if (touch.x >= backButtonRectangle.x && touch.x <= backButtonRectangle.x + backButtonRectangle.width
+                    && touch.y >= backButtonRectangle.y && touch.y <= backButtonRectangle.y + backButtonRectangle.height) {
+                StateManager gsm = getStateManager();
+
+                gsm.push(new MenuState(gsm));
+            }
         }
     }
 
@@ -76,5 +72,7 @@ public class DescriptionState extends State {
     public void dispose() {
         description.dispose();
         button.dispose();
+        Extra1.dispose();
+        Extra2.dispose();
     }
 }
