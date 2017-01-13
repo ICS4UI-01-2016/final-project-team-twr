@@ -16,13 +16,13 @@ import com.badlogic.gdx.math.Vector3;
 public abstract class State {
 
     // Create the constants for the camera and the state manager
-    private OrthographicCamera cam;
+    private OrthographicCamera cam1;
     private StateManager sm;
 
     public State(StateManager sm) {
         // Assign the state manager and create the camera
         this.sm = sm;
-        cam = new OrthographicCamera();
+        cam1 = new OrthographicCamera();
     }
 
     // Create all of the abstract methods for a state
@@ -40,7 +40,7 @@ public abstract class State {
      * @return the camera
      */
     public OrthographicCamera getOrthographicCamera() {
-        return cam;
+        return cam1;
     }
 
     /**
@@ -59,8 +59,8 @@ public abstract class State {
      * @param height the heigh of the camera
      */
     public void setCameraView(float width, float height) {
-        cam.setToOrtho(false, width, height);
-        cam.update();
+        cam1.setToOrtho(false, width, height);
+        cam1.update();
     }
 
     /**
@@ -70,9 +70,9 @@ public abstract class State {
      * @param y the y value of the camera
      */
     public void setCameraPosition(float x, float y) {
-        cam.position.x = x;
-        cam.position.y = y;
-        cam.update();
+        cam1.position.x = x;
+        cam1.position.y = y;
+        cam1.update();
     }
 
     /**
@@ -81,36 +81,36 @@ public abstract class State {
      * @return the combined camera
      */
     public Matrix4 getCombinedCamera() {
-        return cam.combined;
+        return cam1.combined;
     }
 
     public void moveCameraX(float x) {
-        cam.position.x = x;
-        cam.update();
+        cam1.position.x = x;
+        cam1.update();
     }
 
     public void moveCameraY(float y) {
-        cam.position.y = y;
-        cam.update();
+        cam1.position.y = y;
+        cam1.update();
     }
 
     public float getCameraX() {
-        return cam.position.x;
+        return cam1.position.x;
     }
 
     public float getCameraY() {
-        return cam.position.y;
+        return cam1.position.y;
     }
 
     public float getViewWidth() {
-        return cam.viewportWidth;
+        return cam1.viewportWidth;
     }
 
     public float getViewHeight() {
-        return cam.viewportHeight;
+        return cam1.viewportHeight;
     }
 
     public void unproject(Vector3 touch) {
-        cam.unproject(touch);
+        cam1.unproject(touch);
     }
 }

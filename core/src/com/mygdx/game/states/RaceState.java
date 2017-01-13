@@ -39,8 +39,8 @@ public class RaceState extends State {
         super(sm);
         setCameraView(RaceIt.WIDTH /2, RaceIt.HEIGHT / 2);
         if(track == 1){
-            car1 = new Car(600, 400, 1, 270, 207, RaceIt.HEIGHT - 190);
-            car2 = new Car(600, 400, 3, 270, 160, RaceIt.HEIGHT - 145);
+            car1 = new Car(600, 400, 2, 270, 207, RaceIt.HEIGHT - 190);
+            car2 = new Car(600, 400, 4, 270, 160, RaceIt.HEIGHT - 145);
             bg = new Texture("Track1.jpg");
         } else{
             car1 = new Car(0, 0, 0, 0, 0, 0);
@@ -60,36 +60,28 @@ public class RaceState extends State {
         car2.render(batch);
         batch.end();
         
-        setCameraPosition(300, 750);
+        setCameraPosition(250, 750);
     }
 
     @Override
-    public void update(float deltaTime) {
-        System.out.println(getCameraX());
-        System.out.println(getCameraY());
-        
-        if(car1.getSpeedX() != 0){
-            moveCameraX(car1.getX());
-            if(getCameraX() < 300){
-                System.out.println("HIT BOUNDARY");
-                moveCameraX(300);
-            } else if(getCameraX() == RaceIt.WIDTH){
-                System.out.println("HIT BOUNDARY");
-                moveCameraX(RaceIt.WIDTH);
-            }
+    public void update(float deltaTime) {       
+        moveCameraX(car1.getX());
+        if(!(getCameraX() > 250)){
+            moveCameraX(250);
+        }
+
+        if(!(getCameraX() < 750)){
+            moveCameraX(750);
+        }
+        moveCameraY(car1.getY());
+        if(!(getCameraY() < 675)){
+            moveCameraY(675);
+        }
+
+        if(!(getCameraY() > 225)){
+            moveCameraY(225);
         }
         
-        if(car1.getSpeedY() != 0){
-            if(getCameraY() == 0){
-                System.out.println("HIT BOUNDARY");
-                moveCameraY(0);
-            } else if(getCameraY() == RaceIt.HEIGHT){
-                System.out.println("HIT BOUNDARY");
-                moveCameraY(RaceIt.HEIGHT);
-            } else{
-                moveCameraY(car1.getY());
-            }
-        }
         car1.update(deltaTime);
         car2.update(deltaTime);
         

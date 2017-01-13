@@ -157,21 +157,69 @@ public class Car {
             position.y = position.y + damageY;
         }
         
-        if(tempCarType == 3){
-            if(position.x + 75 > RaceIt.WIDTH){
-                position.x = RaceIt.WIDTH - 75;
+        if(tempCarType == 1){
+            if(position.x + 40 > RaceIt.WIDTH){
+                position.x = RaceIt.WIDTH - 40;
             }
 
-            if(position.x + 50 < 0){
-                position.x = - 50;
+            if(position.x < 10){
+                position.x = 10;
             }
 
-            if(position.y + 50 > RaceIt.HEIGHT){
-                position.y = RaceIt.HEIGHT - 50;
+            if(position.y + 55 > RaceIt.HEIGHT){
+                position.y = RaceIt.HEIGHT - 55;
             }
 
-            if(position.y + 25 < 0){
-                position.y =  - 25;
+            if(position.y < - 5){
+                position.y = - 5;
+            }
+        } else if(tempCarType == 2){
+            if(position.x + 40 > RaceIt.WIDTH){
+                position.x = RaceIt.WIDTH - 40;
+            }
+
+            if(position.x < 10){
+                position.x = 10;
+            }
+
+            if(position.y + 55 > RaceIt.HEIGHT){
+                position.y = RaceIt.HEIGHT - 55;
+            }
+
+            if(position.y < - 5){
+                position.y = - 5;
+            }
+        } else if(tempCarType == 3){
+            if(position.x + 85 > RaceIt.WIDTH){
+                position.x = RaceIt.WIDTH - 85;
+            }
+
+            if(position.x < - 35){
+                position.x = - 35;
+            }
+
+            if(position.y + 55 > RaceIt.HEIGHT){
+                position.y = RaceIt.HEIGHT - 55;
+            }
+
+            if(position.y < - 5){
+                position.y = - 5;
+            }
+        } else if(tempCarType == 4){
+            if(position.x + 40 > RaceIt.WIDTH){
+                position.x = RaceIt.WIDTH - 40;
+            }
+
+            if(position.x < 10){
+                position.x = 10;
+            }
+
+            if(position.y + 55 > RaceIt.HEIGHT){
+                position.y = RaceIt.HEIGHT - 55;
+            }
+
+            if(position.y < - 5){
+                position.y = - 5;
             }
         }
         
@@ -186,7 +234,7 @@ public class Car {
         if(tempCarType == 1){
             batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
         } else if(tempCarType == 2){
-            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
+            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 18, carPic.getRegionHeight() / 18, carPic.getRegionWidth() / 9, carPic.getRegionHeight() / 9, 1, 1, rotation);
         } else if(tempCarType == 3){
             batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 22, carPic.getRegionHeight() / 22, carPic.getRegionWidth() / 11, carPic.getRegionHeight() / 11, 1, 1, rotation);
         } else if (tempCarType == 4){
@@ -281,10 +329,10 @@ public class Car {
     }
     
     public float getSpeedX(){
-        return speedX;
+        return speedX + velocity;
     }
     
     public float getSpeedY(){
-        return speedY;
+        return speedY + velocity;
     }
 }
