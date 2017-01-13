@@ -6,8 +6,12 @@ package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -24,9 +28,11 @@ public class MenuState extends State {
     private Texture bg;
     private Texture musicPlay;
     private Texture musicMute;
+    private Texture title;
     private Rectangle muteButton;
     private Music music;
     private boolean mute;
+    private BitmapFont font;
 
     public MenuState(StateManager sm) {
         super(sm);
@@ -40,20 +46,29 @@ public class MenuState extends State {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         music.play();
+        font = new BitmapFont();
+
     }
 
     @Override
     public void render(SpriteBatch batch) {
-
         batch.setProjectionMatrix(getCombinedCamera());
+        
         batch.begin();
-        batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
         if (!mute) {
             batch.draw(musicPlay, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
         } else {
             batch.draw(musicMute, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
         }
+        batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
+        font.setColor(Color.WHITE);
+        font.draw(batch, "PRESS TO PLAY", getViewWidth()/2, getViewHeight() - 200);
         batch.end();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 12;
+        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
     }
 
     @Override
@@ -76,9 +91,9 @@ public class MenuState extends State {
                 }
             }
         }
-
-        //sm = getStateManager();
-        //sm.push(new ChooseAmountPlayersState(sm));
+        
+//        sm = getStateManager();
+//        sm.push(new ChooseAmountPlayersState(sm));
 
     }
 
