@@ -9,6 +9,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.RaceIt;
 
 /**
@@ -61,9 +63,11 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
+        Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        unproject(touch);
         if (Gdx.input.justTouched()) {
-            if (Gdx.input.getX() >= muteButton.x && Gdx.input.getX() <= muteButton.x + muteButton.width
-                    && Gdx.input.getY() >= muteButton.y && Gdx.input.getY()<= muteButton.y + muteButton.height) {
+            if (touch.x >= muteButton.x && touch.x <= muteButton.x + muteButton.width
+                    && touch.y >= muteButton.y && touch.y <= muteButton.y + muteButton.height) {
                 music.pause();
                 mute = true;
             }
