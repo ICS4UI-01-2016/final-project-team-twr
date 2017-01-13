@@ -5,8 +5,10 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.RaceIt;
 
 /**
@@ -18,11 +20,24 @@ public class MenuState extends State {
 
     private StateManager sm;
     private Texture bg;
+    private Texture musicPlay;
+    private Texture musicMute;
+    private Rectangle muteButton;
+    private Music music;
+    private boolean mute;
 
     public MenuState(StateManager sm) {
         super(sm);
         bg = new Texture("bg.jpg");
+        musicPlay = new Texture("playMusic.png");
+        musicMute = new Texture("muteMusic.png");
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+        mute = false;
+        
+        muteButton = new Rectangle(0, 0, 75, 75);
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
+        music.play();
     }
 
     @Override
@@ -31,23 +46,36 @@ public class MenuState extends State {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
+        if (!mute) {
+            batch.draw(musicPlay, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
+        } else {
+            batch.draw(musicMute, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
+        }
         batch.end();
     }
 
     @Override
     public void update(float DeltaTime) {
+        
     }
 
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            StateManager sm = getStateManager();
-            sm.push(new ChooseAmountPlayersState(sm));
+            if (Gdx.input.getX() >= muteButton.x && Gdx.input.getX() <= muteButton.x + muteButton.width
+                    && Gdx.input.getY() >= muteButton.y && Gdx.input.getY()<= muteButton.y + muteButton.height) {
+                music.pause();
+                mute = true;
+            }
         }
+            //sm = getStateManager();
+            //sm.push(new ChooseAmountPlayersState(sm));
+        
     }
 
     @Override
     public void dispose() {
         bg.dispose();
+        music.dispose();
     }
 }

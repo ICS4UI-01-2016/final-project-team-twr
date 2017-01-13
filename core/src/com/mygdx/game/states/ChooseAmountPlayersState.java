@@ -5,6 +5,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.RaceIt;
@@ -24,7 +25,7 @@ public class ChooseAmountPlayersState extends State {
         super(sm);
         bg = new Texture("MenuScreen.jpg");
         next = new Texture("NEXT.png");
-
+        
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
