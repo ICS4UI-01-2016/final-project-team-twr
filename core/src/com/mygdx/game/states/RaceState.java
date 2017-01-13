@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Car;
 import com.mygdx.game.RaceIt;
@@ -30,6 +32,8 @@ public class RaceState extends State {
     private float speedX;
     private float speedY;
     private int track = 1;
+    
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     /**
      * Constructor for the race state
      *
@@ -46,7 +50,7 @@ public class RaceState extends State {
             car1 = new Car(0, 0, 0, 0, 0, 0);
             car2 = new Car(0, 0, 0, 0, 0, 0);
         }
-        
+        setCameraPosition(250, 750);
     }
 
     // Comment this!
@@ -56,15 +60,26 @@ public class RaceState extends State {
         // Begin he drawing 
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth() * 2, getViewHeight() * 2);
+        batch.end();
+        
+        shapeRenderer.setProjectionMatrix(getCombinedCamera());
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.rect(720, 725, 20, 100);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.rect(690, 725, 20, 100);
+        shapeRenderer.end();
+        
+        batch.begin();
         car1.render(batch);
         car2.render(batch);
         batch.end();
-        
-        setCameraPosition(250, 750);
     }
 
     @Override
-    public void update(float deltaTime) {       
+    public void update(float deltaTime) {
+        System.out.println(car1.getX());
+        System.out.println(car1.getY());
         moveCameraX(car1.getX());
         if(!(getCameraX() > 250)){
             moveCameraX(250);
