@@ -35,8 +35,8 @@ public class MenuState extends State {
         musicMute = new Texture("muteMusic.png");
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         mute = false;
-        
-        muteButton = new Rectangle(0, 0, 75, 75);
+
+        muteButton = new Rectangle(0, 0, 50, 50);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         music.play();
@@ -58,7 +58,7 @@ public class MenuState extends State {
 
     @Override
     public void update(float DeltaTime) {
-        
+
     }
 
     @Override
@@ -68,13 +68,18 @@ public class MenuState extends State {
         if (Gdx.input.justTouched()) {
             if (touch.x >= muteButton.x && touch.x <= muteButton.x + muteButton.width
                     && touch.y >= muteButton.y && touch.y <= muteButton.y + muteButton.height) {
-                music.pause();
-                mute = true;
-            }
+                if (mute) {
+                    music.play();
+                    mute = false;
+                } else {
+                    music.pause();
+                    mute = true;
+                }
+            } 
         }
-            //sm = getStateManager();
-            //sm.push(new ChooseAmountPlayersState(sm));
-        
+        sm = getStateManager();
+        sm.push(new ChooseAmountPlayersState(sm));
+
     }
 
     @Override
