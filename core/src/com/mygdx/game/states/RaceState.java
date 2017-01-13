@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Car;
+import com.mygdx.game.CheckPoint;
 import com.mygdx.game.RaceIt;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,6 +34,7 @@ public class RaceState extends State {
     private float speedX;
     private float speedY;
     private int track = 1;
+    private ArrayList<CheckPoint> checkPoints;
     
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     /**
@@ -51,6 +54,14 @@ public class RaceState extends State {
             car2 = new Car(0, 0, 0, 0, 0, 0);
         }
         setCameraPosition(250, 750);
+        
+        for(int i = 0; i < 13; i++){
+            
+        }
+        
+        checkPoints = new ArrayList<CheckPoint>();
+        
+        
     }
 
     // Comment this!
