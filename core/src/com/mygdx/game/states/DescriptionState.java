@@ -23,16 +23,12 @@ public class DescriptionState extends State {
     private Texture description;
     private Rectangle backButtonRectangle;
     private Texture button;
-    private Texture Extra1;
-    private Texture Extra2;
     private Music music;
 
     public DescriptionState(StateManager sm) {
         super(sm);
         description = new Texture("Description.jpg");
-        Extra1 = new Texture("Track1.jpg");
-        Extra2 = new Texture("Track2.jpg");
-        //backButtonRectangle = new Rectangle(10, 10, 200, 50);
+        // backButtonRectangle = new Rectangle(10, 10, 200, 50);
         button = new Texture("blackrectangle.png");
         backButtonRectangle = new Rectangle(-22, 15, 265, 54);
         // Adding music to the state 
@@ -46,8 +42,6 @@ public class DescriptionState extends State {
         batch.begin();
         batch.draw(button, backButtonRectangle.x, backButtonRectangle.y, backButtonRectangle.width, backButtonRectangle.height);
         batch.draw(description, 0, 0, getViewWidth(), getViewHeight());
-        //batch.draw(Extra1, 350, 350, 200, 200);
-        //batch.draw(Extra2, 650, 350, 200, 200);
         batch.end();
     }
 
@@ -58,7 +52,7 @@ public class DescriptionState extends State {
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            // Get the mouse click/touch position
+            // Get the mouse click/touch position of the user
             Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             // Convert the point to game coordinates
             unproject(touch);
@@ -78,7 +72,5 @@ public class DescriptionState extends State {
     public void dispose() {
         description.dispose();
         button.dispose();
-        Extra1.dispose();
-        Extra2.dispose();
     }
 }

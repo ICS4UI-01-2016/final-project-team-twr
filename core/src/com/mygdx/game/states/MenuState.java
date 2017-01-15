@@ -28,9 +28,9 @@ public class MenuState extends State {
     private Texture bg;
     private Texture musicPlay;
     private Texture musicMute;
-    private Texture title;
     private Rectangle muteButton;
-    private Music music;
+    // Music instance variable
+    public Music music;
     private boolean mute;
     // Description option instance variables
     private Texture picOfDescriptionButton;
@@ -70,6 +70,7 @@ public class MenuState extends State {
         muteButton = new Rectangle(0, 0, 50, 50);
         music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         // Create an if statement saying to play only once!
+
         music.play();
         font = new BitmapFont();
 
@@ -157,7 +158,7 @@ public class MenuState extends State {
                     && touch.y >= playButton.y && touch.y <= playButton.y + playButton.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to ChooseAmountPlayersState
-                gsm.push(new PickTrackState(gsm));
+                gsm.push(new CarChoiceState(gsm));
                 // Allow for the music to continue playing
                 music.play();
             }

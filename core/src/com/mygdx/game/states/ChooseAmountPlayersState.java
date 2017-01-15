@@ -25,7 +25,6 @@ public class ChooseAmountPlayersState extends State {
         super(sm);
         bg = new Texture("MenuScreen.jpg");
         next = new Texture("NEXT.png");
-        
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 

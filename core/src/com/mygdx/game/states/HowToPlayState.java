@@ -20,22 +20,30 @@ public class HowToPlayState extends State {
     // Create instance variables
     private Texture howToPlay;
     // Creating the instance variables for the back button
-    private Texture picOfHowToPlayButton;
-    private Rectangle howToPlayButton;
+    private Texture picBackButton;
+    private Rectangle backButton;
 
     HowToPlayState(StateManager sm) {
         super(sm);
+        // Creating the background
         howToPlay = new Texture("HowToPlayState.jpg");
-        picOfHowToPlayButton = new Texture("blackrectangle.png");
-        howToPlayButton = new Rectangle(-7, 25, 311, 59);
+        // Creating the rectangle (picture) for the back button
+        picBackButton = new Texture("blackrectangle.png");
+        // Creating the rectangle for the back button
+        backButton = new Rectangle(-7, 25, 311, 59);
+        // Set the camera view to be correct for the game
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
+        // Begin to draw
         batch.begin();
-        batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
+        // Draw the back button
+        batch.draw(picBackButton, backButton.x, backButton.y, backButton.width, backButton.height);
+        // Draw the background 
         batch.draw(howToPlay, 0, 0, getViewWidth(), getViewHeight());
+        // End the drawing
         batch.end();
     }
 
@@ -49,9 +57,11 @@ public class HowToPlayState extends State {
         Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         unproject(touch);
         if (Gdx.input.justTouched()) {
-            if (touch.x >= howToPlayButton.x && touch.x <= howToPlayButton.x + howToPlayButton.width
-                    && touch.y >= howToPlayButton.y && touch.y <= howToPlayButton.y + howToPlayButton.height) {
+            // If the back button is clicked on, then the state changes to the manu state
+            if (touch.x >= backButton.x && touch.x <= backButton.x + backButton.width
+                    && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
                 StateManager gsm = getStateManager();
+                // Change state to MenuState
                 gsm.push(new MenuState(gsm));
             }
 
@@ -60,6 +70,8 @@ public class HowToPlayState extends State {
 
     @Override
     public void dispose() {
+        // Dispose the used images
+        picBackButton.dispose();
         howToPlay.dispose();
     }
 
