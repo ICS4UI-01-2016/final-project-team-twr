@@ -10,6 +10,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.states.RaceState;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 
 /**
  * 
@@ -25,6 +32,8 @@ public class Car {
     public  int            carWidth;
     public  int            carHeight;
     private int            carScale;               // scalar for the car image to track
+    private int            carLap;
+    private int            carCheckPoint = 0;
     
     private TextureRegion  blackBox;
     private TextureRegion  blackBox2;
@@ -50,6 +59,8 @@ public class Car {
     private boolean leftHit;
     private boolean rightHit;
     private boolean crash;
+    private BitmapFont font = new BitmapFont();
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY){
         position = new Vector3(x,y,0);
@@ -114,7 +125,26 @@ public class Car {
                 velocity *= .25f;
             }
         }
-        
+
+        // Based on the Track feature that is under the car
+        // have the car react.
+        // switch( feature ) {
+        if ( feature == RaceState.TrackFeature.FINISHLINE ){
+            if ( carCheckPoint == 7) {
+                carLap += 1;
+                carCheckPoint = 0;   
+            }
+        }
+
+        // Check to see if I am on checkpoint
+        if ( (feature.ordinal() >= RaceState.TrackFeature.CHECKPOINT1.ordinal() ) &&
+             (feature.ordinal() <= RaceState.TrackFeature.CHECKPOINT8.ordinal() )) {
+            int newCheckPoint = feature.ordinal() - RaceState.TrackFeature.CHECKPOINT1.ordinal() + 1;
+            if ( newCheckPoint == (carCheckPoint + 1) ) {
+                carCheckPoint = newCheckPoint;
+            }
+        }   
+                
         // check if the front of the car has hit a barrier
         if ( raceState.getTrackFeatureAtPt( carCorners.frontLeft) == 
                    RaceState.TrackFeature.BARRIER  
@@ -199,11 +229,11 @@ public class Car {
         // if it's in motion (ie has velocity)
 //        if ( velocity > 0 ) {
             if(turnLeft){
-                rotation += 4f;
+                rotation += 3.5f;
             }
 
             if(turnRight){
-                rotation -= 4f;
+                rotation -= 3.5f;
             }
 //        }
 
@@ -237,80 +267,45 @@ public class Car {
             position.y = position.y + damageY;
         }
         
-//        if(tempCarType == 1){
-//            if(position.x + 40 > RaceIt.WIDTH){
-//                position.x = RaceIt.WIDTH - 40;
-//            }
-//
-//            if(position.x < 10){
-//                position.x = 10;
-//            }
-//
-//            if(position.y + 55 > RaceIt.HEIGHT){
-//                position.y = RaceIt.HEIGHT - 55;
-//            }
-//
-//            if(position.y < - 5){
-//                position.y = - 5;
-//            }
-//        } else if(tempCarType == 2){
-//            if(position.x + 40 > RaceIt.WIDTH){
-//                position.x = RaceIt.WIDTH - 40;
-//            }
-//
-//            if(position.x < 10){
-//                position.x = 10;
-//            }
-//
-//            if(position.y + 55 > RaceIt.HEIGHT){
-//                position.y = RaceIt.HEIGHT - 55;
-//            }
-//
-//            if(position.y < - 5){
-//                position.y = - 5;
-//            }
-//        } else if(tempCarType == 3){
-//            if(position.x + 85 > RaceIt.WIDTH){
-//                position.x = RaceIt.WIDTH - 85;
-//            }
-//
-//            if(position.x < - 35){
-//                position.x = - 35;
-//            }
-//
-//            if(position.y + 55 > RaceIt.HEIGHT){
-//                position.y = RaceIt.HEIGHT - 55;
-//            }
-//
-//            if(position.y < - 5){
-//                position.y = - 5;
-//            }
-//        } else if(tempCarType == 4){
-//            if(position.x + 40 > RaceIt.WIDTH){
-//                position.x = RaceIt.WIDTH - 40;
-//            }
-//
-//            if(position.x < 10){
-//                position.x = 10;
-//            }
-//
-//            if(position.y + 55 > RaceIt.HEIGHT){
-//                position.y = RaceIt.HEIGHT - 55;
-//            }
-//
-//            if(position.y < - 5){
-//                position.y = - 5;
-//            }
-//        }
-        
         bounds.setPosition(position.x, position.y);
         front.setPosition(position.x, position.y + 50);
         back.setPosition(position.x, position.y);
         left.setPosition(position.x, position.y);
         right.setPosition(position.x + 50, position.y);
     }
+
+    public void renderHUD(RaceState state, SpriteBatch batch){
+ 
+        // Draw the heads up display relative to the camera position
+        // On the HUD, show the following informaiton
+        //   - lap #, 
+        //   - checkpoint
+        //   - time in race.
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+
+        // Enable transparency
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(state.getCameraX()-110, state.getCameraY()+175, 220, 35);
+        shapeRenderer.end();
+        
+        // End Transparency
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+ 
+        // Draw the HUD Text as separate batch from shapeRender since
+        // the need to work on different batches
+        batch.begin();
+        font.setColor(Color.RED);
+        String text = "Lap:" + carLap +"  Chkpoint: " + carCheckPoint + "   Time:  ";
+        font.draw( batch, text, state.getCameraX()-100, state.getCameraY()+200);
+        batch.end(); 
+    }
     
     public void render(SpriteBatch batch){
+    
         batch.draw( carPic,      position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight, 1, 1, rotation);
 //        batch.draw( carPic,      position.x, position.y, carWidth, carHeight, carWidth, carHeight, 1, 1, rotation);
 //        batch.draw( carPic, position.x, position.y);
@@ -318,20 +313,10 @@ public class Car {
         batch.draw( carPointPic, position.x, position.y);
         
         // draw corners of the car
-        batch.draw( carPointPic, carCorners.backLeft.x,   carCorners.backLeft.y);
-        batch.draw( carPointPic, carCorners.backRight.x,  carCorners.backRight.y);
-        batch.draw( carPointPic, carCorners.frontLeft.x,  carCorners.frontLeft.y);
-        batch.draw( carPointPic, carCorners.frontRight.x, carCorners.frontRight.y);
-        
-        /*
-        if(tempCarType == 1){
-        } else if(tempCarType == 2){
-            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 18, carPic.getRegionHeight() / 18, carPic.getRegionWidth() / 9, carPic.getRegionHeight() / 9, 1, 1, rotation);
-        } else if(tempCarType == 3){
-            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 22, carPic.getRegionHeight() / 22, carPic.getRegionWidth() / 11, carPic.getRegionHeight() / 11, 1, 1, rotation);
-        } else if (tempCarType == 4){
-            batch.draw(carPic, position.x, position.y, carPic.getRegionWidth() / 14, carPic.getRegionHeight() / 14, carPic.getRegionWidth() / 7, carPic.getRegionHeight() / 7, 1, 1, rotation);
-        }*/
+ //       batch.draw( carPointPic, carCorners.bottomLeft.x+carWidth/2-2,   carCorners.bottomLeft.y+carHeight/2-2);
+ //       batch.draw( carPointPic, carCorners.bottomRight.x+carWidth/2-2,  carCorners.bottomRight.y+carHeight/2-2);
+ //       batch.draw( carPointPic, carCorners.topLeft.x+carWidth/2-2,      carCorners.topLeft.y+carHeight/2-2);
+ //       batch.draw( carPointPic, carCorners.topRight.x+carWidth/2-2,     carCorners.topRight.y+carHeight/2-2);
         
     }
     

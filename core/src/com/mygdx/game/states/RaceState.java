@@ -17,6 +17,11 @@ import com.mygdx.game.RaceIt;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
 
 
 /**
@@ -45,7 +50,7 @@ public class RaceState extends State {
     public enum TrackFeature {  UNKNOWN, ROAD, GRASS, BARRIER, FINISHLINE,
        CHECKPOINT1, CHECKPOINT2, CHECKPOINT3, CHECKPOINT4, 
        CHECKPOINT5, CHECKPOINT6, CHECKPOINT7, CHECKPOINT8 };
-    
+        
     /**
      * Constructor for the race state
      *
@@ -53,12 +58,11 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm) {
         super(sm);
-        setCameraView(RaceIt.WIDTH /2, RaceIt.HEIGHT / 2);
+        setCameraView(RaceIt.WIDTH /4, RaceIt.HEIGHT / 2);
         if(track == 1){
-            car1 = new Car(600, 400, 1, 270, 207, RaceIt.HEIGHT - 165);
-            car2 = new Car(600, 400, 3, 270, 160, RaceIt.HEIGHT - 120);
+            car1 = new Car(600, 400, 2, 270, 207, RaceIt.HEIGHT - 165);
+            car2 = new Car(600, 400, 4, 270, 207, RaceIt.HEIGHT - 120);
             bg = new Texture("Track1.jpg");
-//            bg = new Texture("Track1-boundaries.png");
             loadBoundaryMap("Track1-boundaries.png");
         } else{
             car1 = new Car(0, 0, 0, 0, 0, 0);
@@ -67,18 +71,19 @@ public class RaceState extends State {
         
     }
 
-    // Comment this!
-    public void render(SpriteBatch batch) {
+    public void  moveCamView( SpriteBatch batch, Car car ) {
         // Update the camera view
-        moveCameraX(car1.getX());
-        if(!(getCameraX() > 250)){
-            moveCameraX(250);
+        moveCameraX(car.getX());
+        //System.out.println( "cam(" + getCameraX(camera) + "," + getCameraY(camera) + "+" );
+        if( getCameraX() > 870 ){
+            moveCameraX(870);
         }
 
-        if(!(getCameraX() < 750)){
-            moveCameraX(750);
+        if( (getCameraX() < 125)){
+            moveCameraX(125);
         }
-        moveCameraY(car1.getY());
+ 
+        moveCameraY(car.getY());
         if(!(getCameraY() < 675)){
             moveCameraY(675);
         }
@@ -86,18 +91,51 @@ public class RaceState extends State {
         if(!(getCameraY() > 225)){
             moveCameraY(225);
         }
-        
-
+ 
         // Draw the screen 
         batch.setProjectionMatrix(getCombinedCamera());
-        // Begin he drawing 
-        batch.begin();
-        batch.draw(bg, 0, 0, getViewWidth() * 2, getViewHeight() * 2);
+    }
+
+    // Comment this!
+    public void render(SpriteBatch batch) {
+        
+ 
+        setCameraView(RaceIt.WIDTH /4, RaceIt.HEIGHT/2);
+          
+        //
+        // Render the view for Car1
+        //
+        batch.begin();       
+        // set viewport for RIGHT side,leave a space of 2 pixels to separte the frames 
+        Gdx.gl.glViewport( Gdx.graphics.getWidth()/2+2,0+2,Gdx.graphics.getWidth()/2-4,Gdx.graphics.getHeight()-4 );
+        moveCamView(batch, car1 );
+        // draw track
+        batch.draw(bg, 0, 0, getViewWidth() * 4, getViewHeight() * 2);
+        // draw track
         car1.render(batch);
         car2.render(batch);
+        // End the batch to allow the HUD to be displated and use ShaperRenderr
         batch.end();
+        // draw the cars Hends Up Display
+        car1.renderHUD( this, batch);
         
-        setCameraPosition(250, 750);
+       
+        //
+        // Render the view for Car2
+        //
+        batch.begin();
+        // set viewport for LEFT side, leave a space of 2 pixels to separte the frames 
+        Gdx.gl.glViewport( 0+2,0+2,Gdx.graphics.getWidth()/2-4,Gdx.graphics.getHeight()-4 );
+        moveCamView( batch, car2 );
+        // draw track
+        batch.draw(bg, 0, 0, getViewWidth() * 4, getViewHeight() * 2);
+        // draw cars
+        car1.render(batch);
+        car2.render(batch);
+        // End the batch to allow the HUD to be displated and use ShaperRenderr
+        batch.end();
+        // draw the cars Hends Up Display
+        car2.renderHUD( this, batch);
     }
 
     @Override
@@ -171,7 +209,7 @@ public class RaceState extends State {
     }
 
     
-    // constants to determine boundary features from PNG image
+// constants to determine boundary features from PNG image
     private static final int RGB_ROAD       = -13816531;
     private static final int RGB_GRASS      = -14503604;
     private static final int RGB_BARRIER    = -1237980;
@@ -236,7 +274,7 @@ public class RaceState extends State {
             if (grabber.grabPixels()) {
                 boundaryMapWidth  = grabber.getWidth();
                 boundaryMapHeight = grabber.getHeight();
-               
+
                 // create space to store the boundary map
                 boundaryMap = new TrackFeature[boundaryMapWidth*boundaryMapHeight];
                         
@@ -263,7 +301,7 @@ public class RaceState extends State {
                             case RGB_ROAD:
                                 feature = TrackFeature.ROAD;
                                 break;
- 
+
                             case RGB_FINISHLINE:
                                 feature = TrackFeature.FINISHLINE;
                                 break;
