@@ -92,7 +92,7 @@ public class Car {
         carCorners = new CarRectCorners( carWidth, carHeight );
         
         tempCarType = carType;
-        bounds = new Rectangle(position.x, position.y, carPic.getRegionWidth(), carPic.getRegionHeight());
+        bounds = new Rectangle(position.x, position.y, carWidth, carHeight);
         front  = new Rectangle(position.x, position.y + 50, 50, 1);
         back   = new Rectangle(position.x, position.y, 50, 1);
         right  = new Rectangle(position.x + 50, position.y, 1, 50);
@@ -202,69 +202,41 @@ public class Car {
 
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
-        if(velocity > 0){
-            if(rotation >= 0 && rotation <= 90){
-                float tempRotation = rotation;
-                speedX = (0.0f - (tempRotation / 18.0f)) * velocity;
-                speedY = (5.0f - (tempRotation / 18.0f)) * velocity; 
-            } else if (rotation >= 90 && rotation <= 180){
-                float tempRotation = rotation - 90;
-                speedX = (-5.0f + (tempRotation / 18.0f)) * velocity;
-                speedY = (0.0f - (tempRotation / 18.0f)) * velocity; 
-            } else if (rotation >= 180 && rotation <= 270){
-                float tempRotation = rotation - 180;
-                speedX = (0.0f + (tempRotation / 18.0f)) * velocity;
-                speedY = (-5.0f + (tempRotation / 18.0f)) * velocity; 
-            } else if (rotation >= 270 && rotation <= 360){
-                float tempRotation = rotation - 270;
-                speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
-                speedY = (0.0f + (tempRotation / 18.0f)) * velocity; 
+        if(!crash){
+            if(velocity > 0){
+                if(rotation >= 0 && rotation <= 90){
+                    float tempRotation = rotation;
+                    speedX = (0.0f - (tempRotation / 18.0f)) * velocity;
+                    speedY = (5.0f - (tempRotation / 18.0f)) * velocity; 
+                } else if (rotation >= 90 && rotation <= 180){
+                    float tempRotation = rotation - 90;
+                    speedX = (-5.0f + (tempRotation / 18.0f)) * velocity;
+                    speedY = (0.0f - (tempRotation / 18.0f)) * velocity; 
+                } else if (rotation >= 180 && rotation <= 270){
+                    float tempRotation = rotation - 180;
+                    speedX = (0.0f + (tempRotation / 18.0f)) * velocity;
+                    speedY = (-5.0f + (tempRotation / 18.0f)) * velocity; 
+                } else if (rotation >= 270 && rotation <= 360){
+                    float tempRotation = rotation - 270;
+                    speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
+                    speedY = (0.0f + (tempRotation / 18.0f)) * velocity; 
+                }
+                position.x += speedX;
+                position.y += speedY;
             }
-            position.x += speedX;
-            position.y += speedY;
         }
 
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
-//        if ( velocity > 0 ) {
+        if ( velocity > 0 ) {
             if(turnLeft){
-                rotation += 3.5f;
+                rotation += 4f;
             }
 
             if(turnRight){
-                rotation -= 3.5f;
+                rotation -= 4f;
             }
-//        }
-
-        if(crash){
-            if(frontHit){
-                speedX = 0;
-                speedY = 0;
-                crash = true;
-                damageY = damageY + 0.1f;
-                if(damageY == 1){
-                    frontHit = false;
-                    crash = false;
-                    damageY = 0;
-                }
-                System.out.println("HERE");
-            }
-
-            if(backHit){
-                speedX = 0;
-                speedY = 0;
-                crash = true;
-                damageY = damageY - 0.1f;
-                if(damageY == -1){
-                    backHit = false;
-                    crash = false;
-                    damageY = 0;
-                }
-                System.out.println("HERE");
-            }
-
-            position.y = position.y + damageY;
         }
         
         bounds.setPosition(position.x, position.y);
@@ -368,49 +340,21 @@ public class Car {
         turnRight = turningRight;
     }
     
-    public void collides(Car b){
-        if(front.overlaps(b.getBounds())){
-            System.out.println(tempCarType + ": FRONT");
-            frontHit = true;
-            crash = true;
-        } else{
-            frontHit = false;
-        }
-        
-        if(back.overlaps(b.getBounds())){
-            System.out.println(tempCarType + ": BACK");
-            backHit = true;
-            crash = true;
-        } else{
-            backHit = false;
-        }
-        
-        if(left.overlaps(b.getBounds())){
-            System.out.println(tempCarType + ": LEFT");
-            leftHit = true;
-            crash = true;
-        } else{
-            leftHit = false;
-        }
-        
-        if(right.overlaps(b.getBounds())){
-            System.out.println(tempCarType + ": RIGHT");
-            rightHit = true;
-            crash = true;
-        } else{
-            rightHit = false;
-        }
-    }
-    
-    public boolean crashed(){
-        return crash;
-    }
-    
     public float getSpeedX(){
         return speedX + velocity;
     }
     
     public float getSpeedY(){
         return speedY + velocity;
+    }
+    
+    public void collide(Car b){
+        if(this.bounds.overlaps(b.bounds)){
+            crash = true;
+        }
+    }
+    
+    public boolean crashed(){
+        return crash;
     }
 }

@@ -60,8 +60,8 @@ public class RaceState extends State {
         super(sm);
         setCameraView(RaceIt.WIDTH /4, RaceIt.HEIGHT / 2);
         if(track == 1){
-            car1 = new Car(600, 400, 2, 270, 207, RaceIt.HEIGHT - 165);
-            car2 = new Car(600, 400, 4, 270, 207, RaceIt.HEIGHT - 120);
+            car1 = new Car(600, 400, 1, 270, 220, 800);
+            car2 = new Car(600, 400, 3, 270, 220, 750);
             bg = new Texture("Track1.jpg");
             loadBoundaryMap("Track1-boundaries.png");
         } else{
@@ -143,10 +143,10 @@ public class RaceState extends State {
         car1.update(deltaTime, this);
         car2.update(deltaTime, this);
         
-        if(!car1.crashed() && !car2.crashed()){
-//            car1.collides(car2);
-//            car2.collides(car1);
-        }
+//        if(!car1.crashed() && !car2.crashed()){
+//            car1.collide(car2);
+//            car2.collide(car1);
+//        }
             
     }
 
