@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Car;
 import com.mygdx.game.CheckPoint;
 import com.mygdx.game.RaceIt;
@@ -35,8 +36,35 @@ public class RaceState extends State {
     private float speedY;
     private int track = 1;
     private ArrayList<CheckPoint> checkPoints;
-    
+    private final CheckPoint cp1;
+    private final CheckPoint cp2;
+    private final CheckPoint cp3;
+    private final CheckPoint cp4;
+    private final CheckPoint cp5;
+    private final CheckPoint cp6;
+    private final CheckPoint cp7;
+    private final CheckPoint cp8;
+    private final CheckPoint cp9;
+    private final CheckPoint cp10;
+    private final CheckPoint cp11;
+    private final CheckPoint cp12;
+    private final CheckPoint cp13;
+    private final CheckPoint cp14;
+    private final CheckPoint cp15;
+    private final CheckPoint cp16;
+    private final CheckPoint cp17;
+    private final CheckPoint cp18;
+    private final CheckPoint cp19;
+    private final CheckPoint cp20;
+    private final CheckPoint cp21;
+    private final CheckPoint cp22;
+    private final CheckPoint cp23;
+    private final CheckPoint cp24;
+    private final CheckPoint cp25;
+    private final CheckPoint cp26;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    
+    
     /**
      * Constructor for the race state
      *
@@ -58,6 +86,45 @@ public class RaceState extends State {
         for(int i = 0; i < 13; i++){
             
         }
+        cp1 = new CheckPoint(720, 725, 20, 100, Color.WHITE);
+        cp2 = new CheckPoint(690, 725, 20, 100, Color.WHITE);
+        
+        cp3 = new CheckPoint(815, 450, 100, 20, Color.WHITE);
+        cp4 = new CheckPoint(815, 480, 100, 20, Color.WHITE);
+        
+        cp5 = new CheckPoint(550, 450, 100, 20, Color.WHITE);
+        cp6 = new CheckPoint(550, 480, 100, 20, Color.WHITE);
+        
+        cp7 = new CheckPoint(550, 550, 100, 20, Color.WHITE);
+        cp8 = new CheckPoint(550, 580, 100, 20, Color.WHITE);
+        
+        cp9 = new CheckPoint(295, 550, 100, 20, Color.WHITE);
+        cp10 = new CheckPoint(295, 580, 100, 20, Color.WHITE);
+        
+        cp11 = new CheckPoint(295, 320, 100, 20, Color.WHITE);
+        cp12 = new CheckPoint(295, 290, 100, 20, Color.WHITE);
+        
+        cp13 = new CheckPoint(540, 150, 20, 70, Color.WHITE);
+        cp14 = new CheckPoint(510, 150, 20, 70, Color.WHITE);
+        
+        cp15 = new CheckPoint(810, 150, 20, 70, Color.WHITE);
+        cp16 = new CheckPoint(780, 150, 20, 70, Color.WHITE);
+        
+        cp17 = new CheckPoint(810, 50, 20, 70, Color.WHITE);
+        cp18 = new CheckPoint(780, 50, 20, 70, Color.WHITE);
+        
+        cp19 = new CheckPoint(195, 50, 20, 70, Color.WHITE);
+        cp20 = new CheckPoint(225, 50, 20, 70, Color.WHITE);
+        
+        cp21 = new CheckPoint(50, 170, 90, 20, Color.WHITE);
+        cp22 = new CheckPoint(50, 200, 90, 20, Color.WHITE);
+        
+        cp23 = new CheckPoint(50, 690, 90, 20, Color.WHITE);
+        cp24 = new CheckPoint(50, 660, 90, 20, Color.WHITE);
+        
+        cp25 = new CheckPoint(290, 775, 20, 50, Color.WHITE);
+        cp26 = new CheckPoint(290, 725, 20, 50, Color.WHITE);
+        
         
         checkPoints = new ArrayList<CheckPoint>();
         
@@ -66,6 +133,7 @@ public class RaceState extends State {
 
     // Comment this!
     public void render(SpriteBatch batch) {
+        shapeRenderer.setProjectionMatrix(getCombinedCamera());
         // Draw the screen 
         batch.setProjectionMatrix(getCombinedCamera());
         // Begin he drawing 
@@ -73,13 +141,33 @@ public class RaceState extends State {
         batch.draw(bg, 0, 0, getViewWidth() * 2, getViewHeight() * 2);
         batch.end();
         
-        shapeRenderer.setProjectionMatrix(getCombinedCamera());
-        shapeRenderer.begin(ShapeType.Filled);
-        shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(720, 725, 20, 100);
-        shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(690, 725, 20, 100);
-        shapeRenderer.end();
+        cp1.render(shapeRenderer);
+        cp2.render(shapeRenderer);
+        cp3.render(shapeRenderer);
+        cp4.render(shapeRenderer);
+        cp5.render(shapeRenderer);
+        cp6.render(shapeRenderer);
+        cp7.render(shapeRenderer);
+        cp8.render(shapeRenderer);
+        cp9.render(shapeRenderer);
+        cp10.render(shapeRenderer);
+        cp11.render(shapeRenderer);
+        cp12.render(shapeRenderer);
+        cp13.render(shapeRenderer);
+        cp14.render(shapeRenderer);
+        cp15.render(shapeRenderer);
+        cp16.render(shapeRenderer);
+        cp17.render(shapeRenderer);
+        cp18.render(shapeRenderer);
+        cp19.render(shapeRenderer);
+        cp20.render(shapeRenderer);
+        cp21.render(shapeRenderer);
+        cp22.render(shapeRenderer);
+        cp23.render(shapeRenderer);
+        cp24.render(shapeRenderer);
+        cp25.render(shapeRenderer);
+        cp26.render(shapeRenderer);
+        
         
         batch.begin();
         car1.render(batch);
@@ -114,6 +202,14 @@ public class RaceState extends State {
         if(!car1.crashed() && !car2.crashed()){
 //            car1.collides(car2);
 //            car2.collides(car1);
+        }
+        
+        for(int i = 0; i > 26; i++){
+            if(!(cp1.getColor()== Color.RED)){
+                if(car1.getBounds().overlaps(cp1.getBounds())){
+                    cp1.setColor(Color.RED);
+                }   
+            }
         }
             
     }

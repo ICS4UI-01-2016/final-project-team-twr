@@ -64,11 +64,11 @@ public class MenuState extends State {
         font.setColor(Color.WHITE);
         font.draw(batch, "PRESS TO PLAY", getViewWidth()/2, getViewHeight() - 200);
         batch.end();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 12;
-        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+//        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+//        parameter.size = 12;
+//        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
+//        generator.dispose(); // don't forget to dispose to avoid memory leaks!
     }
 
     @Override

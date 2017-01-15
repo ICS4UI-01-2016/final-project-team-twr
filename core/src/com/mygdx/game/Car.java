@@ -60,7 +60,7 @@ public class Car {
         }
         
         tempCarType = carType;
-        bounds = new Rectangle(position.x, position.y, carPic.getRegionWidth(), carPic.getRegionHeight());
+        bounds = new Rectangle(position.x, position.y, 50, 50);
         front = new Rectangle(position.x, position.y + 50, 50, 1);
         back = new Rectangle(position.x, position.y, 50, 1);
         right = new Rectangle(position.x + 50, position.y, 1, 50);
@@ -119,11 +119,11 @@ public class Car {
         // only allow the car to turn when in motion
         if ( velocity > 0 ) {
             if(turnLeft){
-                rotation += 3.5f;
+                rotation += 4f;
             }
 
             if(turnRight){
-                rotation -= 3.5f;
+                rotation -= 4f;
             }
         }
         
@@ -334,5 +334,9 @@ public class Car {
     
     public float getSpeedY(){
         return speedY + velocity;
+    }
+    
+    public void hits(CheckPoint checkpoint){
+        
     }
 }
