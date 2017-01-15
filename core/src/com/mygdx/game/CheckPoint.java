@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 /**
  *
- * @author brayden
+ * @author whitb0039, richj0985, and tatad6701
  */
 public class CheckPoint {
 

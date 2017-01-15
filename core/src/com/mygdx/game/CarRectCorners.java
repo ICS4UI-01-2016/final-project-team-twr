@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  *
- * @author richarb
+ * @author whitb0039, richj0985, and tatad6701
  */
 public class CarRectCorners {
     public  Vector3 frontLeft;
