@@ -4,9 +4,11 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.RaceIt;
 
 /**
@@ -24,12 +26,15 @@ public class HowToPlayState extends State {
     HowToPlayState(StateManager sm) {
         super(sm);
         howToPlay = new Texture("HowToPlayState.jpg");
+        picOfHowToPlayButton = new Texture("blackrectangle.png");
+        howToPlayButton = new Rectangle(-7, 25, 311, 59);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
+        batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
         batch.draw(howToPlay, 0, 0, getViewWidth(), getViewHeight());
         batch.end();
     }
@@ -41,7 +46,16 @@ public class HowToPlayState extends State {
 
     @Override
     public void handleInput() {
+        Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        unproject(touch);
+        if (Gdx.input.justTouched()) {
+            if (touch.x >= howToPlayButton.x && touch.x <= howToPlayButton.x + howToPlayButton.width
+                    && touch.y >= howToPlayButton.y && touch.y <= howToPlayButton.y + howToPlayButton.height) {
+                StateManager gsm = getStateManager();
+                gsm.push(new MenuState(gsm));
+            }
 
+        }
     }
 
     @Override

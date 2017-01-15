@@ -32,12 +32,15 @@ public class MenuState extends State {
     private Rectangle muteButton;
     private Music music;
     private boolean mute;
-    // Description instance variables
+    // Description option instance variables
     private Texture picOfDescriptionButton;
     private Rectangle descriptionButton;
-    // How To Play instance variables
+    // How To Play option instance variables
     private Texture picOfHowToPlayButton;
     private Rectangle howToPlayButton;
+    // Play option instance variables
+    private Texture picOfPlayButton;
+    private Rectangle playButton;
     private BitmapFont font;
 
     public MenuState(StateManager sm) {
@@ -52,15 +55,21 @@ public class MenuState extends State {
         picOfDescriptionButton = new Texture("blackrectangle.png");
         // Create the rectangle behind the description button option 
         descriptionButton = new Rectangle(679, 409, 260, 50);
-
+        // Create the picture of the black rectangle 
         picOfHowToPlayButton = new Texture("blackrectangle.png");
+        // Create the rectangle button for the how to play option
         howToPlayButton = new Rectangle(68, 409, 260, 50);
+        // Create the picture of the rectangle button for the play option
+        picOfPlayButton = new Texture("blackrectangle.png");
+        // Create the rectangle of the play button
+        playButton = new Rectangle(377, 409, 260, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         // Se the mute boolean to be false
         mute = false;
         // Place the mute button 
         muteButton = new Rectangle(0, 0, 50, 50);
         music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
+        // Create an if statement saying to play only once!
         music.play();
         font = new BitmapFont();
 
@@ -71,6 +80,8 @@ public class MenuState extends State {
         batch.setProjectionMatrix(getCombinedCamera());
         // Beginning the drawings
         batch.begin();
+        // Drawing the rectangle behind the Play option
+        batch.draw(picOfPlayButton, playButton.x, playButton.y, playButton.width, playButton.height);
         // Drawing the rectangle behind the How To Play option
         batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
         // Drawing the rectangle behind the description option
@@ -125,17 +136,31 @@ public class MenuState extends State {
             if (touch.x >= descriptionButton.x && touch.x <= descriptionButton.x + descriptionButton.width
                     && touch.y >= muteButton.y && touch.y <= descriptionButton.y + descriptionButton.height) {
                 StateManager gsm = getStateManager();
+                // Change the state to DescriptionState
                 gsm.push(new DescriptionState(gsm));
+                // Allow for the music to continue playing
+                music.play();
             }
 
             // If the "How To Play" button is touch, change the screen to How To Play screen
             if (touch.x >= howToPlayButton.x && touch.x <= howToPlayButton.x + howToPlayButton.width
                     && touch.y >= howToPlayButton.y && touch.y <= howToPlayButton.y + howToPlayButton.height) {
                 StateManager gsm = getStateManager();
+                // Change the state to HowToPlayState
                 gsm.push(new HowToPlayState(gsm));
+                // Allow for the music to continue playing
+                music.play();
             }
 
             // If the "Play" button is touch, change the screen to Choose Player Amount screen
+            if (touch.x >= playButton.x && touch.x <= playButton.x + playButton.width
+                    && touch.y >= playButton.y && touch.y <= playButton.y + playButton.height) {
+                StateManager gsm = getStateManager();
+                // Change the state to ChooseAmountPlayersState
+                gsm.push(new PickTrackState(gsm));
+                // Allow for the music to continue playing
+                music.play();
+            }
         }
     }
 

@@ -5,6 +5,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,6 +25,7 @@ public class DescriptionState extends State {
     private Texture button;
     private Texture Extra1;
     private Texture Extra2;
+    private Music music;
 
     public DescriptionState(StateManager sm) {
         super(sm);
@@ -33,6 +35,8 @@ public class DescriptionState extends State {
         //backButtonRectangle = new Rectangle(10, 10, 200, 50);
         button = new Texture("blackrectangle.png");
         backButtonRectangle = new Rectangle(-22, 15, 265, 54);
+        // Adding music to the state 
+        music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
@@ -62,8 +66,10 @@ public class DescriptionState extends State {
             if (touch.x >= backButtonRectangle.x && touch.x <= backButtonRectangle.x + backButtonRectangle.width
                     && touch.y >= backButtonRectangle.y && touch.y <= backButtonRectangle.y + backButtonRectangle.height) {
                 StateManager gsm = getStateManager();
-
+                // Change state to MenuState
                 gsm.push(new MenuState(gsm));
+                // Stop the music
+                music.stop();
             }
         }
     }
