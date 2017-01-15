@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Map;
+import com.mygdx.game.RaceIt;
 import java.util.ArrayList;
 
 /**
@@ -35,14 +36,16 @@ public class PickTrackState extends State {
         super(sm);
         //PickTrackBackground = new Texture("");
         Track1 = new Texture("Track1.jpg");
-        Track2 = new Texture("Description.jpg");
+        Track2 = new Texture("Track2.jpg");
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
-        batch.draw(Track2, 0, 0, getViewWidth(), getViewHeight());
+        batch.draw(Track1, 350, 350, 200, 200);
+        batch.draw(Track2, 650, 350, 200, 200);
         batch.end();
     }
 

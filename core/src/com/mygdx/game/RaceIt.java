@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.states.DescriptionState;
+import com.mygdx.game.states.HowToPlayState;
 import com.mygdx.game.states.MenuState;
 import com.mygdx.game.states.PickTrackState;
 import com.mygdx.game.states.RaceState;
