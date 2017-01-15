@@ -94,6 +94,11 @@ public class MenuState extends State {
         //parameter.size = 12;
         //BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
         //generator.dispose(); // don't forget to dispose to avoid memory leaks!
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+//        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+//        parameter.size = 12;
+//        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
+//        generator.dispose(); // don't forget to dispose to avoid memory leaks!
     }
 
     @Override
