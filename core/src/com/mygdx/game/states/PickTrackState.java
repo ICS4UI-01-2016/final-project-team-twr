@@ -84,7 +84,7 @@ public class PickTrackState extends State {
                     && touch.y >= picOfTrack1.y && touch.y <= picOfTrack1.y + picOfTrack1.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to RaceState
-                gsm.push(new RaceState(gsm));
+                gsm.push(new RaceState(gsm, 1));
             }
 
             // If track 2 was clicked on, then change the screen to race state but track 2
@@ -92,7 +92,7 @@ public class PickTrackState extends State {
                     && touch.y >= picOfTrack2.y && touch.y <= picOfTrack2.y + picOfTrack2.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to RaceState
-                gsm.push(new RaceState(gsm));
+                gsm.push(new RaceState(gsm, 2));
             }
 
             // If the back button was clicked on, then change the screen to car choice state

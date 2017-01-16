@@ -40,7 +40,7 @@ public class CarChoiceState extends State {
      */
     public CarChoiceState(StateManager sm) {
         super(sm);
-        PickCarBackground = new Texture("CarChoiceState.jpg");
+        PickCarBackground = new Texture("CarChoiceState.png");
         lambo = new Texture("lamborghiniblack.png");
         acura = new Texture("acura.png");
         lambo2 = new Texture("lamborghini2.png");

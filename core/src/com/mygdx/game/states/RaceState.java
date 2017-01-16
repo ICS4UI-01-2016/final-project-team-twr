@@ -56,7 +56,7 @@ public class RaceState extends State {
      *
      * @param sm
      */
-    public RaceState(StateManager sm) {
+    public RaceState(StateManager sm, int track) {
         super(sm);
         setCameraView(RaceIt.WIDTH /4, RaceIt.HEIGHT / 2);
         if(track == 1){
@@ -67,6 +67,7 @@ public class RaceState extends State {
         } else{
             car1 = new Car(0, 0, 0, 0, 0, 0);
             car2 = new Car(0, 0, 0, 0, 0, 0);
+            bg = new Texture("Track2.jpg");
         }
         
     }
