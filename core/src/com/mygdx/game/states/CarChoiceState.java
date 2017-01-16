@@ -29,6 +29,9 @@ public class CarChoiceState extends State {
     // Creating instance variables for the next button
     private Texture picNextButton;
     private Rectangle nextButton;
+    // Creating instance variables for the back button
+    private Texture picBackButton;
+    private Rectangle backButton;
 
     /**
      * Constructor for the pick track screen for the players
@@ -45,16 +48,23 @@ public class CarChoiceState extends State {
         // Placing the next button
         picNextButton = new Texture("blackrectangle.png");
         nextButton = new Rectangle(763, 30, 215, 50);
+        // Placing the back button
+        picBackButton = new Texture("blackrectangle.png");
+        backButton = new Rectangle(19, 30, 220, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
+        // Beginning the drawings
         batch.begin();
+        // Drawing the back button
+        batch.draw(picBackButton, backButton.x, backButton.y, backButton.width, backButton.height);
         // Drawing the next button option
         batch.draw(picNextButton, nextButton.x, nextButton.y, nextButton.width, nextButton.height);
         batch.draw(PickCarBackground, 0, 0, getViewWidth(), getViewHeight());
+        // Ending the drawings
         batch.end();
     }
 
@@ -77,6 +87,14 @@ public class CarChoiceState extends State {
                 gsm.push(new PickTrackState(gsm));
             }
 
+            // If the back button is clicked on, the state then changes to menu state
+            if (touch.x >= backButton.x && touch.x <= backButton.x + backButton.width
+                    && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
+                StateManager gsm = getStateManager();
+                // Change the state to pick a track state
+                gsm.push(new MenuState(gsm));
+            }
+
             // Saving Player 1's clicked option
             // Saving Player 2's clicked option
         }
@@ -86,5 +104,7 @@ public class CarChoiceState extends State {
     @Override
     public void dispose() {
         PickCarBackground.dispose();
+        picNextButton.dispose();
+        picBackButton.dispose();
     }
 }
