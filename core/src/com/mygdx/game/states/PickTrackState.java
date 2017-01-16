@@ -23,11 +23,15 @@ public class PickTrackState extends State {
     // Create constant variables
     private StateManager sm;
     private Texture PickTrackBackground;
-
+    // Track 1 option instance variables
     private Texture track1Button;
     private Rectangle picOfTrack1;
+    // Track 2 option instance variables
     private Texture track2Button;
     private Rectangle picOfTrack2;
+    // Back button instance variables
+    private Texture picBackButton;
+    private Rectangle backButton;
 
     /**
      * Constructor for the pick track screen for the players
@@ -43,7 +47,9 @@ public class PickTrackState extends State {
         // Buttons for Track2
         picOfTrack2 = new Rectangle(535, 305, 373, 223);
         track2Button = new Texture("blackrectangle.png");
-        //track1Button = new 
+        // Placing the back button
+        picBackButton = new Texture("blackrectangle.png");
+        backButton = new Rectangle(21, 30, 215, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
@@ -51,6 +57,8 @@ public class PickTrackState extends State {
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
+        // Drawing the back button rectangle
+        batch.draw(picBackButton, backButton.x, backButton.y, backButton.width, backButton.height);
         // Drawing the track 1 button rectangle
         batch.draw(track1Button, picOfTrack1.x, picOfTrack1.y, picOfTrack1.width, picOfTrack1.height);
         // Drawing the track 1 button rectangle
@@ -85,6 +93,14 @@ public class PickTrackState extends State {
                 StateManager gsm = getStateManager();
                 // Change the state to RaceState
                 gsm.push(new RaceState(gsm));
+            }
+
+            // If the back button was clicked on, then change the screen to car choice state
+            if (touch.x >= backButton.x && touch.y <= backButton.x + backButton.width
+                    && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
+                StateManager gsm = getStateManager();
+                // Change the state to CarChoiceState
+                gsm.push(new CarChoiceState(gsm));
             }
         }
     }
