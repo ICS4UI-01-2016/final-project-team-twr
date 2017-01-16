@@ -29,8 +29,8 @@ public class DescriptionState extends State {
         super(sm);
         description = new Texture("Description.jpg");
         // backButtonRectangle = new Rectangle(10, 10, 200, 50);
-        button = new Texture("blackrectangle.png");
-        backButtonRectangle = new Rectangle(-22, 15, 265, 54);
+        button = new Texture("blackrectangle1.png");
+        backButtonRectangle = new Rectangle(22, 18, 175, 48);
         // Adding music to the state 
         music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);

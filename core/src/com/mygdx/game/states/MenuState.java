@@ -52,17 +52,17 @@ public class MenuState extends State {
         // Create the music mute button
         musicMute = new Texture("muteMusic.png");
         // Description Button instance variables
-        picOfDescriptionButton = new Texture("blackrectangle.png");
+        picOfDescriptionButton = new Texture("blackrectangle1.png");
         // Create the rectangle behind the description button option 
-        descriptionButton = new Rectangle(679, 409, 260, 50);
+        descriptionButton = new Rectangle(721, 409, 175, 50);
         // Create the picture of the black rectangle 
-        picOfHowToPlayButton = new Texture("blackrectangle.png");
+        picOfHowToPlayButton = new Texture("blackrectangle1.png");
         // Create the rectangle button for the how to play option
-        howToPlayButton = new Rectangle(68, 409, 260, 50);
+        howToPlayButton = new Rectangle(110, 409, 175, 50);
         // Create the picture of the rectangle button for the play option
-        picOfPlayButton = new Texture("blackrectangle.png");
+        picOfPlayButton = new Texture("blackrectangle1.png");
         // Create the rectangle of the play button
-        playButton = new Rectangle(377, 409, 260, 50);
+        playButton = new Rectangle(419, 409, 175, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         // Se the mute boolean to be false
         mute = false;
@@ -87,8 +87,9 @@ public class MenuState extends State {
         batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
         // Drawing the rectangle behind the description option
         batch.draw(picOfDescriptionButton, descriptionButton.x, descriptionButton.y, descriptionButton.width, descriptionButton.height);
+        
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
-
+        
         // If the mute button is not clicked
         if (!mute) {
             // Draw the playing mute button
@@ -135,7 +136,7 @@ public class MenuState extends State {
 
             // If the "Description" button is touch, change the screen to description screen
             if (touch.x >= descriptionButton.x && touch.x <= descriptionButton.x + descriptionButton.width
-                    && touch.y >= muteButton.y && touch.y <= descriptionButton.y + descriptionButton.height) {
+                    && touch.y >= descriptionButton.y && touch.y <= descriptionButton.y + descriptionButton.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to DescriptionState
                 gsm.push(new DescriptionState(gsm));
@@ -173,5 +174,4 @@ public class MenuState extends State {
         musicPlay.dispose();
         musicMute.dispose();
     }
-
 }
