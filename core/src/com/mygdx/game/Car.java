@@ -29,6 +29,7 @@ public class Car {
     private CarRectCorners carCorners;  // corners bounding box of car on track
     private TextureRegion  carPic;
     private TextureRegion  carPointPic;
+    private TextureRegion  checkPointPic;
     public  int            carWidth;
     public  int            carHeight;
     private int            carScale;               // scalar for the car image to track
@@ -59,6 +60,7 @@ public class Car {
     private boolean leftHit;
     private boolean rightHit;
     private boolean crash;
+    private boolean hitCheckPoint;
     private BitmapFont font = new BitmapFont();
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     
@@ -69,6 +71,7 @@ public class Car {
         position.y = initialPositionY;
         
         carPointPic = new TextureRegion(new Texture("point.png"));
+        checkPointPic = new TextureRegion(new Texture("checkpoint.png"));
         
         // setup the image of the car, it's appropriate scale on the track
         // and it's bounding rectangle on the track
@@ -129,7 +132,7 @@ public class Car {
         if ( feature == RaceState.TrackFeature.FINISHLINE ){
             if ( carCheckPoint == 7) {
                 carLap += 1;
-                carCheckPoint = 0;   
+                carCheckPoint = 0;
             }
         }
 
@@ -139,7 +142,10 @@ public class Car {
             int newCheckPoint = feature.ordinal() - RaceState.TrackFeature.CHECKPOINT1.ordinal() + 1;
             if ( newCheckPoint == (carCheckPoint + 1) ) {
                 carCheckPoint = newCheckPoint;
+                hitCheckPoint = true;
             }
+        } else{
+                hitCheckPoint = false;
         }   
                 
         // check if the front of the car has hit a barrier
@@ -267,7 +273,7 @@ public class Car {
         // Draw the HUD Text as separate batch from shapeRender since
         // the need to work on different batches
         batch.begin();
-        font.setColor(Color.RED);
+        font.setColor(Color.BLUE);
         String text = "Lap:" + carLap +" CheckPoint: " + carCheckPoint + " Time:  ";
         font.draw( batch, text, state.getCameraX()-100, state.getCameraY()+200);
         batch.end(); 
@@ -284,6 +290,11 @@ public class Car {
         batch.draw( carPointPic, carCorners.frontLeft.x,   carCorners.frontLeft.y);
         batch.draw( carPointPic, carCorners.frontRight.x,  carCorners.frontRight.y);
         
+        if(hitCheckPoint){
+            float cpX = position.x;
+            float cpY = position.y;
+            batch.draw(checkPointPic, cpX, cpY, 50, 50);
+        }
     }
     
     public float getX(){
@@ -350,5 +361,9 @@ public class Car {
     
     public boolean crashed(){
         return crash;
+    }
+    
+    public int getLap(){
+        return carLap;
     }
 }
