@@ -28,9 +28,9 @@ public class HowToPlayState extends State {
         // Creating the background
         howToPlay = new Texture("HowToPlayState.jpg");
         // Creating the rectangle (picture) for the back button
-        picBackButton = new Texture("blackrectangle.png");
+        picBackButton = new Texture("blackrectangle1.png");
         // Creating the rectangle for the back button
-        backButton = new Rectangle(-7, 25, 311, 59);
+        backButton = new Rectangle(40, 23, 218, 62);
         // Set the camera view to be correct for the game
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
@@ -49,7 +49,6 @@ public class HowToPlayState extends State {
 
     @Override
     public void update(float DeltaTime) {
-
     }
 
     @Override
@@ -74,5 +73,4 @@ public class HowToPlayState extends State {
         picBackButton.dispose();
         howToPlay.dispose();
     }
-
 }
