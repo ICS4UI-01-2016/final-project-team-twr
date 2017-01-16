@@ -113,9 +113,7 @@ public class Car {
         System.out.println("(" + position.x +"," + position.y +")=" 
                    + feature + "   LC(" + carCorners.backLeft.x + "," 
                    + carCorners.backLeft.x +")" );
-    
-//        if ( raceState.getInterestingTrackFeature( carCorners ) == RaceState.TrackFeature.GRASS ){
-       
+           
         // Based on the Track feature that is under the car
         // have the car react.
         // switch( feature ) {
@@ -126,9 +124,8 @@ public class Car {
             }
         }
 
-        // Based on the Track feature that is under the car
-        // have the car react.
-        // switch( feature ) {
+        // ceck to see if the car has reached the finishline after
+        // having passed over all of the required check points.
         if ( feature == RaceState.TrackFeature.FINISHLINE ){
             if ( carCheckPoint == 7) {
                 carLap += 1;
@@ -271,7 +268,7 @@ public class Car {
         // the need to work on different batches
         batch.begin();
         font.setColor(Color.RED);
-        String text = "Lap:" + carLap +"  Chkpoint: " + carCheckPoint + "   Time:  ";
+        String text = "Lap:" + carLap +" CheckPoint: " + carCheckPoint + " Time:  ";
         font.draw( batch, text, state.getCameraX()-100, state.getCameraY()+200);
         batch.end(); 
     }
@@ -279,16 +276,13 @@ public class Car {
     public void render(SpriteBatch batch){
     
         batch.draw( carPic,      position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight, 1, 1, rotation);
-//        batch.draw( carPic,      position.x, position.y, carWidth, carHeight, carWidth, carHeight, 1, 1, rotation);
-//        batch.draw( carPic, position.x, position.y);
-//        batch.draw( carPointPic, position.x+carWidth/2-2, position.y+carHeight/2-2);
         batch.draw( carPointPic, position.x, position.y);
         
         // draw corners of the car
- //       batch.draw( carPointPic, carCorners.bottomLeft.x+carWidth/2-2,   carCorners.bottomLeft.y+carHeight/2-2);
- //       batch.draw( carPointPic, carCorners.bottomRight.x+carWidth/2-2,  carCorners.bottomRight.y+carHeight/2-2);
- //       batch.draw( carPointPic, carCorners.topLeft.x+carWidth/2-2,      carCorners.topLeft.y+carHeight/2-2);
- //       batch.draw( carPointPic, carCorners.topRight.x+carWidth/2-2,     carCorners.topRight.y+carHeight/2-2);
+        batch.draw( carPointPic, carCorners.backLeft.x,    carCorners.backLeft.y);
+        batch.draw( carPointPic, carCorners.backRight.x,   carCorners.backRight.y);
+        batch.draw( carPointPic, carCorners.frontLeft.x,   carCorners.frontLeft.y);
+        batch.draw( carPointPic, carCorners.frontRight.x,  carCorners.frontRight.y);
         
     }
     
