@@ -42,14 +42,14 @@ public class PickTrackState extends State {
         super(sm);
         PickTrackBackground = new Texture("PickTrackState.jpg");
         // Buttons for Track1
-        picOfTrack1 = new Rectangle(95, 305, 373, 223);
-        track1Button = new Texture("blackrectangle.png");
+        picOfTrack1 = new Rectangle(155, 305, 250, 223);
+        track1Button = new Texture("blackrectangle1.png");
         // Buttons for Track2
-        picOfTrack2 = new Rectangle(535, 305, 373, 223);
-        track2Button = new Texture("blackrectangle.png");
+        picOfTrack2 = new Rectangle(595, 305, 250, 223);
+        track2Button = new Texture("blackrectangle1.png");
         // Placing the back button
-        picBackButton = new Texture("blackrectangle.png");
-        backButton = new Rectangle(21, 30, 215, 50);
+        picBackButton = new Texture("blackrectangle1.png");
+        backButton = new Rectangle(55, 29, 146, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
@@ -64,7 +64,6 @@ public class PickTrackState extends State {
         // Drawing the track 1 button rectangle
         batch.draw(track2Button, picOfTrack2.x, picOfTrack2.y, picOfTrack2.width, picOfTrack2.height);
         batch.draw(PickTrackBackground, 0, 0, getViewWidth(), getViewHeight());
-
         batch.end();
     }
 
@@ -88,7 +87,7 @@ public class PickTrackState extends State {
             }
 
             // If track 2 was clicked on, then change the screen to race state but track 2
-            if (touch.x >= picOfTrack2.x && touch.y <= picOfTrack2.x + picOfTrack2.width
+            if (touch.x >= picOfTrack2.x && touch.x <= picOfTrack2.x + picOfTrack2.width
                     && touch.y >= picOfTrack2.y && touch.y <= picOfTrack2.y + picOfTrack2.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to RaceState
@@ -96,7 +95,7 @@ public class PickTrackState extends State {
             }
 
             // If the back button was clicked on, then change the screen to car choice state
-            if (touch.x >= backButton.x && touch.y <= backButton.x + backButton.width
+            if (touch.x >= backButton.x && touch.x <= backButton.x + backButton.width
                     && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to CarChoiceState

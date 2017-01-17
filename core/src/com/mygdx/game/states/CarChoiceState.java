@@ -46,11 +46,11 @@ public class CarChoiceState extends State {
         lambo2 = new Texture("lamborghini2.png");
         bentley = new Texture("Bentley2.png");
         // Placing the next button
-        picNextButton = new Texture("blackrectangle.png");
-        nextButton = new Rectangle(763, 30, 215, 50);
+        picNextButton = new Texture("blackrectangle1.png");
+        nextButton = new Rectangle(799, 30, 144, 50);
         // Placing the back button
-        picBackButton = new Texture("blackrectangle.png");
-        backButton = new Rectangle(19, 30, 220, 50);
+        picBackButton = new Texture("blackrectangle1.png");
+        backButton = new Rectangle(56, 29, 147, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 

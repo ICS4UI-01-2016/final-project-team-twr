@@ -87,9 +87,9 @@ public class MenuState extends State {
         batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
         // Drawing the rectangle behind the description option
         batch.draw(picOfDescriptionButton, descriptionButton.x, descriptionButton.y, descriptionButton.width, descriptionButton.height);
-        
+
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
-        
+
         // If the mute button is not clicked
         if (!mute) {
             // Draw the playing mute button
