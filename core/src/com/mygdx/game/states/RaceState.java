@@ -144,15 +144,13 @@ public class RaceState extends State {
         car1.update(deltaTime, this);
         car2.update(deltaTime, this);
         
-        if(car1.getLap() == 3){
+        if(car1.getLap() == 4){
             StateManager gsm = getStateManager();
-            gsm.push(new WinnerState(gsm));
+            gsm.push(new MenuState(gsm));
         }
         
-//        if(!car1.crashed() && !car2.crashed()){
-//            car1.collide(car2);
-//            car2.collide(car1);
-//        }
+        car1.checkCollision(car2);
+        car2.checkCollision(car1);
             
     }
 

@@ -4,7 +4,12 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.RaceIt;
 
 /**
  *
@@ -12,28 +17,63 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class WinnerState extends State{
 
-    WinnerState(StateManager sm) {
+    // Create instance variables
+    private Texture winnerPic;
+    // Creating the instance variables for the back button
+    private Texture picBackButton;
+    private Rectangle backButton;
+
+    WinnerState (StateManager sm) {
         super(sm);
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+        // Creating the background
+        winnerPic = new Texture("bg.jpg");
+        // Creating the rectangle (picture) for the back button
+        picBackButton = new Texture("blackrectangle1.png");
+        // Creating the rectangle for the back button
+        backButton = new Rectangle(40, 23, 218, 62);
+        // Set the camera view to be correct for the game
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        batch.setProjectionMatrix(getCombinedCamera());
+        // Begin to draw
+        batch.begin();
+        // Draw the back button
+        batch.draw(picBackButton, backButton.x, backButton.y, backButton.width, backButton.height);
+        // Draw the background 
+        batch.draw(winnerPic, 0, 0, getViewWidth(), getViewHeight());
+        // End the drawing
+        batch.end();
     }
 
     @Override
     public void update(float DeltaTime) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void handleInput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        unproject(touch);
+        if (Gdx.input.justTouched()) {
+            // If the back button is clicked on, then the state changes to the manu state
+            if (touch.x >= backButton.x && touch.x <= backButton.x + backButton.width
+                    && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
+                StateManager gsm = getStateManager();
+                // Change state to MenuState
+                gsm.push(new MenuState(gsm));
+            }
+
+        }
     }
 
     @Override
     public void dispose() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Dispose the used images
+        picBackButton.dispose();
+        winnerPic.dispose();
     }
     
 }

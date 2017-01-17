@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Circle;
 
 /**
  * 
@@ -59,10 +60,11 @@ public class Car {
     private boolean backHit;
     private boolean leftHit;
     private boolean rightHit;
-    private boolean crash;
+    private boolean crash = false;
     private boolean hitCheckPoint;
     private BitmapFont font = new BitmapFont();
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private Circle bounds2;
     
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY){
         position = new Vector3(x,y,0);
@@ -96,10 +98,6 @@ public class Car {
         
         tempCarType = carType;
         bounds = new Rectangle(position.x, position.y, carWidth, carHeight);
-        front  = new Rectangle(position.x, position.y + 50, 50, 1);
-        back   = new Rectangle(position.x, position.y, 50, 1);
-        right  = new Rectangle(position.x + 50, position.y, 1, 50);
-        left   = new Rectangle(position.x, position.y, 1, 50);
     }
 
         
@@ -243,10 +241,10 @@ public class Car {
         }
         
         bounds.setPosition(position.x, position.y);
-        front.setPosition(position.x, position.y + 50);
-        back.setPosition(position.x, position.y);
-        left.setPosition(position.x, position.y);
-        right.setPosition(position.x + 50, position.y);
+//        front.setPosition(position.x, position.y + 50);
+//        back.setPosition(position.x, position.y);
+//        left.setPosition(position.x, position.y);
+//        right.setPosition(position.x + 50, position.y);
     }
 
     public void renderHUD(RaceState state, SpriteBatch batch){
@@ -280,7 +278,6 @@ public class Car {
     }
     
     public void render(SpriteBatch batch){
-    
         batch.draw( carPic,      position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight, 1, 1, rotation);
         batch.draw( carPointPic, position.x, position.y);
         
@@ -289,6 +286,12 @@ public class Car {
         batch.draw( carPointPic, carCorners.backRight.x,   carCorners.backRight.y);
         batch.draw( carPointPic, carCorners.frontLeft.x,   carCorners.frontLeft.y);
         batch.draw( carPointPic, carCorners.frontRight.x,  carCorners.frontRight.y);
+        
+        // draw corners of the car
+        batch.draw( carPointPic, carCorners.back.x,    carCorners.back.y);
+        batch.draw( carPointPic, carCorners.right.x,   carCorners.right.y);
+        batch.draw( carPointPic, carCorners.left.x,   carCorners.left.y);
+        batch.draw( carPointPic, carCorners.front.x,  carCorners.front.y);
         
         if(hitCheckPoint){
             float cpX = position.x;
@@ -353,10 +356,34 @@ public class Car {
         return speedY + velocity;
     }
     
-    public void collide(Car b){
-        if(this.bounds.overlaps(b.bounds)){
+    public void checkCollision(Car opponent){
+        if(carCorners.front.overlaps(opponent.carCorners.back)  ||  
+           carCorners.front.overlaps(opponent.carCorners.left)  || 
+           carCorners.front.overlaps(opponent.carCorners.right) ||
+           carCorners.front.overlaps(opponent.carCorners.front) ){
             crash = true;
+        } else{
+            crash = false;
         }
+        
+        if(carCorners.front.overlaps(opponent.carCorners.left)){
+            opponent.rotation += 30f;
+        }
+        
+//        if(this.carCorners.getFront().overlaps(b.carCorners.getFront()) || this.carCorners.getFront().overlaps(b.carCorners.getBack())){
+//            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            accelerate = false;
+//        }
+//        
+//        if(this.carCorners.getLeft().overlaps(b.carCorners.getRight())){
+//            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            turnLeft = false;
+//        }
+//        
+//        if(this.carCorners.getRight().overlaps(b.carCorners.getLeft())){
+//            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            turnRight = false;
+//        }
     }
     
     public boolean crashed(){
