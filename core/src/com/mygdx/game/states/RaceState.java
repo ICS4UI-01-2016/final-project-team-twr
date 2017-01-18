@@ -157,7 +157,7 @@ public class RaceState extends State {
         }
         
         if(pause){
-            gsm.push(new PauseState(gsm, track));
+            gsm.push(new PauseState(gsm, track, carType1, carType2));
         }
         
         car1.checkCollision(car2);

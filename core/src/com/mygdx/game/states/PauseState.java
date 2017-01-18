@@ -20,10 +20,14 @@ public class PauseState extends State {
     private Texture bg;
     private boolean unpause;
     private int track;
+    private int carType1;
+    private int carType2;
 
-    PauseState(StateManager sm, int track) {
+    PauseState(StateManager sm, int track, int carType1, int carType2) {
         super(sm);
         this.track = track;
+        this.carType1 = carType1;
+        this.carType2 = carType2;
         // Creating the background image
         bg = new Texture("PauseState.png");
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
@@ -40,7 +44,7 @@ public class PauseState extends State {
     public void update(float DeltaTime) {
         StateManager gsm = getStateManager();
         if(unpause){
-            gsm.push(new RaceState(gsm, track));
+            gsm.push(new RaceState(gsm, track, carType1, carType2));
         }
     }
 
