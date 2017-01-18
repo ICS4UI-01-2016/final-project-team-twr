@@ -68,10 +68,7 @@ public class MenuState extends State {
         mute = false;
         // Place the mute button 
         muteButton = new Rectangle(0, 0, 50, 50);
-        music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         // Create an if statement saying to play only once!
-
-        music.play();
         font = new BitmapFont();
 
     }
@@ -141,7 +138,7 @@ public class MenuState extends State {
                 // Change the state to DescriptionState
                 gsm.push(new DescriptionState(gsm));
                 // Allow for the music to continue playing
-                music.play();
+                //music.play();
             }
 
             // If the "How To Play" button is touch, change the screen to How To Play screen
@@ -151,7 +148,7 @@ public class MenuState extends State {
                 // Change the state to HowToPlayState
                 gsm.push(new HowToPlayState(gsm));
                 // Allow for the music to continue playing
-                music.play();
+                //music.play();
             }
 
             // If the "Play" button is touch, change the screen to Choose Player Amount screen
@@ -161,7 +158,7 @@ public class MenuState extends State {
                 // Change the state to ChooseAmountPlayersState
                 gsm.push(new CarChoiceState(gsm));
                 // Allow for the music to continue playing
-                music.play();
+                //music.play();
             }
         }
     }

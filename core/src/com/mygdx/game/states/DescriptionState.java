@@ -63,7 +63,7 @@ public class DescriptionState extends State {
                 // Change state to MenuState
                 gsm.push(new MenuState(gsm));
                 // Stop the music
-                music.stop();
+                //music.stop();
             }
         }
     }
