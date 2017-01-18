@@ -4,6 +4,8 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Stack;
 
@@ -11,8 +13,10 @@ import java.util.Stack;
  *
  * @author whitb0039, richj0985, and tatad6701
  */
-public class StateManager { 
+public class StateManager {
 
+    // Create instance variables
+    private Music song;
     private Stack<State> states;
 
     public StateManager() {
@@ -33,6 +37,23 @@ public class StateManager {
         push(s);
     }
 
+    // Music code
+    /**
+     * Constructor for the music within the game
+     */
+    public void play() {
+        System.out.println("PLAY");
+        this.song.stop();
+        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuStateMusic.mp3"));
+        this.song.play();
+
+    }
+
+    public void startMusic() {
+        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
+        this.song.play();
+    }
+
     public void update(float deltaTime) {
         states.peek().update(deltaTime);
     }
@@ -43,7 +64,6 @@ public class StateManager {
 
     public void handleInput() {
         states.peek().handleInput();
-        
-    }
 
+    }
 }

@@ -68,10 +68,7 @@ public class MenuState extends State {
         mute = false;
         // Place the mute button 
         muteButton = new Rectangle(0, 0, 50, 50);
-        music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         // Create an if statement saying to play only once!
-
-        music.play();
         font = new BitmapFont();
 
     }
@@ -91,13 +88,7 @@ public class MenuState extends State {
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
 
         // If the mute button is not clicked
-        if (!mute) {
-            // Draw the playing mute button
-            batch.draw(musicPlay, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
-        } else {
-            // if not, then draw the stopped mute button
-            batch.draw(musicMute, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
-        }
+        
 
         // font.setColor(Color.WHITE);
         // font.draw(batch, "PRESS TO PLAY", getViewWidth() / 2, getViewHeight() - 200);
@@ -123,16 +114,6 @@ public class MenuState extends State {
         Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         unproject(touch);
         if (Gdx.input.justTouched()) {
-            if (touch.x >= muteButton.x && touch.x <= muteButton.x + muteButton.width
-                    && touch.y >= muteButton.y && touch.y <= muteButton.y + muteButton.height) {
-                if (mute) {
-                    music.play();
-                    mute = false;
-                } else {
-                    music.pause();
-                    mute = true;
-                }
-            }
 
             // If the "Description" button is touch, change the screen to description screen
             if (touch.x >= descriptionButton.x && touch.x <= descriptionButton.x + descriptionButton.width
@@ -141,7 +122,7 @@ public class MenuState extends State {
                 // Change the state to DescriptionState
                 gsm.push(new DescriptionState(gsm));
                 // Allow for the music to continue playing
-                music.play();
+                //music.play();
             }
 
             // If the "How To Play" button is touch, change the screen to How To Play screen
@@ -151,7 +132,7 @@ public class MenuState extends State {
                 // Change the state to HowToPlayState
                 gsm.push(new HowToPlayState(gsm));
                 // Allow for the music to continue playing
-                music.play();
+                //music.play();
             }
 
             // If the "Play" button is touch, change the screen to Choose Player Amount screen
@@ -161,7 +142,7 @@ public class MenuState extends State {
                 // Change the state to ChooseAmountPlayersState
                 gsm.push(new CarChoiceState(gsm));
                 // Allow for the music to continue playing
-                music.play();
+                //music.play();
             }
         }
     }
