@@ -225,7 +225,7 @@ public class RaceState extends State {
             car2.nitroPushed(false);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
             sm.push(new PauseState(sm, track, carType1, carType2));
         }
     }

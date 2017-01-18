@@ -47,7 +47,7 @@ public class PauseState extends State {
 
     @Override
     public void handleInput() {
-        if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)){
             sm.pop();
         }
     }
