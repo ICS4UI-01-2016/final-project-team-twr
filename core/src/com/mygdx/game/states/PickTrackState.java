@@ -32,13 +32,16 @@ public class PickTrackState extends State {
     // Back button instance variables
     private Texture picBackButton;
     private Rectangle backButton;
+    
+    private int car1Type;
+    private int car2Type;
 
     /**
      * Constructor for the pick track screen for the players
      *
      * @param sm the state manager
      */
-    public PickTrackState(StateManager sm) {
+    public PickTrackState(StateManager sm, int car1Type, int car2Type) {
         super(sm);
         PickTrackBackground = new Texture("PickTrackState.jpg");
         // Buttons for Track1
@@ -51,6 +54,9 @@ public class PickTrackState extends State {
         picBackButton = new Texture("blackrectangle1.png");
         backButton = new Rectangle(55, 29, 146, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+        
+        this.car1Type = car1Type;
+        this.car2Type = car2Type;
     }
 
     @Override
@@ -83,7 +89,7 @@ public class PickTrackState extends State {
                     && touch.y >= picOfTrack1.y && touch.y <= picOfTrack1.y + picOfTrack1.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to RaceState
-                gsm.push(new RaceState(gsm, 1));
+                gsm.push(new RaceState(gsm, 1, this.car1Type, this.car2Type));
             }
 
             // If track 2 was clicked on, then change the screen to race state but track 2
@@ -91,7 +97,7 @@ public class PickTrackState extends State {
                     && touch.y >= picOfTrack2.y && touch.y <= picOfTrack2.y + picOfTrack2.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to RaceState
-                gsm.push(new RaceState(gsm, 2));
+                gsm.push(new RaceState(gsm, 2, this.car1Type, this.car2Type));
             }
 
             // If the back button was clicked on, then change the screen to car choice state
