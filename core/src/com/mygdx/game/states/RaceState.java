@@ -58,14 +58,14 @@ public class RaceState extends State {
      *
      * @param sm
      */
-    public RaceState(StateManager sm, int track) {
+    public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
         setCameraView(RaceIt.WIDTH /4, RaceIt.HEIGHT / 2);
         if(track == 1){
-            carType1 = 1;
-            carType2 = 2;
-            car1 = new Car(600, 400, carType1, 270, 220, 800);
-            car2 = new Car(600, 400, carType2, 270, 220, 750);
+            this.carType1 = car1Type;
+            this.carType2 = car2Type;
+            car1 = new Car(600, 400, carType2, 270, 220, 800);
+            car2 = new Car(600, 400, carType1, 270, 220, 750);
             bg = new Texture("Track1.jpg");
             loadBoundaryMap("Track1-boundaries.png");
         } else{
