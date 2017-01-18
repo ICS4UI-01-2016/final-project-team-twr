@@ -4,6 +4,8 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.RaceIt;
@@ -16,11 +18,14 @@ public class PauseState extends State {
 
     // Create instance variables
     private Texture bg;
+    private boolean unpause;
+    private int track;
 
-    PauseState(StateManager sm) {
+    PauseState(StateManager sm, int track) {
         super(sm);
+        this.track = track;
         // Creating the background image
-        bg = new Texture("PauseState.jpg");
+        bg = new Texture("PauseState.png");
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
@@ -33,12 +38,19 @@ public class PauseState extends State {
 
     @Override
     public void update(float DeltaTime) {
-
+        StateManager gsm = getStateManager();
+        if(unpause){
+            gsm.push(new RaceState(gsm, track));
+        }
     }
 
     @Override
     public void handleInput() {
-
+        if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)){
+            unpause = true;
+        } else{
+            unpause = false;
+        }
     }
 
     @Override

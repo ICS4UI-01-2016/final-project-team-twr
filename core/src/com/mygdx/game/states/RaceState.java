@@ -44,6 +44,7 @@ public class RaceState extends State {
     private int         track = 1;
     private int         carType1;
     private int         carType2;
+    private boolean     pause;
 
     private TrackFeature[] boundaryMap;
     private int            boundaryMapWidth;
@@ -147,13 +148,16 @@ public class RaceState extends State {
     public void update(float deltaTime) {             
         car1.update(deltaTime, this);
         car2.update(deltaTime, this);
+        StateManager gsm = getStateManager();
         
         if(car1.getLap() == 4){
-            StateManager gsm = getStateManager();
             gsm.push(new WinnerState(gsm, carType1));
         } else if(car2.getLap() == 4){
-            StateManager gsm = getStateManager();
             gsm.push(new WinnerState(gsm, carType2));
+        }
+        
+        if(pause){
+            gsm.push(new PauseState(gsm, track));
         }
         
         car1.checkCollision(car2);
@@ -188,6 +192,12 @@ public class RaceState extends State {
             car1.brakePedal(false);
         }
         
+        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
+            car1.nitroPushed(true);
+        } else{
+            car1.nitroPushed(false);
+        }
+        
         if(Gdx.input.isKeyPressed(Input.Keys.W)){
             car2.acceleratorPedal(true);
         } else{
@@ -210,6 +220,18 @@ public class RaceState extends State {
             car2.brakePedal(true);
         } else{
             car2.brakePedal(false);
+        }
+        
+        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            car2.nitroPushed(true);
+        } else{
+            car2.nitroPushed(false);
+        }
+        
+        if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)){
+            pause = true;
+        } else{
+            pause = false;
         }
     }
         

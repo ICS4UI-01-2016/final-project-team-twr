@@ -41,6 +41,7 @@ public class Car {
     private TextureRegion  blackBox2;
     private TextureRegion  blackBox3;
     private TextureRegion  blackBox4;
+    private TextureRegion  flame;
     private Rectangle bounds;    
     private Rectangle front;
     private Rectangle back;
@@ -67,12 +68,18 @@ public class Car {
     private Circle bounds2;
     private boolean turnLeftCrash = false;
     private boolean turnRightCrash = false;
+    private boolean nitro;
+    private float nitroX;
+    private boolean nitroPushed;
+    private float nitroIncrease;
     
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY){
         position = new Vector3(x,y,0);
         rotation = initialRotation;
         position.x = initialPositionX;
         position.y = initialPositionY;
+        
+        flame = new TextureRegion(new Texture("flame.png"));
         
         carPointPic = new TextureRegion(new Texture("point.png"));
         checkPointPic = new TextureRegion(new Texture("checkpoint.png"));
@@ -201,7 +208,24 @@ public class Car {
             rotation = rotation + 360;
         }
         
-
+        System.out.println("NITRO INCREASE: " + nitroIncrease);
+        System.out.println("NITRO: " + nitro);
+        System.out.println("NITROPUSHED: " + nitroPushed);
+        System.out.println("ACCELERATION: " + accelerate);
+        
+        if(nitro && nitroPushed){
+            nitroIncrease = nitroIncrease + 0.05f;
+            nitroX = nitroX - 7;
+            if(nitroIncrease > 1.5f){
+                nitroIncrease = 0f;
+                nitroX = 0;
+                nitro = false;
+            }
+        } else if(nitroIncrease > 0){
+            nitroIncrease = 0f;
+            nitroX = 0;
+            nitro = false;
+        }
 
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
@@ -224,6 +248,14 @@ public class Car {
                     speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
                     speedY = (0.0f + (tempRotation / 18.0f)) * velocity; 
                 }
+                
+                if(nitroIncrease > 0){
+                    nitroIncrease = nitroIncrease + velocity;
+                    speedX = speedX * nitroIncrease;
+                    speedY = speedY * nitroIncrease;
+                    nitroIncrease = nitroIncrease - velocity;
+                }
+                
                 position.x += speedX;
                 position.y += speedY;
             }
@@ -232,7 +264,7 @@ public class Car {
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
-        if ( velocity > 0 ) {
+        if (velocity > 0 ) {
             if(!turnLeftCrash){
                 if(turnLeft){
                     rotation += 4f;
@@ -243,6 +275,13 @@ public class Car {
                 if(turnRight){
                     rotation -= 4f;
                 }
+            }
+        }
+        
+        if(nitroX < 220){
+            nitroX = nitroX + 1;
+            if(nitroX == 220){
+                nitro = true;
             }
         }
         
@@ -269,6 +308,8 @@ public class Car {
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(state.getCameraX()-110, state.getCameraY()+175, 220, 35);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(state.getCameraX()-110, state.getCameraY()+ 175, nitroX, 35);
         shapeRenderer.end();
         
         // End Transparency
@@ -284,6 +325,11 @@ public class Car {
     }
     
     public void render(SpriteBatch batch){
+        
+        if(nitroIncrease > 0){
+           batch.draw(flame, position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight*2, 1, 1, rotation + 180);
+        }
+        
         batch.draw( carPic,      position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight, 1, 1, rotation);
         batch.draw( carPointPic, position.x, position.y);
         
@@ -352,6 +398,10 @@ public class Car {
     
     public void turnRight(boolean turningRight){
         turnRight = turningRight;
+    }
+    
+    public void nitroPushed(boolean boosting){
+        nitroPushed = boosting;
     }
     
     public float getSpeedX(){
