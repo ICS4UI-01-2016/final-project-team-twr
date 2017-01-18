@@ -42,7 +42,6 @@ public class StateManager {
      * Constructor for the music within the game
      */
     public void play() {
-        System.out.println("PLAY");
         this.song.stop();
         this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuStateMusic.mp3"));
         this.song.play();
