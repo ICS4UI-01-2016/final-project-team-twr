@@ -18,13 +18,14 @@ public class PauseState extends State {
 
     // Create instance variables
     private Texture bg;
-    private boolean unpause;
     private int track;
     private int carType1;
     private int carType2;
+    private StateManager sm;
 
     PauseState(StateManager sm, int track, int carType1, int carType2) {
         super(sm);
+        this.sm = sm;
         this.track = track;
         this.carType1 = carType1;
         this.carType2 = carType2;
@@ -42,18 +43,12 @@ public class PauseState extends State {
 
     @Override
     public void update(float DeltaTime) {
-        StateManager gsm = getStateManager();
-        if(unpause){
-            gsm.push(new RaceState(gsm, track, carType1, carType2));
-        }
     }
 
     @Override
     public void handleInput() {
         if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)){
-            unpause = true;
-        } else{
-            unpause = false;
+            sm.pop();
         }
     }
 
