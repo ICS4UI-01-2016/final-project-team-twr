@@ -88,13 +88,7 @@ public class MenuState extends State {
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
 
         // If the mute button is not clicked
-        if (!mute) {
-            // Draw the playing mute button
-            batch.draw(musicPlay, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
-        } else {
-            // if not, then draw the stopped mute button
-            batch.draw(musicMute, muteButton.x, muteButton.y, muteButton.width, muteButton.height);
-        }
+        
 
         // font.setColor(Color.WHITE);
         // font.draw(batch, "PRESS TO PLAY", getViewWidth() / 2, getViewHeight() - 200);
@@ -120,16 +114,6 @@ public class MenuState extends State {
         Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         unproject(touch);
         if (Gdx.input.justTouched()) {
-            if (touch.x >= muteButton.x && touch.x <= muteButton.x + muteButton.width
-                    && touch.y >= muteButton.y && touch.y <= muteButton.y + muteButton.height) {
-                if (mute) {
-                    music.play();
-                    mute = false;
-                } else {
-                    music.pause();
-                    mute = true;
-                }
-            }
 
             // If the "Description" button is touch, change the screen to description screen
             if (touch.x >= descriptionButton.x && touch.x <= descriptionButton.x + descriptionButton.width

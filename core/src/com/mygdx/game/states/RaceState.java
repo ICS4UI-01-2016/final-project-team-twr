@@ -64,6 +64,7 @@ public class RaceState extends State {
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
         this.sm = sm;
+        this.sm.play();
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         if (track == 1) {
             this.carType1 = car1Type;

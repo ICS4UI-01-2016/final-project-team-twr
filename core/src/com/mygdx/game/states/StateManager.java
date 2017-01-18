@@ -16,7 +16,7 @@ import java.util.Stack;
 public class StateManager {
 
     // Create instance variables
-    private Music menuMusic;
+    private Music song;
     private Stack<State> states;
 
     public StateManager() {
@@ -41,15 +41,17 @@ public class StateManager {
     /**
      * Constructor for the music within the game
      */
-    public void sound() {
-        this.menuMusic = Gdx.audio.newMusic(Gdx.files.internal("data/mymusic.mp3"));
+    public void play() {
+        System.out.println("PLAY");
+        this.song.stop();
+        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuStateMusic.mp3"));
+        this.song.play();
+
     }
 
-    public void play() {
-        this.menuMusic.play();
-        if (states.peek() instanceof MenuState && states.peek() instanceof DescriptionState) {
-            this.menuMusic.play();
-        }
+    public void startMusic() {
+        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
+        this.song.play();
     }
 
     public void update(float deltaTime) {

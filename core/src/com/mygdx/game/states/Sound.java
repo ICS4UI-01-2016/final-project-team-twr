@@ -27,5 +27,6 @@ public class Sound {
     }
 
     public void play() {
+        menuMusic.play();
     }
 }
