@@ -66,17 +66,18 @@ public class RaceState extends State {
         this.sm = sm;
         this.sm.play();
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
+        this.carType1 = car1Type;
+        this.carType2 = car2Type;
         if (track == 1) {
-            this.carType1 = car1Type;
-            this.carType2 = car2Type;
             car1 = new Car(600, 400, carType2, 270, 220, 800);
             car2 = new Car(600, 400, carType1, 270, 220, 750);
             bg = new Texture("Track1.jpg");
             loadBoundaryMap("Track1-boundaries.png");
         } else {
-            car1 = new Car(0, 0, 0, 0, 0, 0);
-            car2 = new Car(0, 0, 0, 0, 0, 0);
-            bg = new Texture("Track2.jpg");
+            car1 = new Car(600, 400, carType2, 0, 855, 535);
+            car2 = new Car(600, 400, carType1, 0, 930, 535);
+            bg = new Texture("Track2.1.jpg");
+            loadBoundaryMap("Track2.1-boundaries.png");
         }
 
     }
