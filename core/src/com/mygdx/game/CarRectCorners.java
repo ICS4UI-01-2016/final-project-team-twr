@@ -29,6 +29,10 @@ public class CarRectCorners {
     public Circle back;
     public Circle left;
     public Circle right;
+    public Circle frontLeftCorner;
+    public Circle backLeftCorner;
+    public Circle frontRightCorner;
+    public Circle backRightCorner;
     
     public CarRectCorners( int width, int height ) {
         frontLeft     = new Vector3(0,0,0);
@@ -36,10 +40,15 @@ public class CarRectCorners {
         backLeft  = new Vector3(0,0,0);
         backRight = new Vector3(0,0,0);
        
-        front = new Circle(0,0,10); 
-        back = new Circle(0,0,10); 
-        left = new Circle(0,0,10);
-        right = new Circle(0,0,10);
+        front = new Circle(0,0,8); 
+        back = new Circle(0,0,8); 
+        left = new Circle(0,0,8);
+        right = new Circle(0,0,8);
+        
+        frontLeftCorner = new Circle(0,0,8); 
+        backLeftCorner = new Circle(0,0,8); 
+        frontRightCorner = new Circle(0,0,8);
+        backRightCorner = new Circle(0,0,8);
         
         carWidth  = width;
         carHeight = height;
@@ -65,6 +74,17 @@ public class CarRectCorners {
         frontRight.x = carPos.x + carWidth/2;
         frontRight.y = carPos.y + carHeight/2;
         
+        backLeftCorner.x = carPos.x - carWidth/2;
+        backLeftCorner.y = carPos.y - carHeight/2;
+
+        backRightCorner.x = carPos.x + carWidth/2;
+        backRightCorner.y = carPos.y - carHeight/2;
+
+        frontLeftCorner.x = carPos.x - carWidth/2;
+        frontLeftCorner.y = carPos.y + carHeight/2;
+
+        frontRightCorner.x = carPos.x + carWidth/2;
+        frontRightCorner.y = carPos.y + carHeight/2;
         
         
         front.x = carPos.x;
@@ -87,6 +107,11 @@ public class CarRectCorners {
         backRight = rotatePoint( backRight, rotation, carPos);
         frontLeft     = rotatePoint( frontLeft, rotation,  carPos );
         frontRight    = rotatePoint( frontRight, rotation, carPos);
+        
+        backLeftCorner  = rotateCircleAroundCarCentre( backLeftCorner, rotation,  carPos);
+        backRightCorner = rotateCircleAroundCarCentre( backRightCorner, rotation, carPos);
+        frontLeftCorner     = rotateCircleAroundCarCentre( frontLeftCorner, rotation,  carPos );
+        frontRightCorner    = rotateCircleAroundCarCentre( frontRightCorner, rotation, carPos);
         
         
         front    = rotateCircleAroundCarCentre( front, rotation,  carPos);

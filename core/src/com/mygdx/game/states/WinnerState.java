@@ -22,9 +22,11 @@ public class WinnerState extends State{
     // Creating the instance variables for the back button
     private Texture picBackButton;
     private Rectangle backButton;
+    private int winner;
 
-    WinnerState (StateManager sm) {
+    WinnerState (StateManager sm, int winner) {
         super(sm);
+        this.winner = winner;
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         // Creating the background
         winnerPic = new Texture("bg.jpg");
@@ -39,6 +41,17 @@ public class WinnerState extends State{
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
+                
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+        //
+        // Render the view for Car1
+        //
+        batch.begin();       
+        // set viewport for RIGHT side,leave a space of 2 pixels to separte the frames 
+        Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        // End the batch to allow the HUD to be displated and use ShaperRenderr
+        batch.end();
+        
         // Begin to draw
         batch.begin();
         // Draw the back button

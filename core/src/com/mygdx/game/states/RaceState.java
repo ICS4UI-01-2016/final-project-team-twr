@@ -42,6 +42,8 @@ public class RaceState extends State {
     private float       speedX;
     private float       speedY;
     private int         track = 1;
+    private int         carType1;
+    private int         carType2;
 
     private TrackFeature[] boundaryMap;
     private int            boundaryMapWidth;
@@ -60,8 +62,10 @@ public class RaceState extends State {
         super(sm);
         setCameraView(RaceIt.WIDTH /4, RaceIt.HEIGHT / 2);
         if(track == 1){
-            car1 = new Car(600, 400, 1, 270, 220, 800);
-            car2 = new Car(600, 400, 3, 270, 220, 750);
+            carType1 = 1;
+            carType2 = 2;
+            car1 = new Car(600, 400, carType1, 270, 220, 800);
+            car2 = new Car(600, 400, carType2, 270, 220, 750);
             bg = new Texture("Track1.jpg");
             loadBoundaryMap("Track1-boundaries.png");
         } else{
@@ -146,7 +150,10 @@ public class RaceState extends State {
         
         if(car1.getLap() == 4){
             StateManager gsm = getStateManager();
-            gsm.push(new MenuState(gsm));
+            gsm.push(new WinnerState(gsm, carType1));
+        } else if(car2.getLap() == 4){
+            StateManager gsm = getStateManager();
+            gsm.push(new WinnerState(gsm, carType2));
         }
         
         car1.checkCollision(car2);

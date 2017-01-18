@@ -65,6 +65,8 @@ public class Car {
     private BitmapFont font = new BitmapFont();
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Circle bounds2;
+    private boolean turnLeftCrash = false;
+    private boolean turnRightCrash = false;
     
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY){
         position = new Vector3(x,y,0);
@@ -231,12 +233,16 @@ public class Car {
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
         if ( velocity > 0 ) {
-            if(turnLeft){
-                rotation += 4f;
+            if(!turnLeftCrash){
+                if(turnLeft){
+                    rotation += 4f;
+                }
             }
-
-            if(turnRight){
-                rotation -= 4f;
+            
+            if(!turnRightCrash){
+                if(turnRight){
+                    rotation -= 4f;
+                }
             }
         }
         
@@ -282,10 +288,10 @@ public class Car {
         batch.draw( carPointPic, position.x, position.y);
         
         // draw corners of the car
-        batch.draw( carPointPic, carCorners.backLeft.x,    carCorners.backLeft.y);
-        batch.draw( carPointPic, carCorners.backRight.x,   carCorners.backRight.y);
-        batch.draw( carPointPic, carCorners.frontLeft.x,   carCorners.frontLeft.y);
-        batch.draw( carPointPic, carCorners.frontRight.x,  carCorners.frontRight.y);
+        batch.draw( carPointPic, carCorners.backLeftCorner.x,    carCorners.backLeftCorner.y);
+        batch.draw( carPointPic, carCorners.backRightCorner.x,   carCorners.backRightCorner.y);
+        batch.draw( carPointPic, carCorners.frontLeftCorner.x,   carCorners.frontLeftCorner.y);
+        batch.draw( carPointPic, carCorners.frontRightCorner.x,  carCorners.frontRightCorner.y);
         
         // draw corners of the car
         batch.draw( carPointPic, carCorners.back.x,    carCorners.back.y);
@@ -366,8 +372,45 @@ public class Car {
             crash = false;
         }
         
-        if(carCorners.front.overlaps(opponent.carCorners.left)){
-            opponent.rotation += 30f;
+        if(carCorners.front.overlaps(opponent.carCorners.back)  ||  
+           carCorners.front.overlaps(opponent.carCorners.left)  || 
+           carCorners.front.overlaps(opponent.carCorners.right) ||
+           carCorners.front.overlaps(opponent.carCorners.front) ||
+            carCorners.front.overlaps(opponent.carCorners.frontLeftCorner)  ||  
+           carCorners.front.overlaps(opponent.carCorners.backLeftCorner)  || 
+           carCorners.front.overlaps(opponent.carCorners.frontRightCorner) ||
+           carCorners.front.overlaps(opponent.carCorners.backRightCorner)){
+            crash = true;
+        } else{
+            crash = false;
+        }
+        
+        if(carCorners.frontRightCorner.overlaps(opponent.carCorners.backLeftCorner)){
+            turnRightCrash = true;
+            opponent.rotation += 20f;
+        } else{
+            turnRightCrash = false;
+        }
+        
+        if(carCorners.frontLeftCorner.overlaps(opponent.carCorners.backRightCorner)){
+            turnLeftCrash = true;
+            opponent.rotation -= 20f;
+        } else{
+            turnLeftCrash = false;
+        }
+        
+        if(carCorners.frontRightCorner.overlaps(opponent.carCorners.frontLeftCorner)){
+            turnRightCrash = true;
+            opponent.rotation -= 20f;
+        } else{
+            turnRightCrash = false;
+        }
+        
+        if(carCorners.frontLeftCorner.overlaps(opponent.carCorners.frontRightCorner)){
+            turnLeftCrash = true;
+            opponent.rotation += 20f;
+        } else{
+            turnLeftCrash = false;
         }
         
 //        if(this.carCorners.getFront().overlaps(b.carCorners.getFront()) || this.carCorners.getFront().overlaps(b.carCorners.getBack())){
