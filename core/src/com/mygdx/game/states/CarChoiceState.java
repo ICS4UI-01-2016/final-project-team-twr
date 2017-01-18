@@ -38,12 +38,10 @@ public class CarChoiceState extends State {
     private Rectangle player1Acura;
     private Rectangle player1Lambo2;
     private Rectangle player1Bentley;
-
     private Rectangle player2Lambo;
     private Rectangle player2Acura;
     private Rectangle player2Lambo2;
     private Rectangle player2Bentley;
-
     private int car1Type;
     private int car2Type;
 
@@ -54,7 +52,9 @@ public class CarChoiceState extends State {
      */
     public CarChoiceState(StateManager sm) {
         super(sm);
+        // Creating the images
         PickCarBackground = new Texture("CarChoiceState.png");
+        // Creating the car images 
         lambo = new Texture("lamborghiniblack.png");
         acura = new Texture("acura.png");
         lambo2 = new Texture("lamborghini2.png");
@@ -67,12 +67,12 @@ public class CarChoiceState extends State {
         picBackButton = new Texture("blackrectangle1.png");
         backButton = new Rectangle(56, 29, 147, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        // Placing the car choice buttons
+        // Placing the car choice buttons for player 1
         player1Lambo = new Rectangle(81, 215, 100, 100);
         player1Acura = new Rectangle(324, 215, 100, 100);
         player1Lambo2 = new Rectangle(520, 215, 100, 100);
         player1Bentley = new Rectangle(742, 215, 100, 100);
-
+        // Placing the car choice buttons for player 1
         player2Lambo = new Rectangle(81, 515, 100, 100);
         player2Acura = new Rectangle(324, 515, 100, 100);
         player2Lambo2 = new Rectangle(520, 515, 100, 100);
@@ -82,7 +82,11 @@ public class CarChoiceState extends State {
         car2Type = 2;
 
     }
-
+    
+    /**
+     * Method used to 
+     * @param batch 
+     */
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());

@@ -4,8 +4,11 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -49,6 +52,7 @@ public class RaceState extends State {
     private int boundaryMapHeight;
     
     private StateManager sm;
+    private Sound accelerationEffect;
 
     public enum TrackFeature {
         UNKNOWN, ROAD, GRASS, BARRIER, FINISHLINE,
@@ -65,6 +69,7 @@ public class RaceState extends State {
         super(sm);
         this.sm = sm;
         this.sm.play();
+        // accelerationEffect = Audio.newSound(new FileHandle("Tirescreech.mp3"));
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         this.carType1 = car1Type;
         this.carType2 = car2Type;
