@@ -15,21 +15,30 @@ import com.mygdx.game.RaceIt;
  *
  * @author richj0985
  */
-public class WinnerState extends State{
+public class WinnerState extends State {
 
     // Create instance variables
-    private Texture winnerPic;
+    private Texture player1Winner;
+    private Texture player2Winner;
     // Creating the instance variables for the back button
     private Texture picBackButton;
     private Rectangle backButton;
-    private int winner;
+    private int winnerCar;
+    private int winnerPlayer;
+    // Instance variables for the cars
+    private Texture lambo;
+    private Texture acura;
+    private Texture lambo2;
+    private Texture bentley;
+    private Texture Rect;
 
-    WinnerState (StateManager sm, int winner) {
+    public WinnerState(StateManager sm, int winnerCar, int winnerPlayer) {
         super(sm);
-        this.winner = winner;
-        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        // Creating the background
-        winnerPic = new Texture("bg.jpg");
+        this.winnerCar = winnerCar;
+        this.winnerPlayer = winnerPlayer;
+        // Creating the player 1 and 2 winner picture
+        player1Winner = new Texture("WinnerPlayer1.jpg");
+        player2Winner = new Texture("WinnerPlayer2.jpg");
         // Creating the rectangle (picture) for the back button
         picBackButton = new Texture("blackrectangle1.png");
         // Creating the rectangle for the back button
@@ -41,25 +50,32 @@ public class WinnerState extends State{
     @Override
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(getCombinedCamera());
-                
+
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         //
         // Render the view for Car1
         //
-        batch.begin();       
+        batch.begin();
         // set viewport for RIGHT side,leave a space of 2 pixels to separte the frames 
-        Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // If player 1 wins, print the player one jpeg
+        if (winnerPlayer == 1) {
+            batch.draw(player1Winner, 0, 0, getViewWidth(), getViewHeight());
+            //batch.draw()
+        } else {
+            // If not print the player two jpeg
+            batch.draw(player2Winner, 0, 0, getViewWidth(), getViewHeight());
+        }
+
         // End the batch to allow the HUD to be displated and use ShaperRenderr
         batch.end();
-        
-        // Begin to draw
-        batch.begin();
-        // Draw the back button
-        batch.draw(picBackButton, backButton.x, backButton.y, backButton.width, backButton.height);
-        // Draw the background 
-        batch.draw(winnerPic, 0, 0, getViewWidth(), getViewHeight());
-        // End the drawing
-        batch.end();
+
+//        // Begin to draw
+//        batch.begin();
+//        // Draw the back button
+//        batch.draw(picBackButton, backButton.x, backButton.y, backButton.width, backButton.height);
+//        // End the drawing
+//        batch.end();
     }
 
     @Override
@@ -86,7 +102,6 @@ public class WinnerState extends State{
     public void dispose() {
         // Dispose the used images
         picBackButton.dispose();
-        winnerPic.dispose();
+
     }
-    
 }

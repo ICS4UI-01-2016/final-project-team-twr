@@ -35,7 +35,6 @@ public class RaceState extends State {
     // Create the constant variables
     private final Car car1;
     private final Car car2;
-    private Texture bg;
     private boolean accelerate;
     private boolean stop;
     private boolean turnLeft;
@@ -43,6 +42,7 @@ public class RaceState extends State {
     private float velocity;
     private float speedX;
     private float speedY;
+    private Texture bg;
     private int track = 1;
     private int carType1;
     private int carType2;
@@ -159,9 +159,9 @@ public class RaceState extends State {
         StateManager gsm = getStateManager();
 
         if (car1.getLap() == 4) {
-            gsm.push(new WinnerState(gsm, carType1));
+            gsm.push(new WinnerState(gsm, carType1, 1));
         } else if (car2.getLap() == 4) {
-            gsm.push(new WinnerState(gsm, carType2));
+            gsm.push(new WinnerState(gsm, carType2, 2));
         }
 
         car1.checkCollision(car2);
