@@ -43,7 +43,7 @@ public class RaceState extends State {
     private float speedX;
     private float speedY;
     private Texture bg;
-    private int track = 1;
+    private int track;
     private int carType1;
     private int carType2;
 
@@ -71,6 +71,7 @@ public class RaceState extends State {
         this.sm.play();
         // accelerationEffect = Audio.newSound(new FileHandle("Tirescreech.mp3"));
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
+        this.track = track;
         this.carType1 = car1Type;
         this.carType2 = car2Type;
         if (track == 1) {
@@ -158,9 +159,9 @@ public class RaceState extends State {
         car2.update(deltaTime, this);
         StateManager gsm = getStateManager();
 
-        if (car1.getLap() == 4) {
+        if (car1.getLap() == 6) {
             gsm.push(new WinnerState(gsm, carType1, 1));
-        } else if (car2.getLap() == 4) {
+        } else if (car2.getLap() == 6) {
             gsm.push(new WinnerState(gsm, carType2, 2));
         }
 

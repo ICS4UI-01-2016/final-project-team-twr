@@ -331,20 +331,20 @@ public class Car {
         }
         
         batch.draw( carPic,      position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight, 1, 1, rotation);
-        batch.draw( carPointPic, position.x, position.y);
-        
-        // draw corners of the car
-        batch.draw( carPointPic, carCorners.backLeftCorner.x,    carCorners.backLeftCorner.y);
-        batch.draw( carPointPic, carCorners.backRightCorner.x,   carCorners.backRightCorner.y);
-        batch.draw( carPointPic, carCorners.frontLeftCorner.x,   carCorners.frontLeftCorner.y);
-        batch.draw( carPointPic, carCorners.frontRightCorner.x,  carCorners.frontRightCorner.y);
-        
-        // draw corners of the car
-        batch.draw( carPointPic, carCorners.back.x,    carCorners.back.y);
-        batch.draw( carPointPic, carCorners.right.x,   carCorners.right.y);
-        batch.draw( carPointPic, carCorners.left.x,   carCorners.left.y);
-        batch.draw( carPointPic, carCorners.front.x,  carCorners.front.y);
-        
+//        batch.draw( carPointPic, position.x, position.y);
+//        
+//        // draw corners of the car
+//        batch.draw( carPointPic, carCorners.backLeftCorner.x,    carCorners.backLeftCorner.y);
+//        batch.draw( carPointPic, carCorners.backRightCorner.x,   carCorners.backRightCorner.y);
+//        batch.draw( carPointPic, carCorners.frontLeftCorner.x,   carCorners.frontLeftCorner.y);
+//        batch.draw( carPointPic, carCorners.frontRightCorner.x,  carCorners.frontRightCorner.y);
+//        
+//        // draw corners of the car
+//        batch.draw( carPointPic, carCorners.back.x,    carCorners.back.y);
+//        batch.draw( carPointPic, carCorners.right.x,   carCorners.right.y);
+//        batch.draw( carPointPic, carCorners.left.x,   carCorners.left.y);
+//        batch.draw( carPointPic, carCorners.front.x,  carCorners.front.y);
+//        
         if(hitCheckPoint){
             float cpX = position.x;
             float cpY = position.y;
