@@ -73,6 +73,7 @@ public class Car {
     private float nitroX;
     private boolean nitroPushed;
     private float nitroIncrease;
+    private int hit;
 
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY) {
         position = new Vector3(x, y, 0);
@@ -156,15 +157,22 @@ public class Car {
         }
 
         // check if the front of the car has hit a barrier
+        System.out.println("HIT: " + hit);
         if (raceState.getTrackFeatureAtPt(carCorners.frontLeft)
                 == RaceState.TrackFeature.BARRIER
                 || raceState.getTrackFeatureAtPt(carCorners.frontRight)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.backRight)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.backLeft)
                 == RaceState.TrackFeature.BARRIER) {
             // the car hit a barrier, bound the car of the barrier    
-            velocity *= .9f;
-            spin = 1f;
+            if(hit < 2){
+                hit++;
+                velocity *= .9f;
+                spin = 1f;
+            }
         }
-
         // check if the car is in a spin, if it is
         // then continue to rotate the car but reduce the spin
         if (spin > 0.1f) {
@@ -178,21 +186,25 @@ public class Car {
         // If the accelerator is being pressed then increase the velocity
         // otherwise reduce the velocity to simulate the drag/friction
         // of the road and air
+        System.out.println("VELOCITY: " + velocity);
         if (accelerate) {
             velocity = velocity + 0.05f;
             if (velocity > 1.2f) {
                 velocity = 1.2f;
             }
-        } else {
+        } else if (stop) {
+            velocity = velocity - 0.025f * 2f;
+            if (velocity < - 1.2f) {
+                velocity = - 1.2f;
+            }
+        } else if (velocity > 0){
             velocity = velocity - 0.025f;
             if (velocity < 0) {
                 velocity = 0;
             }
-        }
-
-        if (stop) {
-            velocity = velocity - 0.025f * 2f;
-            if (velocity < 0) {
+        } else if(velocity < 0){
+            velocity = velocity + 0.025f;
+            if (velocity > 0) {
                 velocity = 0;
             }
         }
@@ -207,11 +219,6 @@ public class Car {
         while (rotation < 0) {
             rotation = rotation + 360;
         }
-
-        System.out.println("NITRO INCREASE: " + nitroIncrease);
-        System.out.println("NITRO: " + nitro);
-        System.out.println("NITROPUSHED: " + nitroPushed);
-        System.out.println("ACCELERATION: " + accelerate);
 
         if (nitro && nitroPushed) {
             nitroIncrease = nitroIncrease + 0.05f;
@@ -230,7 +237,7 @@ public class Car {
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
         if (!crash) {
-            if (velocity > 0) {
+//            if (velocity > 0) {
                 if (rotation >= 0 && rotation <= 90) {
                     float tempRotation = rotation;
                     speedX = (0.0f - (tempRotation / 18.0f)) * velocity;
@@ -258,13 +265,13 @@ public class Car {
 
                 position.x += speedX;
                 position.y += speedY;
-            }
+//            }
         }
 
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
-        if (velocity > 0) {
+//        if (velocity > 0) {
             if (!turnLeftCrash) {
                 if (turnLeft) {
                     rotation += 4f;
@@ -276,7 +283,7 @@ public class Car {
                     rotation -= 4f;
                 }
             }
-        }
+//        }
 
         if (nitroX < 220) {
             nitroX = nitroX + 1;
