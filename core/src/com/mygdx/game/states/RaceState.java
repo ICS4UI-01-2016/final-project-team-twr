@@ -4,27 +4,18 @@
  */
 package com.mygdx.game.states;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Car;
 import com.mygdx.game.CarRectCorners;
 import com.mygdx.game.RaceIt;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.Color;
 
 /**
  *
@@ -36,6 +27,9 @@ public class RaceState extends State {
     private final Car car1;
     private final Car car2;
     private Texture bg;
+    private Texture count3;
+    private Texture count2;
+    private Texture count1;
     private boolean accelerate;
     private boolean stop;
     private boolean turnLeft;
@@ -46,11 +40,13 @@ public class RaceState extends State {
     private int track = 1;
     private int carType1;
     private int carType2;
+    private float PlayTime;
+    private float countTimer;
 
     private TrackFeature[] boundaryMap;
     private int boundaryMapWidth;
     private int boundaryMapHeight;
-    
+
     private StateManager sm;
     private Sound accelerationEffect;
 
@@ -67,6 +63,8 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
+        PlayTime = 0.0f;
+        countTimer = 0;
         this.sm = sm;
         this.sm.play();
         // accelerationEffect = Audio.newSound(new FileHandle("Tirescreech.mp3"));
@@ -84,6 +82,9 @@ public class RaceState extends State {
             bg = new Texture("Track2.1.jpg");
             loadBoundaryMap("Track2.1-boundaries.png");
         }
+        count3 = new Texture("count3.png");
+        count2 = new Texture("count2.png");
+        count1 = new Texture("count1.png");
 
     }
 
@@ -132,7 +133,7 @@ public class RaceState extends State {
         // End the batch to allow the HUD to be displated and use ShaperRenderr
         batch.end();
         // draw the cars Hends Up Display
-        car1.renderHUD(this, batch);
+        car1.renderHUD(this, batch, PlayTime);
 
         //
         // Render the view for Car2
@@ -147,13 +148,35 @@ public class RaceState extends State {
         car1.render(batch);
         car2.render(batch);
         // End the batch to allow the HUD to be displated and use ShaperRenderr
-        batch.end();
         // draw the cars Hends Up Display
-        car2.renderHUD(this, batch);
+        batch.end();
+        car2.renderHUD(this, batch, PlayTime);
+        batch.begin();
+
+        countTimer += Gdx.graphics.getDeltaTime();
+
+        System.out.println(countTimer);
+
+        if (countTimer < 1) {
+            batch.draw(count3, RaceIt.WIDTH / 2 - count3.getWidth(), 800, 100, 100);
+        }
+        if (countTimer < 2 && countTimer > 1) {
+            batch.draw(count2, RaceIt.WIDTH / 2 - count2.getWidth(), 800, 100, 100);
+        }
+        if (countTimer < 3 && countTimer > 2) {
+            batch.draw(count1, RaceIt.WIDTH / 2 - count1.getWidth(), 800, 100, 100);
+        }
+        if (countTimer > 3) {
+        }
+        batch.end();
+
     }
 
     @Override
     public void update(float deltaTime) {
+        if (countTimer > 3) {
+            PlayTime += deltaTime;
+        }
         car1.update(deltaTime, this);
         car2.update(deltaTime, this);
         StateManager gsm = getStateManager();

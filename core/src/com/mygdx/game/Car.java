@@ -18,6 +18,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Circle;
+import java.text.DecimalFormat;
 
 /**
  * 
@@ -292,7 +293,7 @@ public class Car {
 //        right.setPosition(position.x + 50, position.y);
     }
 
-    public void renderHUD(RaceState state, SpriteBatch batch){
+    public void renderHUD(RaceState state, SpriteBatch batch, float PlayTime){
  
         // Draw the heads up display relative to the camera position
         // On the HUD, show the following informaiton
@@ -319,8 +320,10 @@ public class Car {
         // the need to work on different batches
         batch.begin();
         font.setColor(Color.BLUE);
-        String text = "Lap:" + carLap +" CheckPoint: " + carCheckPoint + " Time:  ";
-        font.draw( batch, text, state.getCameraX()-100, state.getCameraY()+200);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        String text = "Lap:" + carLap +" CheckPoint: " + carCheckPoint + " Time:  " + df.format(PlayTime);
+        font.draw( batch, text, state.getCameraX()-105, state.getCameraY()+200);
         batch.end(); 
     }
     
