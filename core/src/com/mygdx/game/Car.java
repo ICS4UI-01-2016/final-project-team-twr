@@ -22,7 +22,7 @@ import java.text.DecimalFormat;
 
 /**
  *
- * @author whitb0039, richj0985, and tatad6701
+ * @author whitb0039, richj0985, and tatad6701 extra
  */
 public class Car {
 
