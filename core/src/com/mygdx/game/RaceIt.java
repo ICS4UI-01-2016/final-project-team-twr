@@ -13,6 +13,7 @@ import com.mygdx.game.states.PickTrackState;
 import com.mygdx.game.states.RaceState;
 import com.mygdx.game.states.State;
 import com.mygdx.game.states.StateManager;
+import com.mygdx.game.states.WinnerState;
 
 /**
  *
@@ -34,7 +35,7 @@ public class RaceIt extends ApplicationAdapter {
 
         stateManager = new StateManager();
         stateManager.startMusic();
-        State firstScreen = new MenuState(stateManager);
+        State firstScreen = new WinnerState(stateManager, 1, 1);
 //            State firstScreen = new RaceState(stateManager);
 
         

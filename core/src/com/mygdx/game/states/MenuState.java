@@ -62,7 +62,7 @@ public class MenuState extends State {
         // Create the picture of the rectangle button for the play option
         picOfPlayButton = new Texture("blackrectangle1.png");
         // Create the rectangle of the play button
-        playButton = new Rectangle(419, 409, 175, 50);
+        playButton = new Rectangle(419, 409, 176, 50);
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
         // Se the mute boolean to be false
         mute = false;
@@ -84,11 +84,11 @@ public class MenuState extends State {
         batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
         // Drawing the rectangle behind the description option
         batch.draw(picOfDescriptionButton, descriptionButton.x, descriptionButton.y, descriptionButton.width, descriptionButton.height);
-
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
 
+
         // If the mute button is not clicked
-        
+
 
         // font.setColor(Color.WHITE);
         // font.draw(batch, "PRESS TO PLAY", getViewWidth() / 2, getViewHeight() - 200);

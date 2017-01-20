@@ -17,7 +17,8 @@ import com.mygdx.game.RaceIt;
 public class PauseState extends State {
 
     // Create instance variables
-    private Texture bg;
+    private Texture bg1;
+    private Texture bg2;
     private int track;
     private int carType1;
     private int carType2;
@@ -30,14 +31,25 @@ public class PauseState extends State {
         this.carType1 = carType1;
         this.carType2 = carType2;
         // Creating the background image
-        bg = new Texture("PauseState.png");
+        if(track == 1){
+            bg1 = new Texture("Track1.jpg");
+        } else{
+            bg1 = new Texture("Track2.1.jpg");
+        }
+        bg2 = new Texture("PauseState.png");
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
-        batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
+        batch.setProjectionMatrix(getCombinedCamera());
+
+        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+        // set viewport for RIGHT side,leave a space of 2 pixels to separte the frames 
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(bg1, 0, 0, getViewWidth(), getViewHeight());
+        batch.draw(bg2, 0, 0, getViewWidth(), getViewHeight());
         batch.end();
     }
 
@@ -54,7 +66,8 @@ public class PauseState extends State {
 
     @Override
     public void dispose() {
-        bg.dispose();
+        bg1.dispose();
+        bg2.dispose();
     }
 
 }
