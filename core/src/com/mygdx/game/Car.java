@@ -20,29 +20,29 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Circle;
 
 /**
- * 
+ *
  * @author whitb0039, richj0985, and tatad6701
  */
 public class Car {
+
     private float rotation;
     private float spin;
     private Vector3 position;           // center position of the car on the track
     private CarRectCorners carCorners;  // corners bounding box of car on track
-    private TextureRegion  carPic;
-    private TextureRegion  carPointPic;
-    private TextureRegion  checkPointPic;
-    public  int            carWidth;
-    public  int            carHeight;
-    private int            carScale;               // scalar for the car image to track
-    private int            carLap;
-    private int            carCheckPoint = 0;
-    
-    private TextureRegion  blackBox;
-    private TextureRegion  blackBox2;
-    private TextureRegion  blackBox3;
-    private TextureRegion  blackBox4;
-    private TextureRegion  flame;
-    private Rectangle bounds;    
+    private TextureRegion carPic;
+    private TextureRegion carPointPic;
+    private TextureRegion checkPointPic;
+    public int carWidth;
+    public int carHeight;
+    private int carScale;               // scalar for the car image to track
+    private int carLap;
+    private int carCheckPoint = 0;
+    private TextureRegion blackBox;
+    private TextureRegion blackBox2;
+    private TextureRegion blackBox3;
+    private TextureRegion blackBox4;
+    private TextureRegion flame;
+    private Rectangle bounds;
     private Rectangle front;
     private Rectangle back;
     private Rectangle left;
@@ -72,62 +72,61 @@ public class Car {
     private float nitroX;
     private boolean nitroPushed;
     private float nitroIncrease;
-    
-    public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY){
-        position = new Vector3(x,y,0);
+
+    public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY) {
+        position = new Vector3(x, y, 0);
         rotation = initialRotation;
         position.x = initialPositionX;
         position.y = initialPositionY;
-        
+
         flame = new TextureRegion(new Texture("flame.png"));
-        
+
         carPointPic = new TextureRegion(new Texture("point.png"));
         checkPointPic = new TextureRegion(new Texture("checkpoint.png"));
-        
+
         // setup the image of the car, it's appropriate scale on the track
         // and it's bounding rectangle on the track
-        if(carType == 1){
+        if (carType == 1) {
             carPic = new TextureRegion(new Texture("lamborghiniblack-new.png"));
-            carScale = 7;            
-        } else if(carType == 2){
+            carScale = 7;
+        } else if (carType == 2) {
             carPic = new TextureRegion(new Texture("acura-new.png"));
-            carScale = 9;            
-        } else if(carType == 3){
+            carScale = 9;
+        } else if (carType == 3) {
             carPic = new TextureRegion(new Texture("lamborghini2-new.png"));
-            carScale = 11;            
-        } else if(carType == 4){
+            carScale = 11;
+        } else if (carType == 4) {
             carPic = new TextureRegion(new Texture("Bentley2-new.png"));
-            carScale = 7;            
+            carScale = 7;
         }
-        
+
         // initialize the bounding rectangle for the car on track
-        carWidth   = carPic.getRegionWidth() / carScale;
-        carHeight  = carPic.getRegionHeight() / carScale;
-        carCorners = new CarRectCorners( carWidth, carHeight );
-        
+        carWidth = carPic.getRegionWidth() / carScale;
+        carHeight = carPic.getRegionHeight() / carScale;
+        carCorners = new CarRectCorners(carWidth, carHeight);
+
         tempCarType = carType;
         bounds = new Rectangle(position.x, position.y, carWidth, carHeight);
     }
 
-        
-    public void update(float deltaTime, RaceState raceState){
-                  
+    public void update(float deltaTime, RaceState raceState) {
+
         // Update the coordinates of the car bounding box based on 
         // new car position.
-        carCorners.updateCornerPos( position, rotation);
+        carCorners.updateCornerPos(position, rotation);
 
 
         // Get the track feature underneath the car
-        RaceState.TrackFeature feature = raceState.getTrackFeatureAtPt( position );
+        RaceState.TrackFeature feature = raceState.getTrackFeatureAtPt(position);
 
-        System.out.println("(" + position.x +"," + position.y +")=" 
-                   + feature + "   LC(" + carCorners.backLeft.x + "," 
-                   + carCorners.backLeft.x +")" );
-           
+        System.out.println("(" + position.x + "," + position.y + ")="
+                + feature + "   LC(" + carCorners.backLeft.x + ","
+                + carCorners.backLeft.x + ")");
+
         // Based on the Track feature that is under the car
         // have the car react.
         // switch( feature ) {
-        if ( feature == RaceState.TrackFeature.GRASS ){
+        if (feature == RaceState.TrackFeature.GRASS) {
             // On grass slow the car to min slow pace
             if (velocity > .5) {
                 velocity *= .25f;
@@ -136,92 +135,92 @@ public class Car {
 
         // ceck to see if the car has reached the finishline after
         // having passed over all of the required check points.
-        if ( feature == RaceState.TrackFeature.FINISHLINE ){
-            if ( carCheckPoint == 7) {
+        if (feature == RaceState.TrackFeature.FINISHLINE) {
+            if (carCheckPoint == 7) {
                 carLap += 1;
                 carCheckPoint = 0;
             }
         }
 
         // Check to see if I am on checkpoint
-        if ( (feature.ordinal() >= RaceState.TrackFeature.CHECKPOINT1.ordinal() ) &&
-             (feature.ordinal() <= RaceState.TrackFeature.CHECKPOINT8.ordinal() )) {
+        if ((feature.ordinal() >= RaceState.TrackFeature.CHECKPOINT1.ordinal())
+                && (feature.ordinal() <= RaceState.TrackFeature.CHECKPOINT8.ordinal())) {
             int newCheckPoint = feature.ordinal() - RaceState.TrackFeature.CHECKPOINT1.ordinal() + 1;
-            if ( newCheckPoint == (carCheckPoint + 1) ) {
+            if (newCheckPoint == (carCheckPoint + 1)) {
                 carCheckPoint = newCheckPoint;
                 hitCheckPoint = true;
             }
-        } else{
-                hitCheckPoint = false;
-        }   
-                
+        } else {
+            hitCheckPoint = false;
+        }
+
         // check if the front of the car has hit a barrier
-        if ( raceState.getTrackFeatureAtPt( carCorners.frontLeft) == 
-                   RaceState.TrackFeature.BARRIER  
-             || raceState.getTrackFeatureAtPt( carCorners.frontRight) == 
-                   RaceState.TrackFeature.BARRIER ) { 
+        if (raceState.getTrackFeatureAtPt(carCorners.frontLeft)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.frontRight)
+                == RaceState.TrackFeature.BARRIER) {
             // the car hit a barrier, bound the car of the barrier    
-            velocity *= .9f;          
+            velocity *= .9f;
             spin = 1f;
         }
 
         // check if the car is in a spin, if it is
         // then continue to rotate the car but reduce the spin
-        if ( spin > 0.1f ) {
+        if (spin > 0.1f) {
             rotation += 60;
             spin *= 0.4f;
         } else {
             spin = 0f;
         }
 
-        
+
         // If the accelerator is being pressed then increase the velocity
         // otherwise reduce the velocity to simulate the drag/friction
         // of the road and air
-        if(accelerate){
+        if (accelerate) {
             velocity = velocity + 0.05f;
-            if(velocity > 1.2f){
+            if (velocity > 1.2f) {
                 velocity = 1.2f;
             }
-        } else{
+        } else {
             velocity = velocity - 0.025f;
-            if(velocity < 0){
+            if (velocity < 0) {
                 velocity = 0;
             }
         }
-        
-        if(stop){
+
+        if (stop) {
             velocity = velocity - 0.025f * 2f;
-            if(velocity < 0){
+            if (velocity < 0) {
                 velocity = 0;
             }
         }
- 
+
         // Ensure that the rotation value stays within
         // 0-360 and as soon as it goes over or under 
         // the roll it back to value within 0-360 while
         // still maintaining it's relative rotation value
-        while(rotation > 360 ){
+        while (rotation > 360) {
             rotation = rotation - 360;
         }
-        while(rotation < 0){
+        while (rotation < 0) {
             rotation = rotation + 360;
         }
-        
+
         System.out.println("NITRO INCREASE: " + nitroIncrease);
         System.out.println("NITRO: " + nitro);
         System.out.println("NITROPUSHED: " + nitroPushed);
         System.out.println("ACCELERATION: " + accelerate);
-        
-        if(nitro && nitroPushed){
+
+        if (nitro && nitroPushed) {
             nitroIncrease = nitroIncrease + 0.05f;
             nitroX = nitroX - 7;
-            if(nitroIncrease > 1.5f){
+            if (nitroIncrease > 1.5f) {
                 nitroIncrease = 0f;
                 nitroX = 0;
                 nitro = false;
             }
-        } else if(nitroIncrease > 0){
+        } else if (nitroIncrease > 0) {
             nitroIncrease = 0f;
             nitroX = 0;
             nitro = false;
@@ -229,33 +228,33 @@ public class Car {
 
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
-        if(!crash){
-            if(velocity > 0){
-                if(rotation >= 0 && rotation <= 90){
+        if (!crash) {
+            if (velocity > 0) {
+                if (rotation >= 0 && rotation <= 90) {
                     float tempRotation = rotation;
                     speedX = (0.0f - (tempRotation / 18.0f)) * velocity;
-                    speedY = (5.0f - (tempRotation / 18.0f)) * velocity; 
-                } else if (rotation >= 90 && rotation <= 180){
+                    speedY = (5.0f - (tempRotation / 18.0f)) * velocity;
+                } else if (rotation >= 90 && rotation <= 180) {
                     float tempRotation = rotation - 90;
                     speedX = (-5.0f + (tempRotation / 18.0f)) * velocity;
-                    speedY = (0.0f - (tempRotation / 18.0f)) * velocity; 
-                } else if (rotation >= 180 && rotation <= 270){
+                    speedY = (0.0f - (tempRotation / 18.0f)) * velocity;
+                } else if (rotation >= 180 && rotation <= 270) {
                     float tempRotation = rotation - 180;
                     speedX = (0.0f + (tempRotation / 18.0f)) * velocity;
-                    speedY = (-5.0f + (tempRotation / 18.0f)) * velocity; 
-                } else if (rotation >= 270 && rotation <= 360){
+                    speedY = (-5.0f + (tempRotation / 18.0f)) * velocity;
+                } else if (rotation >= 270 && rotation <= 360) {
                     float tempRotation = rotation - 270;
                     speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
-                    speedY = (0.0f + (tempRotation / 18.0f)) * velocity; 
+                    speedY = (0.0f + (tempRotation / 18.0f)) * velocity;
                 }
-                
-                if(nitroIncrease > 0){
+
+                if (nitroIncrease > 0) {
                     nitroIncrease = nitroIncrease + velocity;
                     speedX = speedX * nitroIncrease;
                     speedY = speedY * nitroIncrease;
                     nitroIncrease = nitroIncrease - velocity;
                 }
-                
+
                 position.x += speedX;
                 position.y += speedY;
             }
@@ -264,27 +263,27 @@ public class Car {
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
-        if (velocity > 0 ) {
-            if(!turnLeftCrash){
-                if(turnLeft){
+        if (velocity > 0) {
+            if (!turnLeftCrash) {
+                if (turnLeft) {
                     rotation += 4f;
                 }
             }
-            
-            if(!turnRightCrash){
-                if(turnRight){
+
+            if (!turnRightCrash) {
+                if (turnRight) {
                     rotation -= 4f;
                 }
             }
         }
-        
-        if(nitroX < 220){
+
+        if (nitroX < 220) {
             nitroX = nitroX + 1;
-            if(nitroX == 220){
+            if (nitroX == 220) {
                 nitro = true;
             }
         }
-        
+
         bounds.setPosition(position.x, position.y);
 //        front.setPosition(position.x, position.y + 50);
 //        back.setPosition(position.x, position.y);
@@ -292,8 +291,8 @@ public class Car {
 //        right.setPosition(position.x + 50, position.y);
     }
 
-    public void renderHUD(RaceState state, SpriteBatch batch){
- 
+    public void renderHUD(RaceState state, SpriteBatch batch) {
+
         // Draw the heads up display relative to the camera position
         // On the HUD, show the following informaiton
         //   - lap #, 
@@ -307,30 +306,30 @@ public class Car {
 
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(state.getCameraX()-110, state.getCameraY()+175, 220, 35);
+        shapeRenderer.rect(state.getCameraX() - 110, state.getCameraY() + 175, 220, 35);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(state.getCameraX()-110, state.getCameraY()+ 175, nitroX, 35);
+        shapeRenderer.rect(state.getCameraX() - 110, state.getCameraY() + 175, nitroX, 35);
         shapeRenderer.end();
-        
+
         // End Transparency
         Gdx.gl.glDisable(GL20.GL_BLEND);
- 
+
         // Draw the HUD Text as separate batch from shapeRender since
         // the need to work on different batches
         batch.begin();
         font.setColor(Color.BLUE);
-        String text = "Lap:" + carLap +" CheckPoint: " + carCheckPoint + " Time:  ";
-        font.draw( batch, text, state.getCameraX()-100, state.getCameraY()+200);
-        batch.end(); 
+        String text = "Lap:" + carLap + " CheckPoint: " + carCheckPoint + " Time:  ";
+        font.draw(batch, text, state.getCameraX() - 100, state.getCameraY() + 200);
+        batch.end();
     }
-    
-    public void render(SpriteBatch batch){
-        
-        if(nitroIncrease > 0){
-           batch.draw(flame, position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight*2, 1, 1, rotation + 180);
+
+    public void render(SpriteBatch batch) {
+
+        if (nitroIncrease > 0) {
+            batch.draw(flame, position.x - carWidth / 2, position.y - carHeight / 2, carWidth / 2, carHeight / 2, carWidth, carHeight * 2, 1, 1, rotation + 180);
         }
-        
-        batch.draw( carPic,      position.x-carWidth/2, position.y-carHeight/2, carWidth/2, carHeight/2, carWidth, carHeight, 1, 1, rotation);
+
+        batch.draw(carPic, position.x - carWidth / 2, position.y - carHeight / 2, carWidth / 2, carHeight / 2, carWidth, carHeight, 1, 1, rotation);
 //        batch.draw( carPointPic, position.x, position.y);
 //        
 //        // draw corners of the car
@@ -345,124 +344,124 @@ public class Car {
 //        batch.draw( carPointPic, carCorners.left.x,   carCorners.left.y);
 //        batch.draw( carPointPic, carCorners.front.x,  carCorners.front.y);
 //        
-        if(hitCheckPoint){
+        if (hitCheckPoint) {
             float cpX = position.x;
             float cpY = position.y;
             batch.draw(checkPointPic, cpX, cpY, 50, 50);
         }
     }
-    
-    public float getX(){
+
+    public float getX() {
         return position.x;
     }
-    
-    public float getY(){
+
+    public float getY() {
         return position.y;
     }
-    
-    public Rectangle getBounds(){
+
+    public Rectangle getBounds() {
         return bounds;
     }
-    
-    public Rectangle rightBounds(){
+
+    public Rectangle rightBounds() {
         return right;
     }
-    
-    public Rectangle leftBounds(){
+
+    public Rectangle leftBounds() {
         return left;
     }
-    
-    public Rectangle frontBounds(){
+
+    public Rectangle frontBounds() {
         return front;
     }
-    
-    public Rectangle backBounds(){
+
+    public Rectangle backBounds() {
         return bounds;
     }
-    
-    public void dispose(){
+
+    public void dispose() {
         carPic.getTexture().dispose();
     }
-    
-    public void acceleratorPedal(boolean accelerating){
+
+    public void acceleratorPedal(boolean accelerating) {
         accelerate = accelerating;
     }
-    
-    public void brakePedal(boolean braking){
+
+    public void brakePedal(boolean braking) {
         stop = braking;
     }
-    
-    public void turnLeft(boolean turningLeft){
+
+    public void turnLeft(boolean turningLeft) {
         turnLeft = turningLeft;
     }
-    
-    public void turnRight(boolean turningRight){
+
+    public void turnRight(boolean turningRight) {
         turnRight = turningRight;
     }
-    
-    public void nitroPushed(boolean boosting){
+
+    public void nitroPushed(boolean boosting) {
         nitroPushed = boosting;
     }
-    
-    public float getSpeedX(){
+
+    public float getSpeedX() {
         return speedX + velocity;
     }
-    
-    public float getSpeedY(){
+
+    public float getSpeedY() {
         return speedY + velocity;
     }
-    
-    public void checkCollision(Car opponent){
-        if(carCorners.front.overlaps(opponent.carCorners.back)  ||  
-           carCorners.front.overlaps(opponent.carCorners.left)  || 
-           carCorners.front.overlaps(opponent.carCorners.right) ||
-           carCorners.front.overlaps(opponent.carCorners.front) ){
+
+    public void checkCollision(Car opponent) {
+        if (carCorners.front.overlaps(opponent.carCorners.back)
+                || carCorners.front.overlaps(opponent.carCorners.left)
+                || carCorners.front.overlaps(opponent.carCorners.right)
+                || carCorners.front.overlaps(opponent.carCorners.front)) {
             crash = true;
-        } else{
+        } else {
             crash = false;
         }
-        
-        if(carCorners.front.overlaps(opponent.carCorners.back)  ||  
-           carCorners.front.overlaps(opponent.carCorners.left)  || 
-           carCorners.front.overlaps(opponent.carCorners.right) ||
-           carCorners.front.overlaps(opponent.carCorners.front) ||
-            carCorners.front.overlaps(opponent.carCorners.frontLeftCorner)  ||  
-           carCorners.front.overlaps(opponent.carCorners.backLeftCorner)  || 
-           carCorners.front.overlaps(opponent.carCorners.frontRightCorner) ||
-           carCorners.front.overlaps(opponent.carCorners.backRightCorner)){
+
+        if (carCorners.front.overlaps(opponent.carCorners.back)
+                || carCorners.front.overlaps(opponent.carCorners.left)
+                || carCorners.front.overlaps(opponent.carCorners.right)
+                || carCorners.front.overlaps(opponent.carCorners.front)
+                || carCorners.front.overlaps(opponent.carCorners.frontLeftCorner)
+                || carCorners.front.overlaps(opponent.carCorners.backLeftCorner)
+                || carCorners.front.overlaps(opponent.carCorners.frontRightCorner)
+                || carCorners.front.overlaps(opponent.carCorners.backRightCorner)) {
             crash = true;
-        } else{
+        } else {
             crash = false;
         }
-        
-        if(carCorners.frontRightCorner.overlaps(opponent.carCorners.backLeftCorner)){
+
+        if (carCorners.frontRightCorner.overlaps(opponent.carCorners.backLeftCorner)) {
             turnRightCrash = true;
             opponent.rotation += 20f;
-        } else{
+        } else {
             turnRightCrash = false;
         }
-        
-        if(carCorners.frontLeftCorner.overlaps(opponent.carCorners.backRightCorner)){
+
+        if (carCorners.frontLeftCorner.overlaps(opponent.carCorners.backRightCorner)) {
             turnLeftCrash = true;
             opponent.rotation -= 20f;
-        } else{
+        } else {
             turnLeftCrash = false;
         }
-        
-        if(carCorners.frontRightCorner.overlaps(opponent.carCorners.frontLeftCorner)){
+
+        if (carCorners.frontRightCorner.overlaps(opponent.carCorners.frontLeftCorner)) {
             turnRightCrash = true;
             opponent.rotation -= 20f;
-        } else{
+        } else {
             turnRightCrash = false;
         }
-        
-        if(carCorners.frontLeftCorner.overlaps(opponent.carCorners.frontRightCorner)){
+
+        if (carCorners.frontLeftCorner.overlaps(opponent.carCorners.frontRightCorner)) {
             turnLeftCrash = true;
             opponent.rotation += 20f;
-        } else{
+        } else {
             turnLeftCrash = false;
         }
-        
+
 //        if(this.carCorners.getFront().overlaps(b.carCorners.getFront()) || this.carCorners.getFront().overlaps(b.carCorners.getBack())){
 //            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //            accelerate = false;
@@ -478,12 +477,12 @@ public class Car {
 //            turnRight = false;
 //        }
     }
-    
-    public boolean crashed(){
+
+    public boolean crashed() {
         return crash;
     }
-    
-    public int getLap(){
+
+    public int getLap() {
         return carLap;
     }
 }
