@@ -18,6 +18,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Circle;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -72,6 +73,12 @@ public class Car {
     private float nitroX;
     private boolean nitroPushed;
     private float nitroIncrease;
+    private float countTimer;
+
+    private Texture count3;
+    private Texture count2;
+    private Texture count1;
+    private Texture go;
 
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY) {
         position = new Vector3(x, y, 0);
@@ -83,6 +90,10 @@ public class Car {
 
         carPointPic = new TextureRegion(new Texture("point.png"));
         checkPointPic = new TextureRegion(new Texture("checkpoint.png"));
+        count3 = new Texture("count3.png");
+        count2 = new Texture("count2.png");
+        count1 = new Texture("count1.png");
+        go = new Texture("go.png");
 
         // setup the image of the car, it's appropriate scale on the track
         // and it's bounding rectangle on the track
@@ -114,7 +125,6 @@ public class Car {
         // Update the coordinates of the car bounding box based on 
         // new car position.
         carCorners.updateCornerPos(position, rotation);
-
 
         // Get the track feature underneath the car
         RaceState.TrackFeature feature = raceState.getTrackFeatureAtPt(position);
@@ -172,7 +182,6 @@ public class Car {
         } else {
             spin = 0f;
         }
-
 
         // If the accelerator is being pressed then increase the velocity
         // otherwise reduce the velocity to simulate the drag/friction
@@ -291,7 +300,7 @@ public class Car {
 //        right.setPosition(position.x + 50, position.y);
     }
 
-    public void renderHUD(RaceState state, SpriteBatch batch) {
+    public void renderHUD(RaceState state, SpriteBatch batch, float PlayTime) {
 
         // Draw the heads up display relative to the camera position
         // On the HUD, show the following informaiton
@@ -318,8 +327,26 @@ public class Car {
         // the need to work on different batches
         batch.begin();
         font.setColor(Color.BLUE);
-        String text = "Lap:" + carLap + " CheckPoint: " + carCheckPoint + " Time:  ";
-        font.draw(batch, text, state.getCameraX() - 100, state.getCameraY() + 200);
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        String text = "Lap:" + carLap + " CheckPoint: " + carCheckPoint + " Time:  " + df.format(PlayTime);
+        font.draw(batch, text, state.getCameraX() - 105, state.getCameraY() + 200);
+        countTimer += Gdx.graphics.getDeltaTime();
+
+        System.out.println(countTimer);
+
+        if (countTimer < 1) {
+            batch.draw(count3, 200, 800, 100, 100);
+        }
+        if (countTimer < 2 && countTimer > 1) {
+            batch.draw(count2, 200, 800, 100, 100);
+        }
+        if (countTimer < 3 && countTimer > 2) {
+            batch.draw(count1, 200, 800, 100, 100);
+        }
+        if (countTimer > 3 && countTimer < 4) {
+            batch.draw(go, 200, 800, 100, 100);
+        }
         batch.end();
     }
 

@@ -11,20 +11,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Car;
 import com.mygdx.game.CarRectCorners;
 import com.mygdx.game.RaceIt;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.Color;
 
 /**
  *
@@ -35,6 +28,8 @@ public class RaceState extends State {
     // Create the constant variables
     private final Car car1;
     private final Car car2;
+    private Texture bg;
+
     private boolean accelerate;
     private boolean stop;
     private boolean turnLeft;
@@ -42,15 +37,16 @@ public class RaceState extends State {
     private float velocity;
     private float speedX;
     private float speedY;
-    private Texture bg;
     private int track;
     private int carType1;
     private int carType2;
+    private float PlayTime;
+    private float countTimer;
 
     private TrackFeature[] boundaryMap;
     private int boundaryMapWidth;
     private int boundaryMapHeight;
-    
+
     private StateManager sm;
     private Sound accelerationEffect;
 
@@ -67,9 +63,11 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
+        PlayTime = 0.0f;
+        countTimer = 0;
         this.sm = sm;
         this.sm.play();
-        // accelerationEffect = Audio.newSound(new FileHandle("Tirescreech.mp3"));
+        Sound accelerationEffect = Gdx.audio.newSound(new FileHandle("Tirescreech.mp3"));
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         this.track = track;
         this.carType1 = car1Type;
@@ -133,7 +131,7 @@ public class RaceState extends State {
         // End the batch to allow the HUD to be displated and use ShaperRenderr
         batch.end();
         // draw the cars Hends Up Display
-        car1.renderHUD(this, batch);
+        car1.renderHUD(this, batch, PlayTime);
 
         //
         // Render the view for Car2
@@ -148,13 +146,18 @@ public class RaceState extends State {
         car1.render(batch);
         car2.render(batch);
         // End the batch to allow the HUD to be displated and use ShaperRenderr
-        batch.end();
         // draw the cars Hends Up Display
-        car2.renderHUD(this, batch);
+        batch.end();
+        car2.renderHUD(this, batch, PlayTime);
+
     }
 
     @Override
     public void update(float deltaTime) {
+        countTimer += Gdx.graphics.getDeltaTime();
+        if (countTimer > 3) {
+            PlayTime += deltaTime;
+        
         car1.update(deltaTime, this);
         car2.update(deltaTime, this);
         StateManager gsm = getStateManager();
@@ -167,6 +170,7 @@ public class RaceState extends State {
 
         car1.checkCollision(car2);
         car2.checkCollision(car1);
+        }
 
     }
 
