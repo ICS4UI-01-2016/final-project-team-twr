@@ -4,9 +4,11 @@
  */
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -27,9 +29,7 @@ public class RaceState extends State {
     private final Car car1;
     private final Car car2;
     private Texture bg;
-    private Texture count3;
-    private Texture count2;
-    private Texture count1;
+
     private boolean accelerate;
     private boolean stop;
     private boolean turnLeft;
@@ -67,7 +67,7 @@ public class RaceState extends State {
         countTimer = 0;
         this.sm = sm;
         this.sm.play();
-        // accelerationEffect = Audio.newSound(new FileHandle("Tirescreech.mp3"));
+        Sound accelerationEffect = Gdx.audio.newSound(new FileHandle("Tirescreech.mp3"));
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         this.track = track;
         this.carType1 = car1Type;
@@ -83,9 +83,6 @@ public class RaceState extends State {
             bg = new Texture("Track2.1.jpg");
             loadBoundaryMap("Track2.1-boundaries.png");
         }
-        count3 = new Texture("count3.png");
-        count2 = new Texture("count2.png");
-        count1 = new Texture("count1.png");
 
     }
 
@@ -152,32 +149,15 @@ public class RaceState extends State {
         // draw the cars Hends Up Display
         batch.end();
         car2.renderHUD(this, batch, PlayTime);
-        batch.begin();
-
-        countTimer += Gdx.graphics.getDeltaTime();
-
-        System.out.println(countTimer);
-
-        if (countTimer < 1) {
-            batch.draw(count3, RaceIt.WIDTH / 2 - count3.getWidth(), 800, 100, 100);
-        }
-        if (countTimer < 2 && countTimer > 1) {
-            batch.draw(count2, RaceIt.WIDTH / 2 - count2.getWidth(), 800, 100, 100);
-        }
-        if (countTimer < 3 && countTimer > 2) {
-            batch.draw(count1, RaceIt.WIDTH / 2 - count1.getWidth(), 800, 100, 100);
-        }
-        if (countTimer > 3) {
-        }
-        batch.end();
 
     }
 
     @Override
     public void update(float deltaTime) {
+        countTimer += Gdx.graphics.getDeltaTime();
         if (countTimer > 3) {
             PlayTime += deltaTime;
-        }
+        
         car1.update(deltaTime, this);
         car2.update(deltaTime, this);
         StateManager gsm = getStateManager();
@@ -190,6 +170,7 @@ public class RaceState extends State {
 
         car1.checkCollision(car2);
         car2.checkCollision(car1);
+        }
 
     }
 
