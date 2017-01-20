@@ -74,6 +74,7 @@ public class Car {
     private boolean nitroPushed;
     private float nitroIncrease;
     private float countTimer;
+    private int hit;
 
     private Texture count3;
     private Texture count2;
@@ -332,7 +333,7 @@ public class Car {
         // Draw the HUD Text as separate batch from shapeRender since
         // the need to work on different batches
         batch.begin();
-        font.setColor(Color.BLUE);
+        font.setColor(Color.WHITE);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
         String text = "Lap:" + carLap + " CheckPoint: " + carCheckPoint + " Time:  " + df.format(PlayTime);
@@ -341,17 +342,17 @@ public class Car {
 
         System.out.println(countTimer);
 
-        if (countTimer < 1) {
-            batch.draw(count3, 200, 800, 100, 100);
-        }
-        if (countTimer < 2 && countTimer > 1) {
-            batch.draw(count2, 200, 800, 100, 100);
+        if (countTimer < 2) {
+            batch.draw(count3, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
         if (countTimer < 3 && countTimer > 2) {
-            batch.draw(count1, 200, 800, 100, 100);
+            batch.draw(count2, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer > 3 && countTimer < 4) {
-            batch.draw(go, 200, 800, 100, 100);
+        if (countTimer < 4 && countTimer > 3) {
+            batch.draw(count1, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
+        }
+        if (countTimer > 4 && countTimer < 5) {
+            batch.draw(go, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
         batch.end();
     }
