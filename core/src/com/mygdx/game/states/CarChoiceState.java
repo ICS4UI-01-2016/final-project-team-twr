@@ -33,6 +33,8 @@ public class CarChoiceState extends State {
     // Creating instance variables for the back button
     private Texture picBackButton;
     private Rectangle backButton;
+    // Creating rectangle to display which car is choosen
+    private Texture redRectangle;
     // Creating instance variables for the car choice buttons
     private Rectangle player1Lambo;
     private Rectangle player1Acura;
@@ -77,15 +79,18 @@ public class CarChoiceState extends State {
         player2Acura = new Rectangle(324, 515, 100, 100);
         player2Lambo2 = new Rectangle(520, 515, 100, 100);
         player2Bentley = new Rectangle(742, 515, 100, 100);
+        // Creating red rectangle to show the play which car they chose
+        redRectangle = new Texture("redrectangle.png");
 
         car1Type = 1;
         car2Type = 2;
 
     }
-    
+
     /**
-     * Method used to 
-     * @param batch 
+     * Method used to
+     *
+     * @param batch
      */
     @Override
     public void render(SpriteBatch batch) {
@@ -127,12 +132,10 @@ public class CarChoiceState extends State {
                     && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
                 StateManager gsm = getStateManager();
                 // Change the state to pick a track state
-
                 gsm.push(new MenuState(gsm));
             }
 
             // Saving Player 1's clicked option
-            // Saving Player 2's clicked option
             if (touch.x >= player1Lambo.x && touch.x <= player1Lambo.x + player1Lambo.width
                     && touch.y >= player1Lambo.y && touch.y <= player1Lambo.y + player1Lambo.height) {
                 System.out.println("p1");
@@ -154,6 +157,7 @@ public class CarChoiceState extends State {
                 car1Type = 4;
             }
 
+            // Saving Player 2's clicked option
             if (touch.x >= player2Lambo.x && touch.x <= player2Lambo.x + player2Lambo.width
                     && touch.y >= player2Lambo.y && touch.y <= player2Lambo.y + player2Lambo.height) {
                 car2Type = 1;

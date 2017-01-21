@@ -48,9 +48,11 @@ public class RaceState extends State {
     private int boundaryMapHeight;
 
     private StateManager sm;
+    private Sound tireScreach;
     private Sound accelerationEffect;
 
     public enum TrackFeature {
+
         UNKNOWN, ROAD, GRASS, BARRIER, FINISHLINE,
         CHECKPOINT1, CHECKPOINT2, CHECKPOINT3, CHECKPOINT4,
         CHECKPOINT5, CHECKPOINT6, CHECKPOINT7, CHECKPOINT8
@@ -67,7 +69,9 @@ public class RaceState extends State {
         countTimer = 0;
         this.sm = sm;
         this.sm.play();
-        Sound accelerationEffect = Gdx.audio.newSound(new FileHandle("Tirescreech.mp3"));
+        //Sound accelerationEffect = Gdx.audio.newSound(new FileHandle("Tirescreech.mp3"));
+        tireScreach = Gdx.audio.newSound(Gdx.files.internal("tirescreech.mp3"));
+        accelerationEffect = Gdx.audio.newSound(Gdx.files.internal("accelerationeffect.mp3"));
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         this.track = track;
         this.carType1 = car1Type;
@@ -157,19 +161,19 @@ public class RaceState extends State {
         countTimer += Gdx.graphics.getDeltaTime();
         if (countTimer > 5) {
             PlayTime += deltaTime;
-        
-        car1.update(deltaTime, this);
-        car2.update(deltaTime, this);
-        StateManager gsm = getStateManager();
 
-        if (car1.getLap() == 6) {
-            gsm.push(new WinnerState(gsm, carType1, 1));
-        } else if (car2.getLap() == 6) {
-            gsm.push(new WinnerState(gsm, carType2, 2));
-        }
+            car1.update(deltaTime, this);
+            car2.update(deltaTime, this);
+            StateManager gsm = getStateManager();
 
-        car1.checkCollision(car2);
-        car2.checkCollision(car1);
+            if (car1.getLap() == 6) {
+                gsm.push(new WinnerState(gsm, carType1, 1));
+            } else if (car2.getLap() == 6) {
+                gsm.push(new WinnerState(gsm, carType2, 2));
+            }
+
+            car1.checkCollision(car2);
+            car2.checkCollision(car1);
         }
 
     }
@@ -178,7 +182,10 @@ public class RaceState extends State {
     public void handleInput() {
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            tireScreach.play();
+            accelerationEffect.play();
             car1.acceleratorPedal(true);
+
         } else {
             car1.acceleratorPedal(false);
         }
@@ -246,6 +253,7 @@ public class RaceState extends State {
     public void dispose() {
         car1.dispose();
         car2.dispose();
+        accelerationEffect.dispose();
     }
 
 // constants to determine boundary features from PNG image
