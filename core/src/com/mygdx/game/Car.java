@@ -62,7 +62,8 @@ public class Car {
     private boolean backHit;
     private boolean leftHit;
     private boolean rightHit;
-    private boolean crash = false;
+    private boolean crashFront = false;
+    private boolean crashBack = false;
     private boolean hitCheckPoint;
     private BitmapFont font = new BitmapFont();
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -175,12 +176,24 @@ public class Car {
                 == RaceState.TrackFeature.BARRIER
                 || raceState.getTrackFeatureAtPt(carCorners.backLeft)
                 == RaceState.TrackFeature.BARRIER) {
-            // the car hit a barrier, bound the car of the barrier    
-            if(hit < 2){
-                hit++;
-                velocity *= .9f;
+            // the car hit a barrier, bound the car of the barrier
+            if(velocity > 1 && raceState.getTrackFeatureAtPt(carCorners.frontLeft)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.frontRight)
+                == RaceState.TrackFeature.BARRIER){
+                velocity *= -.9f;
+            } else if(velocity < 1 && raceState.getTrackFeatureAtPt(carCorners.backRight)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.backLeft)
+                == RaceState.TrackFeature.BARRIER){
+                velocity *= -.9f;
+            }else{
+                crashFront = true;
+                turnLeftCrash = true;
+                turnRightCrash = true;
                 spin = 1f;
             }
+//                spin = 1f;
         }
         // check if the car is in a spin, if it is
         // then continue to rotate the car but reduce the spin
@@ -244,7 +257,6 @@ public class Car {
 
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
-        if (!crash) {
 //            if (velocity > 0) {
                 if (rotation >= 0 && rotation <= 90) {
                     float tempRotation = rotation;
@@ -263,7 +275,7 @@ public class Car {
                     speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
                     speedY = (0.0f + (tempRotation / 18.0f)) * velocity;
                 }
-
+        if(!crashFront){
                 if (nitroIncrease > 0) {
                     nitroIncrease = nitroIncrease + velocity;
                     speedX = speedX * nitroIncrease;
@@ -279,7 +291,7 @@ public class Car {
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
-//        if (velocity > 0) {
+        if (accelerate || stop) {
             if (!turnLeftCrash) {
                 if (turnLeft) {
                     rotation += 4f;
@@ -291,7 +303,7 @@ public class Car {
                     rotation -= 4f;
                 }
             }
-//        }
+        }
 
         if (nitroX < 220) {
             nitroX = nitroX + 1;
@@ -446,50 +458,59 @@ public class Car {
     }
 
     public void checkCollision(Car opponent) {
-        if (carCorners.front.overlaps(opponent.carCorners.back)
-                || carCorners.front.overlaps(opponent.carCorners.left)
-                || carCorners.front.overlaps(opponent.carCorners.right)
-                || carCorners.front.overlaps(opponent.carCorners.front)) {
-            crash = true;
+//        if (carCorners.front.overlaps(opponent.carCorners.back)
+//                || carCorners.front.overlaps(opponent.carCorners.left)
+//                || carCorners.front.overlaps(opponent.carCorners.right)
+//                || carCorners.front.overlaps(opponent.carCorners.front)) {
+//            crash = true;
+//        } else {
+//            crash = false;
+//        }
+        
+        if (carCorners.frontC.overlaps(opponent.carCorners.backC)
+                || carCorners.frontC.overlaps(opponent.carCorners.leftC)
+                || carCorners.frontC.overlaps(opponent.carCorners.rightC)
+                || carCorners.frontC.overlaps(opponent.carCorners.frontC)
+                || carCorners.frontC.overlaps(opponent.carCorners.frontLeftCornerC)
+                || carCorners.frontC.overlaps(opponent.carCorners.backLeftCornerC)
+                || carCorners.frontC.overlaps(opponent.carCorners.frontRightCornerC)
+                || carCorners.frontC.overlaps(opponent.carCorners.backRightCornerC)) {
+            crashFront = true;
+        } else if (carCorners.backC.overlaps(opponent.carCorners.backC)
+                || carCorners.backC.overlaps(opponent.carCorners.leftC)
+                || carCorners.backC.overlaps(opponent.carCorners.rightC)
+                || carCorners.backC.overlaps(opponent.carCorners.frontC)
+                || carCorners.backC.overlaps(opponent.carCorners.frontLeftCornerC)
+                || carCorners.backC.overlaps(opponent.carCorners.backLeftCornerC)
+                || carCorners.backC.overlaps(opponent.carCorners.frontRightCornerC)
+                || carCorners.backC.overlaps(opponent.carCorners.backRightCornerC)) {
+            crashBack = true;
         } else {
-            crash = false;
+            crashBack = false;
         }
 
-        if (carCorners.front.overlaps(opponent.carCorners.back)
-                || carCorners.front.overlaps(opponent.carCorners.left)
-                || carCorners.front.overlaps(opponent.carCorners.right)
-                || carCorners.front.overlaps(opponent.carCorners.front)
-                || carCorners.front.overlaps(opponent.carCorners.frontLeftCorner)
-                || carCorners.front.overlaps(opponent.carCorners.backLeftCorner)
-                || carCorners.front.overlaps(opponent.carCorners.frontRightCorner)
-                || carCorners.front.overlaps(opponent.carCorners.backRightCorner)) {
-            crash = true;
-        } else {
-            crash = false;
-        }
-
-        if (carCorners.frontRightCorner.overlaps(opponent.carCorners.backLeftCorner)) {
+        if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.backLeftCornerC)) {
             turnRightCrash = true;
             opponent.rotation += 20f;
         } else {
             turnRightCrash = false;
         }
 
-        if (carCorners.frontLeftCorner.overlaps(opponent.carCorners.backRightCorner)) {
+        if (carCorners.frontLeftCornerC.overlaps(opponent.carCorners.backRightCornerC)) {
             turnLeftCrash = true;
             opponent.rotation -= 20f;
         } else {
             turnLeftCrash = false;
         }
 
-        if (carCorners.frontRightCorner.overlaps(opponent.carCorners.frontLeftCorner)) {
+        if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.frontLeftCornerC)) {
             turnRightCrash = true;
             opponent.rotation -= 20f;
         } else {
             turnRightCrash = false;
         }
 
-        if (carCorners.frontLeftCorner.overlaps(opponent.carCorners.frontRightCorner)) {
+        if (carCorners.frontLeftCornerC.overlaps(opponent.carCorners.frontRightCornerC)) {
             turnLeftCrash = true;
             opponent.rotation += 20f;
         } else {
@@ -513,7 +534,7 @@ public class Car {
     }
 
     public boolean crashed() {
-        return crash;
+        return crashFront;
     }
 
     public int getLap() {
