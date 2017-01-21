@@ -281,7 +281,7 @@ public class RaceState extends State {
             return TrackFeature.UNKNOWN;
         }
     }
-
+    
     public TrackFeature getInterestingTrackFeatureCorners(CarRectCorners carRect) {
         TrackFeature feature;
         TrackFeature returnFeature;

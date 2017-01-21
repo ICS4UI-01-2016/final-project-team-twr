@@ -229,33 +229,33 @@ public class Car {
         System.out.println("CRASHFRONT: " + crashFront);
         System.out.println("CRASHBACK: " + crashBack);
         if (accelerate && !crashFront) {
-            if(!frontHit){
+//            if(!frontHit){
                 velocity = velocity + 0.05f;
                 if (velocity > 1.2f) {
                     velocity = 1.2f;
                 }
-            }
+//            }
         } else if (stop && !crashBack) {
-            if(!backHit){
+//            if(!backHit){
                 velocity = velocity - 0.025f * 2f;
                 if (velocity < - 1.2f) {
                     velocity = - 1.2f;
                 }
-            }
+//            }
         } else if (velocity > 0 && !crashBack){
-            if(!backHit){
+//            if(!backHit){
                 velocity = velocity - 0.025f;
                 if (velocity < 0) {
                     velocity = 0;
-                }
+//                }
             }
         } else if(velocity < 0 && !crashFront){
-            if(!frontHit){
+//            if(!frontHit){
                 velocity = velocity + 0.025f;
                 if (velocity > 0) {
                     velocity = 0;
                 }
-            }
+//            }
         }
 
         // Ensure that the rotation value stays within
@@ -302,16 +302,19 @@ public class Car {
             speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
             speedY = (0.0f + (tempRotation / 18.0f)) * velocity;
         }
-        if (nitroIncrease > 0) {
-            nitroIncrease = nitroIncrease + velocity;
-            speedX = speedX * nitroIncrease;
-            speedY = speedY * nitroIncrease;
-            nitroIncrease = nitroIncrease - velocity;
+        
+        if( ((velocity > 0 ) && !frontHit) || 
+        ((velocity < 0 ) && !backHit) ) {
+            if (nitroIncrease > 0) {
+                nitroIncrease = nitroIncrease + velocity;
+                speedX = speedX * nitroIncrease;
+                speedY = speedY * nitroIncrease;
+                nitroIncrease = nitroIncrease - velocity;
+            }
+
+            position.x += speedX;
+            position.y += speedY;
         }
-
-        position.x += speedX;
-        position.y += speedY;
-
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
@@ -481,66 +484,132 @@ public class Car {
         return speedY + velocity;
     }
 
+        // Determine the number of points of overlap between our car
+    // and a point on the opponents car
+    public int numPointsOverlap( Circle pointOnOpponent) {
+        int numOverlaps = 0;
+
+        // check 
+        if ( carCorners.frontC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.backC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.leftC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.rightC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.frontLeftCornerC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.frontRightCornerC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.backLeftCornerC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        if ( carCorners.backRightCornerC.overlaps( pointOnOpponent )) {
+            numOverlaps +=1;
+        }
+        
+        return numOverlaps;
+    }
+    
     public void checkCollision(Car opponent) {
-        if (carCorners.frontC.overlaps(opponent.carCorners.backC)
-                || carCorners.frontC.overlaps(opponent.carCorners.leftC)
-                || carCorners.frontC.overlaps(opponent.carCorners.rightC)
-                || carCorners.frontC.overlaps(opponent.carCorners.frontC)) {
+        //
+        // Reset the crash indicators 
+        // 
+        frontHit     = false;
+        backHit     = false;
+        turnLeftCrash  = false;
+        turnRightCrash = false;
+  
+//        if (carCorners.front.overlaps(opponent.carCorners.back)
+//                || carCorners.front.overlaps(opponent.carCorners.left)
+//                || carCorners.front.overlaps(opponent.carCorners.right)
+//                || carCorners.front.overlaps(opponent.carCorners.front)) {
+//            crash = true;
+//        } else {
+//            crash = false;
+//        }
+        
+        // check to see if the front of the car has hit the opponent car and
+        // if it has then block the car from forward movement
+        if ( carCorners.frontC.overlaps(opponent.carCorners.backC)  ||
+             carCorners.frontC.overlaps(opponent.carCorners.leftC)  ||
+             carCorners.frontC.overlaps(opponent.carCorners.rightC) ||
+             carCorners.frontC.overlaps(opponent.carCorners.frontC) ||
+             carCorners.frontC.overlaps(opponent.carCorners.frontLeftCornerC)  ||
+             carCorners.frontC.overlaps(opponent.carCorners.backLeftCornerC)   ||
+             carCorners.frontC.overlaps(opponent.carCorners.frontRightCornerC) ||
+             carCorners.frontC.overlaps(opponent.carCorners.backRightCornerC) ) {
+            
+            // hit opponent, block movement and transfer some enertia from
+            // car to opponents car
             frontHit = true;
-        } else {
-            frontHit = false;
         }
         
-        if (carCorners.frontC.overlaps(opponent.carCorners.backC)
-                || carCorners.frontC.overlaps(opponent.carCorners.leftC)
-                || carCorners.frontC.overlaps(opponent.carCorners.rightC)
-                || carCorners.frontC.overlaps(opponent.carCorners.frontC)
-                || carCorners.frontC.overlaps(opponent.carCorners.frontLeftCornerC)
-                || carCorners.frontC.overlaps(opponent.carCorners.backLeftCornerC)
-                || carCorners.frontC.overlaps(opponent.carCorners.frontRightCornerC)
-                || carCorners.frontC.overlaps(opponent.carCorners.backRightCornerC)) {
-            frontHit = true;
-            velocity*= -0.5;
-        } else{
-            frontHit = false;
-        }
-        
-        if (carCorners.backC.overlaps(opponent.carCorners.backC)
-                || carCorners.backC.overlaps(opponent.carCorners.leftC)
-                || carCorners.backC.overlaps(opponent.carCorners.rightC)
-                || carCorners.backC.overlaps(opponent.carCorners.frontC)
-                || carCorners.backC.overlaps(opponent.carCorners.frontLeftCornerC)
-                || carCorners.backC.overlaps(opponent.carCorners.backLeftCornerC)
-                || carCorners.backC.overlaps(opponent.carCorners.frontRightCornerC)
-                || carCorners.backC.overlaps(opponent.carCorners.backRightCornerC)) {
+        // check to see if the back of the car has hit the opponents car and 
+        // if it has then block it from reverse motion
+        if ( carCorners.backC.overlaps(opponent.carCorners.backC)  ||
+             carCorners.backC.overlaps(opponent.carCorners.leftC)  ||
+             carCorners.backC.overlaps(opponent.carCorners.rightC) ||
+             carCorners.backC.overlaps(opponent.carCorners.frontC) ||
+             carCorners.backC.overlaps(opponent.carCorners.frontLeftCornerC)  ||
+             carCorners.backC.overlaps(opponent.carCorners.backLeftCornerC)   ||
+             carCorners.backC.overlaps(opponent.carCorners.frontRightCornerC) ||
+             carCorners.backC.overlaps(opponent.carCorners.backRightCornerC)) {
+            // hit opponent, block movement and transfer some enertia from
+            // car to opponents car
             backHit = true;
-            velocity*= -0.5;
-        } else{
+        } else {
             backHit = false;
         }
 
-        if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.backLeftCornerC)) {
+        // if while traveling forward out car has contacted the 
+        // back end of the opponent car then transfer inertia of our 
+        // car to the opponent
+        if ( carCorners.frontC.overlaps(opponent.carCorners.backC) ) {
+            opponent.velocity += velocity / 2;
+            velocity = velocity / 2;
+        }
+        // if reversing out car has contacted the front of the 
+        // opponent car then transfer inertia of our 
+        // car to the opponent
+        if ( carCorners.backC.overlaps(opponent.carCorners.frontC) ) {
+            opponent.velocity += velocity / 2;
+            velocity = velocity / 2;
+        }
+  
+        // Determine if based on contact, if we have hit the opponents car 
+        // in one of the 4 corners only and if we have then cause the opponents
+        // car to spin 
+        if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.backLeftCornerC) &&
+             numPointsOverlap(opponent.carCorners.backC) == 1 ) {
             turnRightCrash = true;
             opponent.rotation += 20f;
         } else {
             turnRightCrash = false;
         }
-
-        if (carCorners.frontLeftCornerC.overlaps(opponent.carCorners.backRightCornerC)) {
-            turnLeftCrash = true;
-            opponent.rotation -= 20f;
-        } else {
-            turnLeftCrash = false;
-        }
-
-        if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.frontLeftCornerC)) {
+        if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.frontLeftCornerC) &&
+             numPointsOverlap(opponent.carCorners.backC) == 1 ) {
             turnRightCrash = true;
             opponent.rotation -= 20f;
         } else {
             turnRightCrash = false;
         }
-
-        if (carCorners.frontLeftCornerC.overlaps(opponent.carCorners.frontRightCornerC)) {
+        if (carCorners.frontLeftCornerC.overlaps(opponent.carCorners.backRightCornerC) &&
+             numPointsOverlap(opponent.carCorners.backC) == 1 ) {
+            turnLeftCrash = true;
+            opponent.rotation -= 20f;
+        } else {
+            turnLeftCrash = false;
+        }
+        if (carCorners.frontLeftCornerC.overlaps(opponent.carCorners.frontRightCornerC) &&
+             numPointsOverlap(opponent.carCorners.backC) == 1 ) {
             turnLeftCrash = true;
             opponent.rotation += 20f;
         } else {
