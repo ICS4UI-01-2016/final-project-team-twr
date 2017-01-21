@@ -140,7 +140,7 @@ public class Car {
         // switch( feature ) {
         if (feature == RaceState.TrackFeature.GRASS) {
             // On grass slow the car to min slow pace
-            if (velocity > .5) {
+            if (velocity > .5 || velocity < - .5) {
                 velocity *= .25f;
             }
         }
@@ -172,28 +172,47 @@ public class Car {
                 == RaceState.TrackFeature.BARRIER
                 || raceState.getTrackFeatureAtPt(carCorners.frontRight)
                 == RaceState.TrackFeature.BARRIER
-                || raceState.getTrackFeatureAtPt(carCorners.backRight)
-                == RaceState.TrackFeature.BARRIER
-                || raceState.getTrackFeatureAtPt(carCorners.backLeft)
+                || raceState.getTrackFeatureAtPt(carCorners.front)
                 == RaceState.TrackFeature.BARRIER) {
             // the car hit a barrier, bound the car of the barrier
-            if(velocity > 1 && raceState.getTrackFeatureAtPt(carCorners.frontLeft)
-                == RaceState.TrackFeature.BARRIER
-                || raceState.getTrackFeatureAtPt(carCorners.frontRight)
-                == RaceState.TrackFeature.BARRIER){
+            if(velocity > 0){
+                accelerate = false;
                 velocity *= -.9f;
-            } else if(velocity < 1 && raceState.getTrackFeatureAtPt(carCorners.backRight)
-                == RaceState.TrackFeature.BARRIER
-                || raceState.getTrackFeatureAtPt(carCorners.backLeft)
-                == RaceState.TrackFeature.BARRIER){
-                velocity *= -.9f;
+                turnLeftCrash = true;
+                turnRightCrash = true;
             }else{
+                velocity = 0;
+                accelerate = false;
                 crashFront = true;
                 turnLeftCrash = true;
                 turnRightCrash = true;
-                spin = 1f;
+                crashBack = false;
             }
 //                spin = 1f;
+        } else if(raceState.getTrackFeatureAtPt(carCorners.backLeft)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.backRight)
+                == RaceState.TrackFeature.BARRIER
+                || raceState.getTrackFeatureAtPt(carCorners.back)
+                == RaceState.TrackFeature.BARRIER){
+            if(velocity < 0){
+                stop = false;
+                velocity *= -.9f;
+                turnLeftCrash = true;
+                turnRightCrash = true;
+            }else{
+                velocity = 0;
+                stop = false;
+                crashBack = true;
+                turnLeftCrash = true;
+                turnRightCrash = true;
+                crashFront = false;
+            }
+        } else{
+            crashFront = false;
+            crashBack = false;
+            turnLeftCrash = false;
+            turnRightCrash = false;
         }
         // check if the car is in a spin, if it is
         // then continue to rotate the car but reduce the spin
@@ -207,26 +226,35 @@ public class Car {
         // If the accelerator is being pressed then increase the velocity
         // otherwise reduce the velocity to simulate the drag/friction
         // of the road and air
-        System.out.println("VELOCITY: " + velocity);
-        if (accelerate) {
-            velocity = velocity + 0.05f;
-            if (velocity > 1.2f) {
-                velocity = 1.2f;
+        System.out.println("CRASHFRONT: " + crashFront);
+        System.out.println("CRASHBACK: " + crashBack);
+        if (accelerate && !crashFront) {
+            if(!frontHit){
+                velocity = velocity + 0.05f;
+                if (velocity > 1.2f) {
+                    velocity = 1.2f;
+                }
             }
-        } else if (stop) {
-            velocity = velocity - 0.025f * 2f;
-            if (velocity < - 1.2f) {
-                velocity = - 1.2f;
+        } else if (stop && !crashBack) {
+            if(!backHit){
+                velocity = velocity - 0.025f * 2f;
+                if (velocity < - 1.2f) {
+                    velocity = - 1.2f;
+                }
             }
-        } else if (velocity > 0){
-            velocity = velocity - 0.025f;
-            if (velocity < 0) {
-                velocity = 0;
+        } else if (velocity > 0 && !crashBack){
+            if(!backHit){
+                velocity = velocity - 0.025f;
+                if (velocity < 0) {
+                    velocity = 0;
+                }
             }
-        } else if(velocity < 0){
-            velocity = velocity + 0.025f;
-            if (velocity > 0) {
-                velocity = 0;
+        } else if(velocity < 0 && !crashFront){
+            if(!frontHit){
+                velocity = velocity + 0.025f;
+                if (velocity > 0) {
+                    velocity = 0;
+                }
             }
         }
 
@@ -257,36 +285,32 @@ public class Car {
 
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
-//            if (velocity > 0) {
-                if (rotation >= 0 && rotation <= 90) {
-                    float tempRotation = rotation;
-                    speedX = (0.0f - (tempRotation / 18.0f)) * velocity;
-                    speedY = (5.0f - (tempRotation / 18.0f)) * velocity;
-                } else if (rotation >= 90 && rotation <= 180) {
-                    float tempRotation = rotation - 90;
-                    speedX = (-5.0f + (tempRotation / 18.0f)) * velocity;
-                    speedY = (0.0f - (tempRotation / 18.0f)) * velocity;
-                } else if (rotation >= 180 && rotation <= 270) {
-                    float tempRotation = rotation - 180;
-                    speedX = (0.0f + (tempRotation / 18.0f)) * velocity;
-                    speedY = (-5.0f + (tempRotation / 18.0f)) * velocity;
-                } else if (rotation >= 270 && rotation <= 360) {
-                    float tempRotation = rotation - 270;
-                    speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
-                    speedY = (0.0f + (tempRotation / 18.0f)) * velocity;
-                }
-        if(!crashFront){
-                if (nitroIncrease > 0) {
-                    nitroIncrease = nitroIncrease + velocity;
-                    speedX = speedX * nitroIncrease;
-                    speedY = speedY * nitroIncrease;
-                    nitroIncrease = nitroIncrease - velocity;
-                }
-
-                position.x += speedX;
-                position.y += speedY;
-//            }
+        if (rotation >= 0 && rotation <= 90) {
+            float tempRotation = rotation;
+            speedX = (0.0f - (tempRotation / 18.0f)) * velocity;
+            speedY = (5.0f - (tempRotation / 18.0f)) * velocity;
+        } else if (rotation >= 90 && rotation <= 180) {
+            float tempRotation = rotation - 90;
+            speedX = (-5.0f + (tempRotation / 18.0f)) * velocity;
+            speedY = (0.0f - (tempRotation / 18.0f)) * velocity;
+        } else if (rotation >= 180 && rotation <= 270) {
+            float tempRotation = rotation - 180;
+            speedX = (0.0f + (tempRotation / 18.0f)) * velocity;
+            speedY = (-5.0f + (tempRotation / 18.0f)) * velocity;
+        } else if (rotation >= 270 && rotation <= 360) {
+            float tempRotation = rotation - 270;
+            speedX = (5.0f - (tempRotation / 18.0f)) * velocity;
+            speedY = (0.0f + (tempRotation / 18.0f)) * velocity;
         }
+        if (nitroIncrease > 0) {
+            nitroIncrease = nitroIncrease + velocity;
+            speedX = speedX * nitroIncrease;
+            speedY = speedY * nitroIncrease;
+            nitroIncrease = nitroIncrease - velocity;
+        }
+
+        position.x += speedX;
+        position.y += speedY;
 
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
@@ -458,14 +482,14 @@ public class Car {
     }
 
     public void checkCollision(Car opponent) {
-//        if (carCorners.front.overlaps(opponent.carCorners.back)
-//                || carCorners.front.overlaps(opponent.carCorners.left)
-//                || carCorners.front.overlaps(opponent.carCorners.right)
-//                || carCorners.front.overlaps(opponent.carCorners.front)) {
-//            crash = true;
-//        } else {
-//            crash = false;
-//        }
+        if (carCorners.frontC.overlaps(opponent.carCorners.backC)
+                || carCorners.frontC.overlaps(opponent.carCorners.leftC)
+                || carCorners.frontC.overlaps(opponent.carCorners.rightC)
+                || carCorners.frontC.overlaps(opponent.carCorners.frontC)) {
+            frontHit = true;
+        } else {
+            frontHit = false;
+        }
         
         if (carCorners.frontC.overlaps(opponent.carCorners.backC)
                 || carCorners.frontC.overlaps(opponent.carCorners.leftC)
@@ -475,8 +499,13 @@ public class Car {
                 || carCorners.frontC.overlaps(opponent.carCorners.backLeftCornerC)
                 || carCorners.frontC.overlaps(opponent.carCorners.frontRightCornerC)
                 || carCorners.frontC.overlaps(opponent.carCorners.backRightCornerC)) {
-            crashFront = true;
-        } else if (carCorners.backC.overlaps(opponent.carCorners.backC)
+            frontHit = true;
+            velocity*= -0.5;
+        } else{
+            frontHit = false;
+        }
+        
+        if (carCorners.backC.overlaps(opponent.carCorners.backC)
                 || carCorners.backC.overlaps(opponent.carCorners.leftC)
                 || carCorners.backC.overlaps(opponent.carCorners.rightC)
                 || carCorners.backC.overlaps(opponent.carCorners.frontC)
@@ -484,9 +513,10 @@ public class Car {
                 || carCorners.backC.overlaps(opponent.carCorners.backLeftCornerC)
                 || carCorners.backC.overlaps(opponent.carCorners.frontRightCornerC)
                 || carCorners.backC.overlaps(opponent.carCorners.backRightCornerC)) {
-            crashBack = true;
-        } else {
-            crashBack = false;
+            backHit = true;
+            velocity*= -0.5;
+        } else{
+            backHit = false;
         }
 
         if (carCorners.frontRightCornerC.overlaps(opponent.carCorners.backLeftCornerC)) {

@@ -49,15 +49,15 @@ public class CarRectCorners {
         backLeft  = new Vector3(0,0,0);
         backRight = new Vector3(0,0,0);
        
-        frontC = new Circle(0,0,8); 
-        backC = new Circle(0,0,8); 
-        leftC = new Circle(0,0,8);
-        rightC = new Circle(0,0,8);
+        frontC = new Circle(0,0,10); 
+        backC = new Circle(0,0,10); 
+        leftC = new Circle(0,0,10);
+        rightC = new Circle(0,0,10);
         
-        frontLeftCornerC = new Circle(0,0,8); 
-        backLeftCornerC = new Circle(0,0,8); 
-        frontRightCornerC = new Circle(0,0,8);
-        backRightCornerC = new Circle(0,0,8);
+        frontLeftCornerC = new Circle(0,0,10); 
+        backLeftCornerC = new Circle(0,0,10); 
+        frontRightCornerC = new Circle(0,0,10);
+        backRightCornerC = new Circle(0,0,10);
         
         carWidth  = width;
         carHeight = height;
