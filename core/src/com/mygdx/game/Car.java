@@ -54,7 +54,7 @@ public class Car {
     private float speedX;
     private float speedY;
     private boolean accelerate;
-    private boolean stop;
+    private boolean reverse;
     private boolean turnLeft;
     private boolean turnRight;
     private int tempCarType;
@@ -135,18 +135,20 @@ public class Car {
                 + feature + "   LC(" + carCorners.backLeft.x + ","
                 + carCorners.backLeft.x + ")");
 
-        // Based on the Track feature that is under the car
-        // have the car react.
-        // switch( feature ) {
+        //
+        // Check the track feature under the car and have the car react to it
+        // 
+        // if the car is driving on grass then increase the drag on the card
+        // to reduce it's speed
         if (feature == RaceState.TrackFeature.GRASS) {
             // On grass slow the car to min slow pace
             if (velocity > .5 || velocity < - .5) {
-                velocity *= .25f;
+                velocity *= .7f;
             }
         }
 
-        // ceck to see if the car has reached the finishline after
-        // having passed over all of the required check points.
+        // if the car in on the finishline area, increase the laps
+        // and reset the checkpoints for the next lap 
         if (feature == RaceState.TrackFeature.FINISHLINE) {
             if (carCheckPoint == 7) {
                 carLap += 1;
@@ -196,13 +198,13 @@ public class Car {
                 || raceState.getTrackFeatureAtPt(carCorners.back)
                 == RaceState.TrackFeature.BARRIER){
             if(velocity < 0){
-                stop = false;
+                reverse = false;
                 velocity *= -.9f;
                 turnLeftCrash = true;
                 turnRightCrash = true;
             }else{
                 velocity = 0;
-                stop = false;
+                reverse = false;
                 crashBack = true;
                 turnLeftCrash = true;
                 turnRightCrash = true;
@@ -235,7 +237,7 @@ public class Car {
                     velocity = 1.2f;
                 }
 //            }
-        } else if (stop && !crashBack) {
+        } else if (reverse && !crashBack) {
 //            if(!backHit){
                 velocity = velocity - 0.025f * 2f;
                 if (velocity < - 1.2f) {
@@ -318,18 +320,20 @@ public class Car {
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
-        if (accelerate || stop) {
-            if (!turnLeftCrash) {
+        if ( (velocity > .1) || (velocity < -.1) ) {
+              if (!turnLeftCrash) {
                 if (turnLeft) {
-                    rotation += 4f;
+                    // set the amount of turn/rotate based on the cars speed
+                    rotation += 4f * (Math.abs(velocity) / 1.2) ;
                 }
-            }
+              }
 
-            if (!turnRightCrash) {
+              if (!turnRightCrash) {
                 if (turnRight) {
-                    rotation -= 4f;
+                    // set the amount of turn/rotate based on the cars speed
+                    rotation -= 4f * (Math.abs(velocity) / 1.2);
                 }
-            }
+              }
         }
 
         if (nitroX < 220) {
@@ -461,7 +465,7 @@ public class Car {
     }
 
     public void brakePedal(boolean braking) {
-        stop = braking;
+        reverse = braking;
     }
 
     public void turnLeft(boolean turningLeft) {
