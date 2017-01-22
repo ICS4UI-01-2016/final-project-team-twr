@@ -43,7 +43,7 @@ public class StateManager {
      */
     public void play() {
         this.song.stop();
-        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuStateMusic.mp3"));
+        this.song = Gdx.audio.newMusic(Gdx.files.internal("RaceMusic.mp3"));
         this.song.play();
 
     }
