@@ -23,7 +23,6 @@ import com.mygdx.game.RaceIt;
  */
 public class MenuState extends State {
     // Create the instance variables 
-
     private StateManager sm;
     private Texture bg;
     private Texture musicPlay;
@@ -151,8 +150,12 @@ public class MenuState extends State {
     public void dispose() {
         // Dispose the used images
         bg.dispose();
-        music.dispose();
         musicPlay.dispose();
         musicMute.dispose();
+        music.dispose();
+        picOfDescriptionButton.dispose();
+        picOfHowToPlayButton.dispose();
+        picOfPlayButton.dispose();
+        font.dispose();
     }
 }
