@@ -50,6 +50,7 @@ public class RaceState extends State {
     private StateManager sm;
     private Sound tireScreach;
     private Sound accelerationEffect;
+    private Sound countDown;
 
     public enum TrackFeature {
 
@@ -65,6 +66,8 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
+        countDown = Gdx.audio.newSound(Gdx.files.internal("321.mp3"));
+        countDown.play();
         PlayTime = 0.0f;
         countTimer = 0;
         this.sm = sm;
@@ -281,7 +284,7 @@ public class RaceState extends State {
             return TrackFeature.UNKNOWN;
         }
     }
-    
+
     public TrackFeature getInterestingTrackFeatureCorners(CarRectCorners carRect) {
         TrackFeature feature;
         TrackFeature returnFeature;
