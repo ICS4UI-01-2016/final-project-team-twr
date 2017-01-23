@@ -24,75 +24,83 @@ import java.text.DecimalFormat;
 
 /**
  *
- * @author whitb0039, richj0985, and tatad6701 extra
+ * @author whitb0039, richj0985, and tatad6701
  */
 public class Car {
-
-    private float rotation;
-    private float spin;
+    private float rotation;             // rotation of car when driving
+    private float spin;                 // spinning the car when it is hit
     private Vector3 position;           // center position of the car on the track
     private CarRectCorners carCorners;  // corners bounding box of car on track
-    private TextureRegion carPic;
-    private TextureRegion carPointPic;
-    private TextureRegion checkPointPic;
-    public int carWidth;
-    public int carHeight;
+    private TextureRegion carPic;       // the picture of the car
+    private TextureRegion carPointPic;  // the picture of the points that indicate the boundaries of the car
+    private TextureRegion checkPointPic;// the picture of a checkpoint identifying that you hit a checkpoint
+    public int carWidth;                // the width of the car
+    public int carHeight;               // the height of the car
     private int carScale;               // scalar for the car image to track
-    private int carLap;
-    private int carCheckPoint = 0;
-    private TextureRegion blackBox;
-    private TextureRegion blackBox2;
-    private TextureRegion blackBox3;
-    private TextureRegion blackBox4;
-    private TextureRegion flame;
-    private Rectangle bounds;
-    private Rectangle front;
-    private Rectangle back;
-    private Rectangle left;
-    private Rectangle right;
-    private float velocity;
-    private float damageX;
-    private float damageY;
-    private float speedX;
-    private float speedY;
-    private boolean accelerate;
-    private boolean reverse;
-    private boolean turnLeft;
-    private boolean turnRight;
-    private int tempCarType;
-    private boolean frontHit;
-    private boolean backHit;
-    private boolean leftHit;
-    private boolean rightHit;
-    private boolean crashFront = false;
-    private boolean crashBack = false;
-    private boolean hitCheckPoint;
-    private BitmapFont font = new BitmapFont();
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private Circle bounds2;
-    private boolean turnLeftCrash = false;
-    private boolean turnRightCrash = false;
-    private boolean nitro;
-    private float nitroX;
-    private boolean nitroPushed;
-    private float nitroIncrease;
-    private float countTimer;
-    private int hit;
+    private int carLap;                 // the lap that the car is on
+    private int carCheckPoint = 0;      // the checkpoint that the car is on
+//    private TextureRegion blackBox;
+//    private TextureRegion blackBox2;
+//    private TextureRegion blackBox3;
+//    private TextureRegion blackBox4;
+    private TextureRegion flame;        // the picture of the car flame
+    private Rectangle bounds;           // the rectangle of the bounds of the car
+    private Rectangle front;            // the front bounds of the car
+    private Rectangle back;             // the back bounds of the car
+    private Rectangle left;             // the left bounds of the car
+    private Rectangle right;            // the right bounds of the car
+    private float velocity;             // the velocity of the car
+//    private float damageX;
+//    private float damageY;
+    private float speedX;               // the speed of the car going along the x-axis
+    private float speedY;               // the speed of the car going along the y-axis
+    private boolean accelerate;         // if the acceleration of the car going forward
+    private boolean reverse;            // if the reverse of the car going backwards
+    private boolean turnLeft;           // if the car is turning left
+    private boolean turnRight;          // if the car is turning right
+    private int tempCarType;            // the type of car
+    private boolean frontHit;           // if the front is hit (intersection between cars)
+    private boolean backHit;            // if the back is hit  (intersection between cars)
+//    private boolean leftHit;            
+//    private boolean rightHit;
+    private boolean crashFront = false; // if the front is crashed (intersection with boundaries)
+    private boolean crashBack = false;  // if the back is crashed (intersection with boundaries)
+    private boolean hitCheckPoint;      // if the car has hit a checkpoint
+    private BitmapFont font = new BitmapFont();  // the font printed
+    private ShapeRenderer shapeRenderer = new ShapeRenderer(); // creating the shapes within the game
+//    private Circle bounds2;
+    private boolean turnLeftCrash = false;// if the left side of the car has crashed (intersection between cars)
+    private boolean turnRightCrash = false; // if the right side of the car has crashed (intersection between cars)
+    private boolean nitro;              // if the car is in nitro
+    private float nitroX;               // the red rectangle x width coordintate
+    private boolean nitroPushed;        // if the nitro has been pushed
+    private float nitroIncrease;        // the increase in nitro
+    private float countTimer;           // the timer of the car
+//    private int hit;                    
+    private Texture count3;             // the image of the countdown number 3
+    private Texture count2;             // the image of the countdown number 2
+    private Texture count1;             // the image of the countdown number 1
+    private Texture go;                 // the image of the countdown go
 
-    private Texture count3;
-    private Texture count2;
-    private Texture count1;
-    private Texture go;
-
+    /**
+     * 
+     * @param x the x coordinate of the car
+     * @param y the y coordinate of the car
+     * @param carType the type of car
+     * @param initialRotation the initialRotation of the car
+     * @param initialPositionX the initial x position of the car
+     * @param initialPositionY  the initial y position of the car
+     */
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY) {
+        // setting up the parameters to the class
         position = new Vector3(x, y, 0);
         rotation = initialRotation;
         position.x = initialPositionX;
         position.y = initialPositionY;
+        tempCarType = carType;
         
-
+        // the images of the class
         flame = new TextureRegion(new Texture("flame.png"));
-
         carPointPic = new TextureRegion(new Texture("point.png"));
         checkPointPic = new TextureRegion(new Texture("checkpoint.png"));
         count3 = new Texture("count3.png");
@@ -120,8 +128,6 @@ public class Car {
         carWidth = carPic.getRegionWidth() / carScale;
         carHeight = carPic.getRegionHeight() / carScale;
         carCorners = new CarRectCorners(carWidth, carHeight);
-
-        tempCarType = carType;
         bounds = new Rectangle(position.x, position.y, carWidth, carHeight);
     }
 
@@ -172,7 +178,7 @@ public class Car {
         }
 
         // check if the front of the car has hit a barrier
-        System.out.println("HIT: " + hit);
+        //        System.out.println("HIT: " + hit);
         if (raceState.getTrackFeatureAtPt(carCorners.frontLeft)
                 == RaceState.TrackFeature.BARRIER
                 || raceState.getTrackFeatureAtPt(carCorners.frontRight)
