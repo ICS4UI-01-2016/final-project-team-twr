@@ -162,7 +162,7 @@ public class RaceState extends State {
     @Override
     public void update(float deltaTime) {
         countTimer += Gdx.graphics.getDeltaTime();
-        if (countTimer > 5) {
+        if (countTimer > 4) {
             PlayTime += deltaTime;
 
             car1.update(deltaTime, this);
@@ -185,23 +185,27 @@ public class RaceState extends State {
     public void handleInput() {
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            tireScreach.play();
             accelerationEffect.play();
             car1.acceleratorPedal(true);
 
         } else {
+            accelerationEffect.stop();
             car1.acceleratorPedal(false);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            tireScreach.play();
             car1.turnLeft(true);
         } else {
+            tireScreach.stop();
             car1.turnLeft(false);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {            
+            tireScreach.play();
             car1.turnRight(true);
         } else {
+            tireScreach.stop();
             car1.turnRight(false);
         }
 

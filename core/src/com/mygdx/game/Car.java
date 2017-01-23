@@ -389,16 +389,16 @@ public class Car {
         System.out.println(countTimer);
         
 
-        if (countTimer < 2) {
+        if (countTimer < 1) {
             batch.draw(count3, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer < 3 && countTimer > 2) {
+        if (countTimer < 2 && countTimer > 1) {
             batch.draw(count2, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer < 4 && countTimer > 3) {
+        if (countTimer < 3 && countTimer > 2) {
             batch.draw(count1, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer > 4 && countTimer < 5) {
+        if (countTimer > 3 && countTimer < 4) {
             batch.draw(go, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
         batch.end();
