@@ -388,7 +388,7 @@ public class Car {
         font.setColor(Color.WHITE);
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(1);
-        String text = "Lap:" + carLap + " CheckPoint: " + carCheckPoint + " Time:  " + df.format(PlayTime);
+        String text = "Lap: " + carLap + " CheckPoint: " + carCheckPoint + " Time: " + df.format(PlayTime);
         font.draw(batch, text, state.getCameraX() - 105, state.getCameraY() + 200);
         countTimer += Gdx.graphics.getDeltaTime();
 

@@ -46,6 +46,7 @@ public class StateManager {
         this.song = Gdx.audio.newMusic(Gdx.files.internal("RaceMusic.mp3"));
         this.song.setLooping(true);
         this.song.play();
+
     }
 
     public void startMusic() {
