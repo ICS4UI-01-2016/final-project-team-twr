@@ -15,12 +15,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Circle;
 import java.text.DecimalFormat;
+import com.badlogic.gdx.files.FileHandle;
 
 /**
  *
@@ -81,6 +83,12 @@ public class Car {
     private Texture count2;             // the image of the countdown number 2
     private Texture count1;             // the image of the countdown number 1
     private Texture go;                 // the image of the countdown go
+    private Sound tireScreach1;
+    private Sound tireScreach2;
+    private Sound accelerationEffect1;
+    private boolean accelSound1;
+    private boolean carScreech1;    
+    private boolean carScreech2;
 
     /**
      * 
@@ -92,6 +100,9 @@ public class Car {
      * @param initialPositionY  the initial y position of the car
      */
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY) {
+        
+        this.accelSound1 = false;
+        this.carScreech1 = false;
         // setting up the parameters to the class
         position = new Vector3(x, y, 0);
         rotation = initialRotation;
@@ -123,6 +134,10 @@ public class Car {
             carPic = new TextureRegion(new Texture("Bentley2-new.png"));
             carScale = 7;
         }
+        
+        tireScreach1 = Gdx.audio.newSound(Gdx.files.internal("tirescreach.mp3"));
+        tireScreach2 = Gdx.audio.newSound(Gdx.files.internal("tirescreach.mp3"));
+        accelerationEffect1 = Gdx.audio.newSound(Gdx.files.internal("accelerationeffect2.mp3"));
 
         // initialize the bounding rectangle for the car on track
         carWidth = carPic.getRegionWidth() / carScale;
@@ -334,6 +349,13 @@ public class Car {
                 if (turnLeft) {
                     // set the amount of turn/rotate based on the cars speed
                     rotation += 4f * (Math.abs(velocity) / 1.2) ;
+                    if(carScreech1 == false){
+                        tireScreach1.play();
+                        carScreech1 = true;
+                    }
+                } else{
+                    carScreech1 = false;
+                    tireScreach1.stop();
                 }
               }
 
@@ -341,6 +363,13 @@ public class Car {
                 if (turnRight) {
                     // set the amount of turn/rotate based on the cars speed
                     rotation -= 4f * (Math.abs(velocity) / 1.2);
+                    if(carScreech2 == false){
+                        tireScreach2.play();
+                        carScreech2 = true;
+                    }
+                }else{
+                    carScreech2 = false;
+                    tireScreach2.stop();
                 }
               }
         }
@@ -351,6 +380,17 @@ public class Car {
                 nitro = true;
             }
         }
+        
+        if(accelerate || reverse){
+            if(accelSound1 == false){
+                accelerationEffect1.loop();
+                accelSound1 = true;
+            }
+        } else{
+            accelSound1 = false;
+            accelerationEffect1.stop();
+        }
+        
 
         bounds.setPosition(position.x, position.y);
 //        front.setPosition(position.x, position.y + 50);
