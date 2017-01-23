@@ -168,7 +168,7 @@ public class RaceState extends State {
     @Override
     public void update(float deltaTime) {
         countTimer += Gdx.graphics.getDeltaTime();
-        if (countTimer > 4) {
+        if (countTimer > 3) {
             PlayTime += deltaTime;
 
             car1.update(deltaTime, this);
