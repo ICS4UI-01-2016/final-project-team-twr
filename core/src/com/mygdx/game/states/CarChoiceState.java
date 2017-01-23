@@ -44,28 +44,28 @@ public class CarChoiceState extends State {
     // Player 2's red rectangle 
     private Rectangle player2Rectangle;
     // Instance variables for the car choice buttons
-    // Instance variables for player 1 lambo
+    // Instance variable for player 1 lambo
     private Rectangle player1Lambo;
-    // Instance variables for player 1 acura
+    // Instance variable for player 1 acura
     private Rectangle player1Acura;
-    // Instance variables for player 1 second lambo
+    // Instance variable for player 1 second lambo
     private Rectangle player1Lambo2;
-    // Instance variables for player 1 bentley
+    // Instance variable for player 1 bentley
     private Rectangle player1Bentley;
-    // Instance variables for player 2 lambo
+    // Instance variable for player 2 lambo
     private Rectangle player2Lambo;
-    // Instance variables for player 2 acura
+    // Instance variable for player 2 acura
     private Rectangle player2Acura;
-    // Instance variables for player 2 second lambo
+    // Instance variable for player 2 second lambo
     private Rectangle player2Lambo2;
-    // Instance variables for player 2 bentley
+    // Instance variable for player 2 bentley
     private Rectangle player2Bentley;
     // Instance variable for the players initial car type
     private int car1Type;
     private int car2Type;
 
     /**
-     * Constructor for the player's car choice
+     * Constructor method for the player's car choice
      *
      * @param sm the state manager
      */
@@ -99,7 +99,7 @@ public class CarChoiceState extends State {
         redRectangle = new Texture("redrectangle.png");
         player1Rectangle = new Rectangle(81, 515, 92, 10);
         player2Rectangle = new Rectangle(310, 219, 92, 10);
-        // Assinging the initial car
+        // Assigning the initial car
         car1Type = 1;
         car2Type = 2;
         // Set the camera to view the game properly
@@ -113,7 +113,7 @@ public class CarChoiceState extends State {
      */
     @Override
     public void render(SpriteBatch batch) {
-        // Sets camera
+        // Sets camera properly
         batch.setProjectionMatrix(getCombinedCamera());
         // Beginning the drawings
         batch.begin();
@@ -135,52 +135,104 @@ public class CarChoiceState extends State {
     public void update(float DeltaTime) {
     }
 
+    /**
+     * Method that deals with handling where the user clicks
+     */
     @Override
     public void handleInput() {
         // Get the mouse click/touch position
         Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         // Convert the point to game coordinates
         unproject(touch);
+
         if (Gdx.input.justTouched()) {
             // If the next button is clicked on, the state then changes to pick a track state
             if (touch.x >= nextButton.x && touch.x <= nextButton.x + nextButton.width
                     && touch.y >= nextButton.y && touch.y <= nextButton.y + nextButton.height) {
+                // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change the state to pick a track state
-                System.out.println(car1Type);
-                System.out.println(car2Type);
                 gsm.push(new PickTrackState(gsm, car1Type, car2Type));
+                // System.out.println(car1Type);
+                // System.out.println(car2Type);
             }
 
             // If the back button is clicked on, the state then changes to menu state
             if (touch.x >= backButton.x && touch.x <= backButton.x + backButton.width
                     && touch.y >= backButton.y && touch.y <= backButton.y + backButton.height) {
+                // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
-                // Change the state to pick a track state
+                // Change the state to menu state
                 gsm.push(new MenuState(gsm));
+            }
+
+            // Displaying player 1's clicked option
+            // If player 1 chose the first lambo
+            if (touch.x >= player1Lambo.x && touch.x <= player1Lambo.x + player1Lambo.width
+                    && touch.y >= player1Lambo.y && touch.y <= player1Lambo.y + player1Lambo.height) {
+                // Set car type to be 1
+                car2Type = 1;
+                // Make the red rectangle to be placed on the first lambo
+                player1Rectangle.x = player1Lambo.x;
+                player1Rectangle.y = player1Lambo.y;
+                player1Rectangle.width = player1Lambo.width;
+
+            }
+            // If player 1 chose the acura
+            if (touch.x >= player1Acura.x && touch.x <= player1Acura.x + player1Acura.width
+                    && touch.y >= player1Acura.y && touch.y <= player1Acura.y + player1Acura.height) {
+                // Set car type to be 2
+                car2Type = 2;
+                // Make the red rectangle to be placed on the acura
+                player1Rectangle.x = player1Acura.x;
+                player1Rectangle.y = player1Acura.y;
+                player1Rectangle.width = player1Acura.width;
+            }
+            // If player 1 chose the second lambo
+            if (touch.x >= player1Lambo2.x && touch.x <= player1Lambo2.x + player1Lambo2.width
+                    && touch.y >= player1Lambo2.y && touch.y <= player1Lambo2.y + player1Lambo2.height) {
+                // Set car type to be 3
+                car2Type = 3;
+                // Make the red rectangle to be placed on the second lambo
+                player1Rectangle.x = player1Lambo2.x;
+                player1Rectangle.y = player1Lambo2.y;
+                player1Rectangle.width = player1Lambo2.width;
+            }
+            // If player 1 chose the bentley
+            if (touch.x >= player1Bentley.x && touch.x <= player1Bentley.x + player1Bentley.width
+                    && touch.y >= player1Bentley.y && touch.y <= player1Bentley.y + player1Bentley.height) {
+                // Set car type to be 4
+                car2Type = 4;
+                // Make the red rectangle to be placed on the bentley
+                player1Rectangle.x = player1Bentley.x;
+                player1Rectangle.y = player1Bentley.y;
+                player1Rectangle.width = player1Bentley.width;
             }
 
             // Saving Player 2's clicked option
             if (touch.x >= player2Lambo.x && touch.x <= player2Lambo.x + player2Lambo.width
                     && touch.y >= player2Lambo.y && touch.y <= player2Lambo.y + player2Lambo.height) {
-                System.out.println("p1");
+                // Set car type to be 1
                 car1Type = 1;
+                // Make the red rectangle to be placed on the lambo
                 player2Rectangle.x = player2Lambo.x;
                 player2Rectangle.y = player2Lambo.y;
                 player2Rectangle.width = player2Lambo.width;
             }
             if (touch.x >= player2Acura.x && touch.x <= player2Acura.x + player2Acura.width
                     && touch.y >= player2Acura.y && touch.y <= player2Acura.y + player2Acura.height) {
-                System.out.println("p2");
+                // Set car type to be 2
                 car1Type = 2;
+                // Make the red rectangle to be placed on the acura
                 player2Rectangle.x = player2Acura.x;
                 player2Rectangle.y = player2Acura.y;
                 player2Rectangle.width = player2Acura.width;
             }
             if (touch.x >= player2Lambo2.x && touch.x <= player2Lambo2.x + player2Lambo2.width
                     && touch.y >= player2Lambo2.y && touch.y <= player2Lambo2.y + player2Lambo2.height) {
-                System.out.println("p3");
+                // Set car type to be 3
                 car1Type = 3;
+                // Make the red rectangle to be placed on the second lambo
                 player2Rectangle.x = player2Lambo2.x;
                 player2Rectangle.y = player2Lambo2.y;
                 player2Rectangle.width = player2Lambo2.width;
@@ -188,52 +240,34 @@ public class CarChoiceState extends State {
             }
             if (touch.x >= player2Bentley.x && touch.x <= player2Bentley.x + player2Bentley.width
                     && touch.y >= player2Bentley.y && touch.y <= player2Bentley.y + player2Bentley.height) {
-                System.out.println("p4");
+                // Set car type to be 4
                 car1Type = 4;
+                // Make the red rectangle to be placed on the bentley
                 player2Rectangle.x = player2Bentley.x;
                 player2Rectangle.y = player2Bentley.y;
                 player2Rectangle.width = player2Bentley.width;
 
             }
-
-            // Saving Player 1's clicked option
-            if (touch.x >= player1Lambo.x && touch.x <= player1Lambo.x + player1Lambo.width
-                    && touch.y >= player1Lambo.y && touch.y <= player1Lambo.y + player1Lambo.height) {
-                car2Type = 1;
-                player1Rectangle.x = player1Lambo.x;
-                player1Rectangle.y = player1Lambo.y;
-                player1Rectangle.width = player1Lambo.width;
-
-            }
-            if (touch.x >= player1Acura.x && touch.x <= player1Acura.x + player1Acura.width
-                    && touch.y >= player1Acura.y && touch.y <= player1Acura.y + player1Acura.height) {
-                car2Type = 2;
-                player1Rectangle.x = player1Acura.x;
-                player1Rectangle.y = player1Acura.y;
-                player1Rectangle.width = player1Acura.width;
-            }
-            if (touch.x >= player1Lambo2.x && touch.x <= player1Lambo2.x + player1Lambo2.width
-                    && touch.y >= player1Lambo2.y && touch.y <= player1Lambo2.y + player1Lambo2.height) {
-                car2Type = 3;
-                player1Rectangle.x = player1Lambo2.x;
-                player1Rectangle.y = player1Lambo2.y;
-                player1Rectangle.width = player1Lambo2.width;
-            }
-            if (touch.x >= player1Bentley.x && touch.x <= player1Bentley.x + player1Bentley.width
-                    && touch.y >= player1Bentley.y && touch.y <= player1Bentley.y + player1Bentley.height) {
-                car2Type = 4;
-                player1Rectangle.x = player1Bentley.x;
-                player1Rectangle.y = player1Bentley.y;
-                player1Rectangle.width = player1Bentley.width;
-            }
         }
 
     }
 
+    /**
+     * Method that disposes the images that were used
+     */
     @Override
     public void dispose() {
+        // Dispose all the images used within this state
         PickCarBackground.dispose();
         picNextButton.dispose();
         picBackButton.dispose();
+        PickCarBackground.dispose();
+        lambo.dispose();
+        acura.dispose();
+        lambo2.dispose();
+        bentley.dispose();
+        picNextButton.dispose();
+        picBackButton.dispose();
+        redRectangle.dispose();
     }
 }

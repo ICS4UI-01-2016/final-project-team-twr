@@ -22,15 +22,19 @@ import com.mygdx.game.RaceIt;
  * @author whitb0039, richj0985, and tatad6701
  */
 public class MenuState extends State {
+
     // Create the instance variables 
     private StateManager sm;
+    // Instance variable for the background image
     private Texture bg;
-    private Texture musicPlay;
-    private Texture musicMute;
-    private Rectangle muteButton;
+    // Instance variables for the mute button
+    //private Texture musicPlay;
+    //private Texture musicMute;
+    //private Rectangle muteButton;
     // Music instance variable
-    public Music music;
-    private boolean mute;
+    //public Music music;
+    // Boolean for the if the music is mute
+    //private boolean mute;
     // Description option instance variables
     private Texture picOfDescriptionButton;
     private Rectangle descriptionButton;
@@ -40,16 +44,23 @@ public class MenuState extends State {
     // Play option instance variables
     private Texture picOfPlayButton;
     private Rectangle playButton;
+    // Instance variable for font
     private BitmapFont font;
 
+    /**
+     * Constructor method for menu state
+     *
+     * @param sm
+     */
     public MenuState(StateManager sm) {
+        // Call the state manager from the super class
         super(sm);
         // Create the background texture
         bg = new Texture("MenuState.jpg");
         // Create the music play button texture
-        musicPlay = new Texture("playMusic.png");
-        // Create the music mute button
-        musicMute = new Texture("muteMusic.png");
+        //musicPlay = new Texture("playMusic.png");
+        // Create the music mute button texture
+        //musicMute = new Texture("muteMusic.png");
         // Description Button instance variables
         picOfDescriptionButton = new Texture("blackrectangle1.png");
         // Create the rectangle behind the description button option 
@@ -62,18 +73,24 @@ public class MenuState extends State {
         picOfPlayButton = new Texture("blackrectangle1.png");
         // Create the rectangle of the play button
         playButton = new Rectangle(419, 409, 176, 50);
+        // Set the camera view to be correct for the game
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        // Se the mute boolean to be false
-        mute = false;
+        // Set the mute boolean to be false
+        //mute = false;
         // Place the mute button 
-        muteButton = new Rectangle(0, 0, 50, 50);
+        //muteButton = new Rectangle(0, 0, 50, 50);
         // Create an if statement saying to play only once!
-        font = new BitmapFont();
-
+        //font = new BitmapFont();
     }
 
+    /**
+     * Method used to draw the images and rectangles (buttons)
+     *
+     * @param batch
+     */
     @Override
     public void render(SpriteBatch batch) {
+        // Sets camera properly
         batch.setProjectionMatrix(getCombinedCamera());
         // Beginning the drawings
         batch.begin();
@@ -83,15 +100,13 @@ public class MenuState extends State {
         batch.draw(picOfHowToPlayButton, howToPlayButton.x, howToPlayButton.y, howToPlayButton.width, howToPlayButton.height);
         // Drawing the rectangle behind the description option
         batch.draw(picOfDescriptionButton, descriptionButton.x, descriptionButton.y, descriptionButton.width, descriptionButton.height);
+        // Drawing the background image
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
-
+        batch.end();
 
         // If the mute button is not clicked
-
-
         // font.setColor(Color.WHITE);
         // font.draw(batch, "PRESS TO PLAY", getViewWidth() / 2, getViewHeight() - 200);
-        batch.end();
         //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
         //FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         //parameter.size = 12;
@@ -108,25 +123,32 @@ public class MenuState extends State {
     public void update(float DeltaTime) {
     }
 
+    /**
+     * Method that deals with handling where the user clicks
+     */
     @Override
     public void handleInput() {
+        // Get the mouse click/touch position of the user
         Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        // Convert the point to game coordinates
         unproject(touch);
-        if (Gdx.input.justTouched()) {
 
-            // If the "Description" button is touch, change the screen to description screen
+        if (Gdx.input.justTouched()) {
+            // If the "Description" button is clicked on, change the screen to description screen
             if (touch.x >= descriptionButton.x && touch.x <= descriptionButton.x + descriptionButton.width
                     && touch.y >= descriptionButton.y && touch.y <= descriptionButton.y + descriptionButton.height) {
+                // Call the state manager in order to change states!               
                 StateManager gsm = getStateManager();
                 // Change the state to DescriptionState
                 gsm.push(new DescriptionState(gsm));
                 // Allow for the music to continue playing
-                //music.play();
+                // music.play();
             }
 
-            // If the "How To Play" button is touch, change the screen to How To Play screen
+            // If the "How To Play" button is clicked on, change the screen to How To Play screen
             if (touch.x >= howToPlayButton.x && touch.x <= howToPlayButton.x + howToPlayButton.width
                     && touch.y >= howToPlayButton.y && touch.y <= howToPlayButton.y + howToPlayButton.height) {
+                // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change the state to HowToPlayState
                 gsm.push(new HowToPlayState(gsm));
@@ -134,9 +156,10 @@ public class MenuState extends State {
                 //music.play();
             }
 
-            // If the "Play" button is touch, change the screen to Choose Player Amount screen
+            // If the "Play" button is clicked on, change the screen to Choose Player Amount screen
             if (touch.x >= playButton.x && touch.x <= playButton.x + playButton.width
                     && touch.y >= playButton.y && touch.y <= playButton.y + playButton.height) {
+                // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change the state to ChooseAmountPlayersState
                 gsm.push(new CarChoiceState(gsm));
@@ -146,16 +169,15 @@ public class MenuState extends State {
         }
     }
 
+    /**
+     * Method that disposes the images that were used
+     */
     @Override
     public void dispose() {
-        // Dispose the used images
+        // Dispose all the images used within this state
         bg.dispose();
-        musicPlay.dispose();
-        musicMute.dispose();
-        music.dispose();
         picOfDescriptionButton.dispose();
         picOfHowToPlayButton.dispose();
         picOfPlayButton.dispose();
-        font.dispose();
     }
 }

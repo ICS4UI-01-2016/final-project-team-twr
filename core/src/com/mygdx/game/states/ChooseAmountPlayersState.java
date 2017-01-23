@@ -16,8 +16,11 @@ import com.mygdx.game.RaceIt;
  */
 public class ChooseAmountPlayersState extends State {
 
+    // Create constant variables
     private StateManager sm;
+    // Instance variable for the background image
     private Texture bg;
+    // Instance varibale for the next 
     private Texture next;
 
     public ChooseAmountPlayersState(StateManager sm) {
@@ -33,7 +36,7 @@ public class ChooseAmountPlayersState extends State {
         batch.setProjectionMatrix(getCombinedCamera());
         batch.begin();
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
-        batch.draw(next, 0, -100,  100, 300);
+        batch.draw(next, 0, -100, 100, 300);
         batch.end();
     }
 
@@ -44,8 +47,8 @@ public class ChooseAmountPlayersState extends State {
 
     @Override
     public void handleInput() {
-        if(Gdx.input.justTouched()){
-            
+        if (Gdx.input.justTouched()) {
+
         }
 
     }
