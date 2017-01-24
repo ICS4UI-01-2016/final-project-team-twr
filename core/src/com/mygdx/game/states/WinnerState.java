@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This class deals with who has one and prints the fianl screen of the game!
+ * 
  */
 package com.mygdx.game.states;
 

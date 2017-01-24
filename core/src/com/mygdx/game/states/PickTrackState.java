@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This class deals with the players being able to choose a track they wish to race on!
+ * 
  */
 package com.mygdx.game.states;
 

@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This class deals with what the players first see when they open the game! 
+ They also have three options to click on, "Play", "Description", and "How To Play"!
+ * 
  */
 package com.mygdx.game.states;
 
