@@ -49,6 +49,7 @@ public class RaceState extends State {
 
     private StateManager sm;
     private Sound countDown;
+    private boolean countDownOn = false;
 
     public enum TrackFeature {
 
@@ -64,16 +65,14 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
-        countDown = Gdx.audio.newSound(Gdx.files.internal("321.mp3"));
-        countDown.play();
-        PlayTime = 0.0f;
-        countTimer = 0;
-        this.sm = sm;
-        this.sm.play();
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         this.track = track;
         this.carType1 = car1Type;
         this.carType2 = car2Type;
+        PlayTime = 0.0f;
+        countTimer = 0;
+        this.sm = sm;
+        countDown = Gdx.audio.newSound(Gdx.files.internal("321.mp3"));
         if (track == 1) {
             car1 = new Car(600, 400, carType2, 270, 220, 800);
             car2 = new Car(600, 400, carType1, 270, 220, 750);
@@ -157,16 +156,22 @@ public class RaceState extends State {
     @Override
     public void update(float deltaTime) {
         countTimer += Gdx.graphics.getDeltaTime();
-        if (countTimer > 3) {
+        if(countTimer > 0 && !countDownOn){
+            sm.play();
+            countDown.play();
+            countDownOn = true;
+        }
+        
+        if (countTimer > 6) {
             PlayTime += deltaTime;
 
             car1.update(deltaTime, this);
             car2.update(deltaTime, this);
             StateManager gsm = getStateManager();
 
-            if (car1.getLap() == 3) {
+            if (car1.getLap() == 6) {
                 gsm.push(new WinnerState(gsm, carType1, 1));
-            } else if (car2.getLap() == 3) {
+            } else if (car2.getLap() == 6) {
                 gsm.push(new WinnerState(gsm, carType2, 2));
             }
 

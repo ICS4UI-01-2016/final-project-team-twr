@@ -76,9 +76,11 @@ public class Car {
     private Sound tireScreach1;         // the tire screach of the left turn of the the car when turning
     private Sound tireScreach2;         // the tire screach of the right turn of the car when turning
     private Sound accelerationEffect1;  // the acceleration sound of the car
+    private Sound nitroEffect;
     private boolean accelSound1;        // if the acceleration sound is being played 
     private boolean carScreech1;        // if the car screech for the left wheel is being played
     private boolean carScreech2;        // if the car screech for the right wheel is being played
+    private boolean nitroSound1;
 
     /**
      * Constructor of Car
@@ -126,6 +128,7 @@ public class Car {
         tireScreach1 = Gdx.audio.newSound(Gdx.files.internal("tirescreach.mp3"));
         tireScreach2 = Gdx.audio.newSound(Gdx.files.internal("tirescreach.mp3"));
         accelerationEffect1 = Gdx.audio.newSound(Gdx.files.internal("accelerationeffect2.mp3"));
+        nitroEffect = Gdx.audio.newSound(Gdx.files.internal("Nitro.mp3"));
 
         // initialize the bounding rectangle for the car on track
         carWidth = carPic.getRegionWidth() / carScale;
@@ -136,6 +139,7 @@ public class Car {
         // seeting the sounds to not being playing off the start
         this.accelSound1 = false;
         this.carScreech1 = false;
+        this.nitroSound1 = false;
     }
     
     /**
@@ -399,9 +403,23 @@ public class Car {
             accelSound1 = false;
             accelerationEffect1.stop();
         }
+        
+        if(nitroIncrease > 0){
+            if(nitroSound1 == false){
+                nitroEffect.play();
+                nitroSound1 = true;
+            }
+        } else{
+            nitroSound1 = false;
+            nitroEffect.stop();
+        }
+        
         // If it has hit the end then stop the sound
-        if(carLap == 3){
+        if(carLap == 6){
+            tireScreach1.stop();
+            tireScreach2.stop();
             accelerationEffect1.stop();
+            nitroEffect.stop();
         }
         
 
@@ -448,16 +466,16 @@ public class Car {
         System.out.println(countTimer);
         
 
-        if (countTimer < 1) {
+        if (countTimer < 3) {
             batch.draw(count3, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer < 2 && countTimer > 1) {
+        if (countTimer < 4 && countTimer > 3) {
             batch.draw(count2, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer < 3 && countTimer > 2) {
+        if (countTimer < 5 && countTimer > 4) {
             batch.draw(count1, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
-        if (countTimer > 3 && countTimer < 4) {
+        if (countTimer > 5 && countTimer < 6) {
             batch.draw(go, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
         }
         batch.end();
