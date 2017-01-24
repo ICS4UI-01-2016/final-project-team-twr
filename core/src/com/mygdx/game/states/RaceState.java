@@ -65,12 +65,12 @@ public class RaceState extends State {
      */
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
         super(sm);
+        sm.stopMusic();
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
         this.track = track;
         this.carType1 = car1Type;
         this.carType2 = car2Type;
         PlayTime = 0.0f;
-        countTimer = 0;
         this.sm = sm;
         countDown = Gdx.audio.newSound(Gdx.files.internal("321.mp3"));
         if (track == 1) {
@@ -84,13 +84,14 @@ public class RaceState extends State {
             bg = new Texture("Track2.1.jpg");
             loadBoundaryMap("Track2.1-boundaries.png");
         }
+        
+        countTimer = 0;
 
     }
 
     public void moveCamView(SpriteBatch batch, Car car) {
         // Update the camera view
         moveCameraX(car.getX());
-        //System.out.println( "cam(" + getCameraX(camera) + "," + getCameraY(camera) + "+" );
         if (getCameraX() > 870) {
             moveCameraX(870);
         }
@@ -156,13 +157,14 @@ public class RaceState extends State {
     @Override
     public void update(float deltaTime) {
         countTimer += Gdx.graphics.getDeltaTime();
-        if(countTimer > 0 && !countDownOn){
+        System.out.println("RaceState: " + countTimer);
+        if(countTimer > 4 && !countDownOn){
             sm.play();
             countDown.play();
             countDownOn = true;
         }
         
-        if (countTimer > 6) {
+        if (countTimer > 8) {
             PlayTime += deltaTime;
 
             car1.update(deltaTime, this);
@@ -395,18 +397,18 @@ public class RaceState extends State {
                         boundaryMap[y * boundaryMapWidth + x] = feature;
                     }
                 }
-                for (int y = 0; y < boundaryMapHeight; y += 30) {
-                    for (int x = 0; x < boundaryMapWidth; x += 30) {
-                        TrackFeature imgPixel = boundaryMap[x + y * boundaryMapWidth];
-                        if (imgPixel == TrackFeature.GRASS) {
-                            System.out.print("x");
-                        } else {
-                            System.out.print(".");
-                        }
-
-                    }
-                    System.out.println("x");
-                }
+//                for (int y = 0; y < boundaryMapHeight; y += 30) {
+//                    for (int x = 0; x < boundaryMapWidth; x += 30) {
+//                        TrackFeature imgPixel = boundaryMap[x + y * boundaryMapWidth];
+//                        if (imgPixel == TrackFeature.GRASS) {
+//                            System.out.print("x");
+//                        } else {
+//                            System.out.print(".");
+//                        }
+//
+//                    }
+//                    System.out.println("x");
+//                }
                 int test = 1;    // need a line to put breakpoint on
             }
 

@@ -42,11 +42,6 @@ public class Car {
     private int carLap;                 // the lap that the car is on
     private int carCheckPoint = 0;      // the checkpoint that the car is on
     private TextureRegion flame;        // the picture of the car flame
-    private Rectangle bounds;           // the rectangle of the bounds of the car
-    private Rectangle front;            // the front bounds of the car
-    private Rectangle back;             // the back bounds of the car
-    private Rectangle left;             // the left bounds of the car
-    private Rectangle right;            // the right bounds of the car
     private float velocity;             // the velocity of the car
     private float speedX;               // the speed of the car going along the x-axis
     private float speedY;               // the speed of the car going along the y-axis
@@ -68,7 +63,7 @@ public class Car {
     private float nitroX;               // the red rectangle x width coordintate
     private boolean nitroPushed;        // if the nitro has been pushed
     private float nitroIncrease;        // the increase in nitro
-    private float countTimer;           // the timer of the car                
+    private float countTimer;           // the timer of the car
     private Texture count3;             // the image of the countdown number 3
     private Texture count2;             // the image of the countdown number 2
     private Texture count1;             // the image of the countdown number 1
@@ -76,11 +71,11 @@ public class Car {
     private Sound tireScreach1;         // the tire screach of the left turn of the the car when turning
     private Sound tireScreach2;         // the tire screach of the right turn of the car when turning
     private Sound accelerationEffect1;  // the acceleration sound of the car
-    private Sound nitroEffect;
+    private Sound nitroEffect;          // the sound the car makes in nitro
     private boolean accelSound1;        // if the acceleration sound is being played 
     private boolean carScreech1;        // if the car screech for the left wheel is being played
     private boolean carScreech2;        // if the car screech for the right wheel is being played
-    private boolean nitroSound1;
+    private boolean nitroSound1;        // If the nitro sound was put into affect
 
     /**
      * Constructor of Car
@@ -134,7 +129,6 @@ public class Car {
         carWidth = carPic.getRegionWidth() / carScale;
         carHeight = carPic.getRegionHeight() / carScale;
         carCorners = new CarRectCorners(carWidth, carHeight);
-        bounds = new Rectangle(position.x, position.y, carWidth, carHeight);
         
         // seeting the sounds to not being playing off the start
         this.accelSound1 = false;
@@ -421,13 +415,6 @@ public class Car {
             accelerationEffect1.stop();
             nitroEffect.stop();
         }
-        
-
-        bounds.setPosition(position.x, position.y);
-//        front.setPosition(position.x, position.y + 50);
-//        back.setPosition(position.x, position.y);
-//        left.setPosition(position.x, position.y);
-//        right.setPosition(position.x + 50, position.y);
     }
 
     public void renderHUD(RaceState state, SpriteBatch batch, float PlayTime) {
@@ -462,22 +449,20 @@ public class Car {
         String text = "Lap: " + carLap + " CheckPoint: " + carCheckPoint + " Time: " + df.format(PlayTime);
         font.draw(batch, text, state.getCameraX() - 105, state.getCameraY() + 200);
         countTimer += Gdx.graphics.getDeltaTime();
-
-        System.out.println(countTimer);
-        
-
-        if (countTimer < 3) {
-            batch.draw(count3, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
-        }
-        if (countTimer < 4 && countTimer > 3) {
-            batch.draw(count2, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
-        }
-        if (countTimer < 5 && countTimer > 4) {
-            batch.draw(count1, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
-        }
-        if (countTimer > 5 && countTimer < 6) {
-            batch.draw(go, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
-        }
+        System.out.println("Car: " + countTimer);
+            if (countTimer > 4 && countTimer < 5){
+                System.out.println("COUNT 1");
+                batch.draw(count3, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
+            } else if (countTimer < 6 && countTimer > 5) {
+                System.out.println("COUNT 2");
+                batch.draw(count2, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
+            } else if (countTimer < 7 && countTimer > 6) {
+                System.out.println("COUNT 3");
+                batch.draw(count1, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
+            } else if (countTimer > 7 && countTimer < 8) {
+                System.out.println("COUNT 4");
+                batch.draw(go, state.getCameraX()  - 50, state.getCameraY(), 100, 100);
+            }
         batch.end();
     }
 
@@ -516,26 +501,6 @@ public class Car {
     public float getY() {
         return position.y;
     }
-
-//    public Rectangle getBounds() {
-//        return bounds;
-//    }
-//
-//    public Rectangle rightBounds() {
-//        return right;
-//    }
-//
-//    public Rectangle leftBounds() {
-//        return left;
-//    }
-//
-//    public Rectangle frontBounds() {
-//        return front;
-//    }
-//
-//    public Rectangle backBounds() {
-//        return bounds;
-//    }
 
     public void dispose() {
         carPic.getTexture().dispose();
@@ -702,21 +667,6 @@ public class Car {
         } else {
             turnLeftCrash = false;
         }
-
-//        if(this.carCorners.getFront().overlaps(b.carCorners.getFront()) || this.carCorners.getFront().overlaps(b.carCorners.getBack())){
-//            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            accelerate = false;
-//        }
-//        
-//        if(this.carCorners.getLeft().overlaps(b.carCorners.getRight())){
-//            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            turnLeft = false;
-//        }
-//        
-//        if(this.carCorners.getRight().overlaps(b.carCorners.getLeft())){
-//            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            turnRight = false;
-//        }
     }
 
     public boolean crashed() {

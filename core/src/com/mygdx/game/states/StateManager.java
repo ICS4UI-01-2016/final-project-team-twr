@@ -50,7 +50,6 @@ public class StateManager {
     }
     
     public void end(){
-        this.song.stop();
         this.song = Gdx.audio.newMusic(Gdx.files.internal("Victory Sound Effect.mp3"));
         this.song.play();
     }
@@ -61,11 +60,8 @@ public class StateManager {
         this.song.play();
     }
     
-    public void continueMusic() {
+    public void stopMusic(){
         this.song.stop();
-        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
-        this.song.setLooping(true);
-        this.song.play();
     }
 
     public void update(float deltaTime) {

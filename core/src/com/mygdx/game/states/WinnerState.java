@@ -47,6 +47,7 @@ public class WinnerState extends State {
         // Call the state manager from the super class
         super(sm);
         this.sm = sm;
+        this.sm.stopMusic();
         this.sm.end();
         // Setting the instance varaibles to be correct
         this.winnerCar = winnerCar;
