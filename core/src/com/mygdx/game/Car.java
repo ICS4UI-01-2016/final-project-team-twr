@@ -391,7 +391,7 @@ public class Car {
             accelerationEffect1.stop();
         }
         
-        if(carLap == 1){
+        if(carLap == 3){
             accelerationEffect1.stop();
         }
         
