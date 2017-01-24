@@ -34,8 +34,7 @@ public class RaceIt extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1); // colour to clear the screen with
 
         stateManager = new StateManager();
-        stateManager.startMusic();
-        State firstScreen = new MenuState(stateManager);
+        State firstScreen = new MenuState(stateManager, 1);
 //            State firstScreen = new RaceState(stateManager);
 
         

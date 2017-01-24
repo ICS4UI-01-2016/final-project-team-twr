@@ -163,7 +163,7 @@ public class CarChoiceState extends State {
                 // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change the state to menu state
-                gsm.push(new MenuState(gsm));
+                gsm.push(new MenuState(gsm, 3));
             }
 
             // Displaying player 1's clicked option

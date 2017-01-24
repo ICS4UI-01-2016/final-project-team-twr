@@ -164,9 +164,9 @@ public class RaceState extends State {
             car2.update(deltaTime, this);
             StateManager gsm = getStateManager();
 
-            if (car1.getLap() == 6) {
+            if (car1.getLap() == 1) {
                 gsm.push(new WinnerState(gsm, carType1, 1));
-            } else if (car2.getLap() == 6) {
+            } else if (car2.getLap() == 1) {
                 gsm.push(new WinnerState(gsm, carType2, 2));
             }
 

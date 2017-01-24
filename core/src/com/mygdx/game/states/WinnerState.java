@@ -34,6 +34,7 @@ public class WinnerState extends State {
     private Texture lambo2;
     private Texture bentley;
     private Texture Rect;
+    private StateManager sm;
 
     /**
      * Constructor for the winner state
@@ -45,6 +46,8 @@ public class WinnerState extends State {
     public WinnerState(StateManager sm, int winnerCar, int winnerPlayer) {
         // Call the state manager from the super class
         super(sm);
+        this.sm = sm;
+        this.sm.end();
         // Setting the instance varaibles to be correct
         this.winnerCar = winnerCar;
         this.winnerPlayer = winnerPlayer;
@@ -108,7 +111,7 @@ public class WinnerState extends State {
                 // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change state to MenuState
-                gsm.push(new MenuState(gsm));
+                gsm.push(new MenuState(gsm, 2));
             }
         }
     }

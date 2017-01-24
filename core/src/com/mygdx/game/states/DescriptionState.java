@@ -87,7 +87,7 @@ public class DescriptionState extends State {
                 // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change state to MenuState
-                gsm.push(new MenuState(gsm));
+                gsm.push(new MenuState(gsm , 3));
             }
         }
     }

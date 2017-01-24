@@ -52,9 +52,16 @@ public class MenuState extends State {
      *
      * @param sm
      */
-    public MenuState(StateManager sm) {
+    public MenuState(StateManager sm, int loop) {
         // Call the state manager from the super class
         super(sm);
+        this.sm = sm;
+        if(loop == 1){
+            sm.startMusic();
+        } else if(loop == 2){
+            sm.continueMusic();
+        }
+//        sm.startMusic();
         // Create the background texture
         bg = new Texture("MenuState.jpg");
         // Create the music play button texture

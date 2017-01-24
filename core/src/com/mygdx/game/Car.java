@@ -391,6 +391,10 @@ public class Car {
             accelerationEffect1.stop();
         }
         
+        if(carLap == 1){
+            accelerationEffect1.stop();
+        }
+        
 
         bounds.setPosition(position.x, position.y);
 //        front.setPosition(position.x, position.y + 50);
@@ -508,6 +512,17 @@ public class Car {
 
     public void dispose() {
         carPic.getTexture().dispose();
+        flame.getTexture().dispose();
+        carPointPic.getTexture().dispose();
+        checkPointPic.getTexture().dispose();
+        count3.getTextureData().disposePixmap();
+        count2.getTextureData().disposePixmap();
+        count1.getTextureData().disposePixmap();
+        go.getTextureData().disposePixmap();
+        tireScreach1.dispose();
+        tireScreach2.dispose();
+        accelerationEffect1.dispose();
+
     }
 
     public void acceleratorPedal(boolean accelerating) {
