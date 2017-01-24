@@ -31,7 +31,6 @@ import com.badlogic.gdx.files.FileHandle;
 public class Car {
     // ALL OF THE INSTANCE VARIABLES WITHIN CAR
     private float rotation;             // rotation of car when driving
-    private float spin;                 // spinning the car when it is hit
     private Vector3 position;           // center position of the car on the track
     private CarRectCorners carCorners;  // corners bounding box of car on track
     private TextureRegion carPic;       // the picture of the car
@@ -76,13 +75,13 @@ public class Car {
     private Texture go;                 // the image of the countdown go
     private Sound tireScreach1;         // the tire screach of the left turn of the the car when turning
     private Sound tireScreach2;         // the tire screach of the right turn of the car when turning
-    private Sound accelerationEffect1;  // the acceleration
-    private boolean accelSound1;
-    private boolean carScreech1;    
-    private boolean carScreech2;
+    private Sound accelerationEffect1;  // the acceleration sound of the car
+    private boolean accelSound1;        // if the acceleration sound is being played 
+    private boolean carScreech1;        // if the car screech for the left wheel is being played
+    private boolean carScreech2;        // if the car screech for the right wheel is being played
 
     /**
-     * 
+     * Constructor of Car
      * @param x the x coordinate of the car
      * @param y the y coordinate of the car
      * @param carType the type of car
@@ -91,9 +90,6 @@ public class Car {
      * @param initialPositionY  the initial y position of the car
      */
     public Car(int x, int y, int carType, float initialRotation, int initialPositionX, int initialPositionY) {
-        
-        this.accelSound1 = false;
-        this.carScreech1 = false;
         // setting up the parameters to the class
         position = new Vector3(x, y, 0);
         rotation = initialRotation;
@@ -126,6 +122,7 @@ public class Car {
             carScale = 7;
         }
         
+        // setting the various sounds from the car
         tireScreach1 = Gdx.audio.newSound(Gdx.files.internal("tirescreach.mp3"));
         tireScreach2 = Gdx.audio.newSound(Gdx.files.internal("tirescreach.mp3"));
         accelerationEffect1 = Gdx.audio.newSound(Gdx.files.internal("accelerationeffect2.mp3"));
@@ -135,24 +132,30 @@ public class Car {
         carHeight = carPic.getRegionHeight() / carScale;
         carCorners = new CarRectCorners(carWidth, carHeight);
         bounds = new Rectangle(position.x, position.y, carWidth, carHeight);
+        
+        // seeting the sounds to not being playing off the start
+        this.accelSound1 = false;
+        this.carScreech1 = false;
     }
-
+    
+    /**
+     * Updating the car within RaceState
+     * @param deltaTime the current time within the game
+     * @param raceState bringing in RaceState
+     */
     public void update(float deltaTime, RaceState raceState) {
-
+        
+        //                            UPDATE
         // Update the coordinates of the car bounding box based on 
-        // new car position.
+        // new car position
         carCorners.updateCornerPos(position, rotation);
-
+        
+        //                          TRACK FEATURES
         // Get the track feature underneath the car
         RaceState.TrackFeature feature = raceState.getTrackFeatureAtPt(position);
-
-        System.out.println("(" + position.x + "," + position.y + ")="
-                + feature + "   LC(" + carCorners.backLeft.x + ","
-                + carCorners.backLeft.x + ")");
-
-        //
+        
+        //                              GRASS
         // Check the track feature under the car and have the car react to it
-        // 
         // if the car is driving on grass then increase the drag on the card
         // to reduce it's speed
         if (feature == RaceState.TrackFeature.GRASS) {
@@ -161,7 +164,8 @@ public class Car {
                 velocity *= .7f;
             }
         }
-
+        
+        //                             FINISHLINE
         // if the car in on the finishline area, increase the laps
         // and reset the checkpoints for the next lap 
         if (feature == RaceState.TrackFeature.FINISHLINE) {
@@ -170,8 +174,10 @@ public class Car {
                 carCheckPoint = 0;
             }
         }
-
-        // Check to see if I am on checkpoint
+        
+        //                              CHECKPOINTS
+        // Check to see if the car has hit a checkpoint
+        // then paste an image that identifies that it has hit a check point
         if ((feature.ordinal() >= RaceState.TrackFeature.CHECKPOINT1.ordinal())
                 && (feature.ordinal() <= RaceState.TrackFeature.CHECKPOINT8.ordinal())) {
             int newCheckPoint = feature.ordinal() - RaceState.TrackFeature.CHECKPOINT1.ordinal() + 1;
@@ -182,9 +188,12 @@ public class Car {
         } else {
             hitCheckPoint = false;
         }
-
-        // check if the front of the car has hit a barrier
-        //        System.out.println("HIT: " + hit);
+        
+        //                                 BOUNDARIES
+        // FRONT
+        // check if the front of the car has hit a barrier from the front
+        // if it has and there is a velocity then bounce it off and set that it has crashed
+        // if it hasn't then it hasn't crashed and reset variables
         if (raceState.getTrackFeatureAtPt(carCorners.frontLeft)
                 == RaceState.TrackFeature.BARRIER
                 || raceState.getTrackFeatureAtPt(carCorners.frontRight)
@@ -205,7 +214,10 @@ public class Car {
                 turnRightCrash = true;
                 crashBack = false;
             }
-//                spin = 1f;
+        // BACK
+        // check if the front of the car has hit a barrier from the front
+        // if it has and there is a velocity then bounce it off and set that it has crashed
+        // if it hasn't then it hasn't crashed and reset variables
         } else if(raceState.getTrackFeatureAtPt(carCorners.backLeft)
                 == RaceState.TrackFeature.BARRIER
                 || raceState.getTrackFeatureAtPt(carCorners.backRight)
@@ -225,56 +237,48 @@ public class Car {
                 turnRightCrash = true;
                 crashFront = false;
             }
+        // If neither has intersected then it has not crashed
         } else{
             crashFront = false;
             crashBack = false;
             turnLeftCrash = false;
             turnRightCrash = false;
         }
-        // check if the car is in a spin, if it is
-        // then continue to rotate the car but reduce the spin
-        if (spin > 0.1f) {
-            rotation += 60;
-            spin *= 0.4f;
-        } else {
-            spin = 0f;
-        }
-
+        
+        //                         ACCELERATION
         // If the accelerator is being pressed then increase the velocity
         // otherwise reduce the velocity to simulate the drag/friction
-        // of the road and air
-        System.out.println("CRASHFRONT: " + crashFront);
-        System.out.println("CRASHBACK: " + crashBack);
+        // of the road and air and make it start moving backwards
+        
+        // if the accelerator is hit and it is not crashed then accelerate
         if (accelerate && !crashFront) {
-//            if(!frontHit){
-                velocity = velocity + 0.05f;
-                if (velocity > 1.2f) {
-                    velocity = 1.2f;
-                }
-//            }
-        } else if (reverse && !crashBack) {
-//            if(!backHit){
-                velocity = velocity - 0.025f * 2f;
-                if (velocity < - 1.2f) {
-                    velocity = - 1.2f;
-                }
-//            }
-        } else if (velocity > 0 && !crashBack){
-//            if(!backHit){
-                velocity = velocity - 0.025f;
-                if (velocity < 0) {
-                    velocity = 0;
-//                }
+            velocity = velocity + 0.05f;
+            if (velocity > 1.2f) {
+                velocity = 1.2f;
             }
+        // If the reverse is hit and it is not crashed then reverse
+        } else if (reverse && !crashBack) {
+            velocity = velocity - 0.025f * 2f;
+            if (velocity < - 1.2f) {
+                velocity = - 1.2f;
+            }
+        // If it still has a velocity in the positive direction use newton's first law 
+        // and make it continue to move with drag
+        } else if (velocity > 0 && !crashBack){
+            velocity = velocity - 0.025f;
+            if (velocity < 0) {
+                velocity = 0;
+            }
+        // If it still has a velocity in the negitive direction use newton's first law 
+        // and make it continue to move with drag
         } else if(velocity < 0 && !crashFront){
-//            if(!frontHit){
-                velocity = velocity + 0.025f;
-                if (velocity > 0) {
-                    velocity = 0;
-                }
-//            }
+            velocity = velocity + 0.025f;
+            if (velocity > 0) {
+                velocity = 0;
+            }
         }
-
+        
+        //                       360 ROTATION
         // Ensure that the rotation value stays within
         // 0-360 and as soon as it goes over or under 
         // the roll it back to value within 0-360 while
@@ -285,7 +289,10 @@ public class Car {
         while (rotation < 0) {
             rotation = rotation + 360;
         }
-
+        
+        //                         NITRO
+        // If the nitro is being hit and it is able to boost then increase
+        // basically the acceleration
         if (nitro && nitroPushed) {
             nitroIncrease = nitroIncrease + 0.05f;
             nitroX = nitroX - 7;
@@ -294,12 +301,14 @@ public class Car {
                 nitroX = 0;
                 nitro = false;
             }
+        // If the nitro is used up reset it
         } else if (nitroIncrease > 0) {
             nitroIncrease = 0f;
             nitroX = 0;
             nitro = false;
         }
-
+        
+        //                        MOVEMENT / SPEED
         // If the car has velocity then update the cars postion
         // based on it's velocit and direction/rotation
         if (rotation >= 0 && rotation <= 90) {
@@ -320,6 +329,7 @@ public class Car {
             speedY = (0.0f + (tempRotation / 18.0f)) * velocity;
         }
         
+        //  ADDING ACCELERATION, NITRO, SPEED TOGETHER (RESTRICTION OF CRASH)
         if( ((velocity > 0 ) && !frontHit) || 
         ((velocity < 0 ) && !backHit) ) {
             if (nitroIncrease > 0) {
@@ -332,6 +342,8 @@ public class Car {
             position.x += speedX;
             position.y += speedY;
         }
+        
+        //                     TURNING
         // Update the cars rotation based on if it is being turned
         // left or right.   Only allow the car to turn
         // if it's in motion (ie has velocity)
@@ -364,7 +376,9 @@ public class Car {
                 }
               }
         }
-
+    
+        //                    NITRO BOX
+        // Increase the red box based on the time
         if (nitroX < 220) {
             nitroX = nitroX + 1;
             if (nitroX == 220) {
@@ -372,6 +386,10 @@ public class Car {
             }
         }
         
+        //                     SOUND
+        // ACCELERATION/REVERSE
+        // If the petal is hit then output the sound
+        // If it is already playing then don't make it start over
         if(accelerate || reverse){
             if(accelSound1 == false){
                 accelerationEffect1.loop();
@@ -381,7 +399,7 @@ public class Car {
             accelSound1 = false;
             accelerationEffect1.stop();
         }
-        
+        // If it has hit the end then stop the sound
         if(carLap == 3){
             accelerationEffect1.stop();
         }
@@ -481,25 +499,25 @@ public class Car {
         return position.y;
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
-    public Rectangle rightBounds() {
-        return right;
-    }
-
-    public Rectangle leftBounds() {
-        return left;
-    }
-
-    public Rectangle frontBounds() {
-        return front;
-    }
-
-    public Rectangle backBounds() {
-        return bounds;
-    }
+//    public Rectangle getBounds() {
+//        return bounds;
+//    }
+//
+//    public Rectangle rightBounds() {
+//        return right;
+//    }
+//
+//    public Rectangle leftBounds() {
+//        return left;
+//    }
+//
+//    public Rectangle frontBounds() {
+//        return front;
+//    }
+//
+//    public Rectangle backBounds() {
+//        return bounds;
+//    }
 
     public void dispose() {
         carPic.getTexture().dispose();
@@ -544,7 +562,7 @@ public class Car {
         return speedY + velocity;
     }
 
-        // Determine the number of points of overlap between our car
+    // Determine the number of points of overlap between our car
     // and a point on the opponents car
     public int numPointsOverlap( Circle pointOnOpponent) {
         int numOverlaps = 0;
@@ -586,15 +604,6 @@ public class Car {
         backHit     = false;
         turnLeftCrash  = false;
         turnRightCrash = false;
-  
-//        if (carCorners.front.overlaps(opponent.carCorners.back)
-//                || carCorners.front.overlaps(opponent.carCorners.left)
-//                || carCorners.front.overlaps(opponent.carCorners.right)
-//                || carCorners.front.overlaps(opponent.carCorners.front)) {
-//            crash = true;
-//        } else {
-//            crash = false;
-//        }
         
         // check to see if the front of the car has hit the opponent car and
         // if it has then block the car from forward movement
