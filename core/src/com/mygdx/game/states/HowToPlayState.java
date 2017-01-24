@@ -61,6 +61,11 @@ public class HowToPlayState extends State {
         batch.end();
     }
 
+    /**
+     * Empty update method
+     *
+     * @param DeltaTime
+     */
     @Override
     public void update(float DeltaTime) {
     }

@@ -55,8 +55,7 @@ public class PauseState extends State {
         }
         // Set bg2 to be the paused state image (made within photoshop
         bg2 = new Texture("PauseState.png");
-        // Set the camera view to be correct for the game
-        setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
+
     }
 
     /**
@@ -72,16 +71,21 @@ public class PauseState extends State {
         batch.begin();
         // Set the camera view to be correct for the game
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        // set viewport for RIGHT side,leave a space of 2 pixels to separte the frames 
+        // Set viewport 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        // Drawing the first background
+        // Drawing the first background (JPEG image)
         batch.draw(bg1, 0, 0, getViewWidth(), getViewHeight());
-        // Drawing the second background
+        // Drawing the second background (png image)
         batch.draw(bg2, 0, 0, getViewWidth(), getViewHeight());
         // End the drawings
         batch.end();
     }
 
+    /**
+     * Empty update method
+     *
+     * @param DeltaTime
+     */
     @Override
     public void update(float DeltaTime) {
     }
@@ -107,5 +111,4 @@ public class PauseState extends State {
         bg1.dispose();
         bg2.dispose();
     }
-
 }

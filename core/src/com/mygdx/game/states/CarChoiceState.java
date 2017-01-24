@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.Car;
 import com.mygdx.game.RaceIt;
-import java.util.ArrayList;
 
 /**
  *
@@ -131,6 +129,11 @@ public class CarChoiceState extends State {
         batch.end();
     }
 
+    /**
+     * Empty update method
+     *
+     * @param DeltaTime
+     */
     @Override
     public void update(float DeltaTime) {
     }

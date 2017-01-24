@@ -5,8 +5,6 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,8 +23,6 @@ public class DescriptionState extends State {
     // Instance variable for the back button
     private Rectangle backButtonRectangle;
     private Texture button;
-    // Instance variable for the music
-    private Music music;
 
     /**
      * Constructor method for the description state
@@ -41,8 +37,6 @@ public class DescriptionState extends State {
         // Creating and placing the back button
         button = new Texture("blackrectangle1.png");
         backButtonRectangle = new Rectangle(22, 18, 175, 48);
-        // Adding music to the state 
-        music = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         // Set the camera to view the state properly 
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
     }
@@ -66,6 +60,11 @@ public class DescriptionState extends State {
         batch.end();
     }
 
+    /**
+     * Empty update method
+     *
+     * @param DeltaTime
+     */
     @Override
     public void update(float DeltaTime) {
     }
@@ -87,7 +86,7 @@ public class DescriptionState extends State {
                 // Call the state manager in order to change states!
                 StateManager gsm = getStateManager();
                 // Change state to MenuState
-                gsm.push(new MenuState(gsm , 3));
+                gsm.push(new MenuState(gsm, 3));
             }
         }
     }

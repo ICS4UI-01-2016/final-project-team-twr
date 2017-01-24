@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.RaceIt;
-import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +17,7 @@ import java.util.ArrayList;
  */
 public class PickTrackState extends State {
     // Create constant variables
+
     private StateManager sm;
     // Instance variable for the background (made on photoshop)
     private Texture PickTrackBackground;
@@ -30,7 +30,6 @@ public class PickTrackState extends State {
     // Back button instance variables
     private Texture picBackButton;
     private Rectangle backButton;
-
     // Car tpye instance variables
     private int car1Type;
     private int car2Type;
@@ -84,6 +83,11 @@ public class PickTrackState extends State {
         batch.end();
     }
 
+    /**
+     * Empty update method
+     *
+     * @param DeltaTime
+     */
     @Override
     public void update(float DeltaTime) {
     }

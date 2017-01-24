@@ -5,15 +5,9 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.RaceIt;
 
@@ -27,14 +21,6 @@ public class MenuState extends State {
     private StateManager sm;
     // Instance variable for the background image
     private Texture bg;
-    // Instance variables for the mute button
-    //private Texture musicPlay;
-    //private Texture musicMute;
-    //private Rectangle muteButton;
-    // Music instance variable
-    //public Music music;
-    // Boolean for the if the music is mute
-    //private boolean mute;
     // Description option instance variables
     private Texture picOfDescriptionButton;
     private Rectangle descriptionButton;
@@ -44,34 +30,28 @@ public class MenuState extends State {
     // Play option instance variables
     private Texture picOfPlayButton;
     private Rectangle playButton;
-    // Instance variable for font
-    private BitmapFont font;
 
-/**
- * 
- * @param sm the state manager
- * @param loop the loop that the game is on for the music to play correctly
- */
+    /**
+     *
+     * @param sm the state manager
+     * @param loop the loop that the game is on for the music to play correctly
+     */
     public MenuState(StateManager sm, int loop) {
         // Call the state manager from the super class
         super(sm);
-        // bringing in the state manager
+        // Bringing in the state manager
         this.sm = sm;
-        
-        // if it is the first loop through then start the music
-        if(loop == 1){
+
+        // If it is the first loop through then start the music
+        if (loop == 1) {
             sm.startMusic();
-            
-        // if it is starting over from winner state then play continue music
-        } else if(loop == 2){
+
+            // if it is starting over from winner state then play continue music
+        } else if (loop == 2) {
             sm.continueMusic();
         }
         // Create the background texture
         bg = new Texture("MenuState.jpg");
-        // Create the music play button texture
-        //musicPlay = new Texture("playMusic.png");
-        // Create the music mute button texture
-        //musicMute = new Texture("muteMusic.png");
         // Description Button instance variables
         picOfDescriptionButton = new Texture("blackrectangle1.png");
         // Create the rectangle behind the description button option 
@@ -110,6 +90,11 @@ public class MenuState extends State {
         batch.end();
     }
 
+    /**
+     * Empty update method
+     *
+     * @param DeltaTime
+     */
     @Override
     public void update(float DeltaTime) {
     }
@@ -132,8 +117,6 @@ public class MenuState extends State {
                 StateManager gsm = getStateManager();
                 // Change the state to DescriptionState
                 gsm.push(new DescriptionState(gsm));
-                // Allow for the music to continue playing
-                // music.play();
             }
 
             // If the "How To Play" button is clicked on, change the screen to How To Play screen
@@ -143,8 +126,6 @@ public class MenuState extends State {
                 StateManager gsm = getStateManager();
                 // Change the state to HowToPlayState
                 gsm.push(new HowToPlayState(gsm));
-                // Allow for the music to continue playing
-                //music.play();
             }
 
             // If the "Play" button is clicked on, change the screen to Choose Player Amount screen
@@ -154,8 +135,6 @@ public class MenuState extends State {
                 StateManager gsm = getStateManager();
                 // Change the state to ChooseAmountPlayersState
                 gsm.push(new CarChoiceState(gsm));
-                // Allow for the music to continue playing
-                //music.play();
             }
         }
     }
