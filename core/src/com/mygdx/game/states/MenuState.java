@@ -47,21 +47,25 @@ public class MenuState extends State {
     // Instance variable for font
     private BitmapFont font;
 
-    /**
-     * Constructor method for menu state
-     *
-     * @param sm
-     */
+/**
+ * 
+ * @param sm the state manager
+ * @param loop the loop that the game is on for the music to play correctly
+ */
     public MenuState(StateManager sm, int loop) {
         // Call the state manager from the super class
         super(sm);
+        // bringing in the state manager
         this.sm = sm;
+        
+        // if it is the first loop through then start the music
         if(loop == 1){
             sm.startMusic();
+            
+        // if it is starting over from winner state then play continue music
         } else if(loop == 2){
             sm.continueMusic();
         }
-//        sm.startMusic();
         // Create the background texture
         bg = new Texture("MenuState.jpg");
         // Create the music play button texture
@@ -82,12 +86,6 @@ public class MenuState extends State {
         playButton = new Rectangle(419, 409, 176, 50);
         // Set the camera view to be correct for the game
         setCameraView(RaceIt.WIDTH, RaceIt.HEIGHT);
-        // Set the mute boolean to be false
-        //mute = false;
-        // Place the mute button 
-        //muteButton = new Rectangle(0, 0, 50, 50);
-        // Create an if statement saying to play only once!
-        //font = new BitmapFont();
     }
 
     /**
@@ -110,20 +108,6 @@ public class MenuState extends State {
         // Drawing the background image
         batch.draw(bg, 0, 0, getViewWidth(), getViewHeight());
         batch.end();
-
-        // If the mute button is not clicked
-        // font.setColor(Color.WHITE);
-        // font.draw(batch, "PRESS TO PLAY", getViewWidth() / 2, getViewHeight() - 200);
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-        //FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        //parameter.size = 12;
-        //BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
-        //generator.dispose(); // don't forget to dispose to avoid memory leaks!
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-//        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-//        parameter.size = 12;
-//        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
-//        generator.dispose(); // don't forget to dispose to avoid memory leaks!
     }
 
     @Override

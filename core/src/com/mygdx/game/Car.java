@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This class deals with all of the functions and aspects of the cars within
+ * RaceState.
  */
 package com.mygdx.game;
 
@@ -29,6 +29,7 @@ import com.badlogic.gdx.files.FileHandle;
  * @author whitb0039, richj0985, and tatad6701
  */
 public class Car {
+    // ALL OF THE INSTANCE VARIABLES WITHIN CAR
     private float rotation;             // rotation of car when driving
     private float spin;                 // spinning the car when it is hit
     private Vector3 position;           // center position of the car on the track
@@ -41,10 +42,6 @@ public class Car {
     private int carScale;               // scalar for the car image to track
     private int carLap;                 // the lap that the car is on
     private int carCheckPoint = 0;      // the checkpoint that the car is on
-//    private TextureRegion blackBox;
-//    private TextureRegion blackBox2;
-//    private TextureRegion blackBox3;
-//    private TextureRegion blackBox4;
     private TextureRegion flame;        // the picture of the car flame
     private Rectangle bounds;           // the rectangle of the bounds of the car
     private Rectangle front;            // the front bounds of the car
@@ -52,8 +49,6 @@ public class Car {
     private Rectangle left;             // the left bounds of the car
     private Rectangle right;            // the right bounds of the car
     private float velocity;             // the velocity of the car
-//    private float damageX;
-//    private float damageY;
     private float speedX;               // the speed of the car going along the x-axis
     private float speedY;               // the speed of the car going along the y-axis
     private boolean accelerate;         // if the acceleration of the car going forward
@@ -63,29 +58,25 @@ public class Car {
     private int tempCarType;            // the type of car
     private boolean frontHit;           // if the front is hit (intersection between cars)
     private boolean backHit;            // if the back is hit  (intersection between cars)
-//    private boolean leftHit;            
-//    private boolean rightHit;
     private boolean crashFront = false; // if the front is crashed (intersection with boundaries)
     private boolean crashBack = false;  // if the back is crashed (intersection with boundaries)
     private boolean hitCheckPoint;      // if the car has hit a checkpoint
     private BitmapFont font = new BitmapFont();  // the font printed
     private ShapeRenderer shapeRenderer = new ShapeRenderer(); // creating the shapes within the game
-//    private Circle bounds2;
     private boolean turnLeftCrash = false;// if the left side of the car has crashed (intersection between cars)
     private boolean turnRightCrash = false; // if the right side of the car has crashed (intersection between cars)
     private boolean nitro;              // if the car is in nitro
     private float nitroX;               // the red rectangle x width coordintate
     private boolean nitroPushed;        // if the nitro has been pushed
     private float nitroIncrease;        // the increase in nitro
-    private float countTimer;           // the timer of the car
-//    private int hit;                    
+    private float countTimer;           // the timer of the car                
     private Texture count3;             // the image of the countdown number 3
     private Texture count2;             // the image of the countdown number 2
     private Texture count1;             // the image of the countdown number 1
     private Texture go;                 // the image of the countdown go
-    private Sound tireScreach1;
-    private Sound tireScreach2;
-    private Sound accelerationEffect1;
+    private Sound tireScreach1;         // the tire screach of the left turn of the the car when turning
+    private Sound tireScreach2;         // the tire screach of the right turn of the car when turning
+    private Sound accelerationEffect1;  // the acceleration
     private boolean accelSound1;
     private boolean carScreech1;    
     private boolean carScreech2;

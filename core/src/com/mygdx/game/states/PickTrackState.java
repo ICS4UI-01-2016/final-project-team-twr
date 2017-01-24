@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.Map;
 import com.mygdx.game.RaceIt;
 import java.util.ArrayList;
 
@@ -18,8 +17,6 @@ import java.util.ArrayList;
  * @author whitb0039, richj0985, and tatad6701
  */
 public class PickTrackState extends State {
-
-    private ArrayList<Map> maps;
     // Create constant variables
     private StateManager sm;
     // Instance variable for the background (made on photoshop)
