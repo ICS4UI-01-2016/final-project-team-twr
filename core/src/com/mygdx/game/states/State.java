@@ -84,32 +84,64 @@ public abstract class State {
         return cam1.combined;
     }
 
+    /**
+     * move the camera's x position
+     *
+     * @param x the x position
+     */
     public void moveCameraX(float x) {
         cam1.position.x = x;
         cam1.update();
     }
 
+    /**
+     * move the camera's y position
+     *
+     * @param y the y position
+     */
     public void moveCameraY(float y) {
         cam1.position.y = y;
         cam1.update();
     }
 
+    /**
+     * get the camera's x position
+     *
+     * @return the camera's x position
+     */
     public float getCameraX() {
         return cam1.position.x;
     }
 
+    /**
+     * get the camera's y position
+     *
+     * @return the camera's y position
+     */
     public float getCameraY() {
         return cam1.position.y;
     }
 
+    /**
+     * get the camera's view width
+     * @return the camera's view width
+     */
     public float getViewWidth() {
         return cam1.viewportWidth;
     }
 
+    /**
+     * get the camera's view height
+     * @return the camera's view height
+     */
     public float getViewHeight() {
         return cam1.viewportHeight;
     }
 
+    /**
+     * unproject the touch coordinates
+     * @param touch the touch coordinates
+     */
     public void unproject(Vector3 touch) {
         cam1.unproject(touch);
     }

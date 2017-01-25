@@ -49,7 +49,8 @@ public class MenuState extends State {
 
             // if it is starting over from winner state then play continue music
         } else if (loop == 2) {
-            sm.continueMusic();
+            sm.stopMusic();
+            sm.startMusic();
         }
         // Create the background texture
         bg = new Texture("MenuState.jpg");

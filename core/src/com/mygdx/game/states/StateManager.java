@@ -49,23 +49,28 @@ public class StateManager {
 
     }
     
+    /**
+     * play the victory music
+     */
     public void end(){
-        this.song.stop();
         this.song = Gdx.audio.newMusic(Gdx.files.internal("Victory Sound Effect.mp3"));
         this.song.play();
     }
 
+    /**
+     * play the menu music
+     */
     public void startMusic() {
         this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         this.song.setLooping(true);
         this.song.play();
     }
     
-    public void continueMusic() {
+    /**
+     * stop playing current music
+     */
+    public void stopMusic(){
         this.song.stop();
-        this.song = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
-        this.song.setLooping(true);
-        this.song.play();
     }
 
     public void update(float deltaTime) {

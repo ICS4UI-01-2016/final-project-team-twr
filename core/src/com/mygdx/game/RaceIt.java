@@ -4,16 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.states.DescriptionState;
-import com.mygdx.game.states.HowToPlayState;
 import com.mygdx.game.states.MenuState;
-import com.mygdx.game.states.PickTrackState;
-import com.mygdx.game.states.RaceState;
 import com.mygdx.game.states.State;
 import com.mygdx.game.states.StateManager;
-import com.mygdx.game.states.WinnerState;
 
 /**
  *
