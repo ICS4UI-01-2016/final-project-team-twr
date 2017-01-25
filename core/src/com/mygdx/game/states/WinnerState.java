@@ -13,7 +13,7 @@ import com.mygdx.game.RaceIt;
 
 /**
  *
- * @author richj0985
+ * @author whitb0039, richj0985, and tatad6701
  */
 public class WinnerState extends State {
 

@@ -1,5 +1,5 @@
 /*
- * This class deals with all the functions on the "Choose a Car" screen 
+ * This class deals with all the functions on the "Choose a Car" screen. 
  * 
  */
 package com.mygdx.game.states;

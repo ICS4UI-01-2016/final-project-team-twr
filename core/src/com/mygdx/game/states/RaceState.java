@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This class deals with the racing of the cars! 
+ * 
  */
 package com.mygdx.game.states;
 
@@ -40,7 +40,7 @@ public class RaceState extends State {
     private int carType2;                    // Type of car selected by player2
     private float playTime;                  // Length of play in RaceState mode
     private TrackFeature[] trackFeaturesMap; // array of track feautre at each (X,Y)
-    private int  trackFeaturesMapWidth;      // width of the track feature map array
+    private int trackFeaturesMapWidth;      // width of the track feature map array
     private int trackFeaturesMapHeight;      // height of the track feature map array
     private StateManager sm;                 // State Manager
     private float countTimer;                // Count Down Time at start of race
@@ -48,13 +48,13 @@ public class RaceState extends State {
     private boolean countDownOn = false;     // Count down sound played
 
     // Track features that are supported in the TrackFeaturesMap arrage
-    public enum TrackFeature {  
+    public enum TrackFeature {
+
         UNKNOWN, ROAD, GRASS, BARRIER, FINISHLINE,
         CHECKPOINT1, CHECKPOINT2, CHECKPOINT3, CHECKPOINT4,
         CHECKPOINT5, CHECKPOINT6, CHECKPOINT7, CHECKPOINT8
     };
-  
-    
+
     /**
      * Constructor for the race state
      *
@@ -81,17 +81,17 @@ public class RaceState extends State {
             bg = new Texture("Track2.1.jpg");
             loadTrackFeatureMap("Track2.1Boundaries.png");
         }
-        
+
         countTimer = 0;
 
     }
 
     /**
      * Method used to move the camera view based on the cars position in the
-     *    world   The camera follows the position of each car.
-     * 
+     * world The camera follows the position of each car.
+     *
      * @param batch - Spritebatch used to batch the screen updates
-     * @param car   - car the camera should be centered over
+     * @param car - car the camera should be centered over
      */
     public void moveCamView(SpriteBatch batch, Car car) {
         // Update the camera view
@@ -119,7 +119,8 @@ public class RaceState extends State {
 
     /**
      * Method to render the RaceState
-     * @param batch 
+     *
+     * @param batch
      */
     public void render(SpriteBatch batch) {
 
@@ -161,10 +162,10 @@ public class RaceState extends State {
     }
 
     /**
-     * Method to update the state of the RaceState object for 
-     *    each time interval delta time
-     *     
-     * @param deltaTime 
+     * Method to update the state of the RaceState object for each time interval
+     * delta time
+     *
+     * @param deltaTime
      */
     @Override
     public void update(float deltaTime) {
@@ -172,21 +173,21 @@ public class RaceState extends State {
 
         // At the beginning of the game, start the countdown
         // and play the count down sound
-        if(countTimer > 4 && !countDownOn){
+        if (countTimer > 4 && !countDownOn) {
             sm.play();
             countDown.play();
             countDownOn = true;
         }
-        
+
         // Allow Car1 and Car2 to update their state once 
         // the game count down has completed
-        if (countTimer > 8) {
+        if (countTimer > 7) {
             playTime += deltaTime;
 
             // Update car1 and car2 state
             car1.update(deltaTime, this);
             car2.update(deltaTime, this);
-            
+
             // CHECK FOR WINNER
             // Check to see if car1 or car2 has completed 6 laps
             // if they have, then declare them a winner by transitioning
@@ -232,7 +233,7 @@ public class RaceState extends State {
         } else {
             car1.turnRight(false);
         }
-            
+
         // CAR1 BRAKE
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             car1.brakePedal(true);
@@ -293,8 +294,6 @@ public class RaceState extends State {
         car1.dispose();
         car2.dispose();
     }
-
-    
     // RGB constants used in the track features PNG file to
     // mark/map out the different features of the supported tracks
     private static final int RGB_ROAD = -13816531;
@@ -312,14 +311,14 @@ public class RaceState extends State {
 
     /**
      * Method to turn the track feature that is defined at world position (X,Y)
-     *     the track features are loaded from a background image and define
-     *     if the location is GRASS, TRACK, BARRIER and other track features
-     * 
-     * @param posX  - X coordinate of a point in world coordinate
-     * @param posY  - Y coordinate of a point in world coordinate
-     * @return  - returns the track feature found at (X,Y)
-     */    
-    public TrackFeature getTrackFeatureAtXY( float posX, float posY) {
+     * the track features are loaded from a background image and define if the
+     * location is GRASS, TRACK, BARRIER and other track features
+     *
+     * @param posX - X coordinate of a point in world coordinate
+     * @param posY - Y coordinate of a point in world coordinate
+     * @return - returns the track feature found at (X,Y)
+     */
+    public TrackFeature getTrackFeatureAtXY(float posX, float posY) {
         // map from the game coordinate to the track feature map coordinate
         float x = (posX / RaceIt.WIDTH) * trackFeaturesMapWidth;
         float y = (posY / RaceIt.HEIGHT) * trackFeaturesMapHeight;
@@ -333,34 +332,36 @@ public class RaceState extends State {
             return TrackFeature.UNKNOWN;
         }
     }
-    
+
     /**
-     * Method to return track feature for a point where point is defined 
-     *     in the X and Y of a circle. 
+     * Method to return track feature for a point where point is defined in the
+     * X and Y of a circle.
+     *
      * @param corner
-     * @return 
+     * @return
      */
-    public TrackFeature getTrackFeatureAtPt( Circle corner) {
-        return ( getTrackFeatureAtXY( corner.x, corner.y ));
+    public TrackFeature getTrackFeatureAtPt(Circle corner) {
+        return (getTrackFeatureAtXY(corner.x, corner.y));
     }
-    
+
     /**
-     * Method to return track feature for a point where point is defined 
-     *     in the X and Y of a Vector3
+     * Method to return track feature for a point where point is defined in the
+     * X and Y of a Vector3
+     *
      * @param corner
-     * @return 
+     * @return
      */
-    public TrackFeature getTrackFeatureAtPt( Vector3 corner) {
-        return ( getTrackFeatureAtXY( corner.x, corner.y ));
+    public TrackFeature getTrackFeatureAtPt(Vector3 corner) {
+        return (getTrackFeatureAtXY(corner.x, corner.y));
     }
-    
+
     /**
-     * Method to return the most interesting features that are found at the 
-     *     4 corners of the car.   The interesting feature is used to 
-     *     determine if the car is in contact with Barriers on the track. 
-     * 
+     * Method to return the most interesting features that are found at the 4
+     * corners of the car. The interesting feature is used to determine if the
+     * car is in contact with Barriers on the track.
+     *
      * @param carRect - contains the corners of the car
-     * @return 
+     * @return
      */
     public TrackFeature getInterestingTrackFeatureCorners(CarRectCorners carRect) {
         TrackFeature feature;
@@ -371,7 +372,7 @@ public class RaceState extends State {
         // ordered in value in terms of interest to the game
         // with BARRIERS being most interesting and causing the car
         // to stopped.
-        
+
         // return the most interesting feature by comparing their values
         // since the features have been order from least to most 
         // interesting in ordinal value order. 
@@ -393,11 +394,10 @@ public class RaceState extends State {
     }
 
     /**
-     * Method that loads the a TrackFeature PNG and creates a 
-     *     Track Features array that is used to determine for any world 
-     *     coordinate any significant feature about the loaded track at 
-     *     the specific world coordinate.
-     * 
+     * Method that loads the a TrackFeature PNG and creates a Track Features
+     * array that is used to determine for any world coordinate any significant
+     * feature about the loaded track at the specific world coordinate.
+     *
      * @param trackFeaturePNG
      * @return boolean whether the track feature map could be loaded.
      */
@@ -412,20 +412,20 @@ public class RaceState extends State {
                 trackFeaturesMapWidth = grabber.getWidth();
                 trackFeaturesMapHeight = grabber.getHeight();
 
-                // create space to store the track feature map
+                // Create space to store the track feature map
                 trackFeaturesMap = new TrackFeature[trackFeaturesMapWidth * trackFeaturesMapHeight];
 
-                // get access to the pixels in RGB for
+                // Get access to the pixels in RGB for
                 int[] data = (int[]) grabber.getPixels();
 
-                // convert the track RGB map to the integer
-                // tracek feature array. 
+                // Convert the track RGB map to the integer
+                // Trace feature array. 
                 for (int y = 0; y < trackFeaturesMapHeight; y++) {
                     for (int x = 0; x < trackFeaturesMapWidth; x++) {
-                        // pull out the next pixel
+                        // Pull out the next pixel
                         int imgPixel = data[y * trackFeaturesMapWidth + x];
 
-                        // map it's color to what it is
+                        // Map it's color to what it is
                         switch (imgPixel) {
                             case RGB_GRASS:
                                 feature = TrackFeature.GRASS;
@@ -476,17 +476,17 @@ public class RaceState extends State {
                                 break;
 
                             default:
-                                // default to no impact on car when unknown
+                                // Default to no impact on car when unknown
                                 feature = TrackFeature.ROAD;
                                 break;
                         }
-                        // assign the feature into track feature array
+                        // Assign the feature into track feature array
                         trackFeaturesMap[y * trackFeaturesMapWidth + x] = feature;
                     }
                 }
             }
 
-            // track feature map loaded
+            // Track feature map loaded
             return true;
         } catch (InterruptedException e1) {
             e1.printStackTrace();

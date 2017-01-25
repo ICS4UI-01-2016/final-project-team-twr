@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This clas deals with mainly the camera within the states of the game!
+ * 
  */
 package com.mygdx.game.states;
 
@@ -19,6 +19,11 @@ public abstract class State {
     private OrthographicCamera cam1;
     private StateManager sm;
 
+    /**
+     * Method that constructs the state class
+     *
+     * @param sm
+     */
     public State(StateManager sm) {
         // Assign the state manager and create the camera
         this.sm = sm;
@@ -35,7 +40,7 @@ public abstract class State {
     public abstract void dispose();
 
     /**
-     * return the orthographic camera
+     * Return the orthographic camera
      *
      * @return the camera
      */
@@ -44,7 +49,7 @@ public abstract class State {
     }
 
     /**
-     * return the state manager
+     * Return the state manager
      *
      * @return state manager
      */
@@ -53,7 +58,7 @@ public abstract class State {
     }
 
     /**
-     * set the camera's current view
+     * Set the camera's current view
      *
      * @param width the width of the camera
      * @param height the heigh of the camera
@@ -64,7 +69,7 @@ public abstract class State {
     }
 
     /**
-     * set the camera's current position
+     * Set the camera's current position
      *
      * @param x the x value of the camera
      * @param y the y value of the camera
@@ -76,7 +81,7 @@ public abstract class State {
     }
 
     /**
-     * return the combined camera
+     * Return the combined camera
      *
      * @return the combined camera
      */
@@ -85,7 +90,7 @@ public abstract class State {
     }
 
     /**
-     * move the camera's x position
+     * Move the camera's x position
      *
      * @param x the x position
      */
@@ -95,7 +100,7 @@ public abstract class State {
     }
 
     /**
-     * move the camera's y position
+     * Move the camera's y position
      *
      * @param y the y position
      */
@@ -105,7 +110,7 @@ public abstract class State {
     }
 
     /**
-     * get the camera's x position
+     * Get the camera's x position
      *
      * @return the camera's x position
      */
@@ -114,7 +119,7 @@ public abstract class State {
     }
 
     /**
-     * get the camera's y position
+     * Get the camera's y position
      *
      * @return the camera's y position
      */
@@ -123,7 +128,8 @@ public abstract class State {
     }
 
     /**
-     * get the camera's view width
+     * Get the camera's view width
+     *
      * @return the camera's view width
      */
     public float getViewWidth() {
@@ -131,7 +137,8 @@ public abstract class State {
     }
 
     /**
-     * get the camera's view height
+     * Get the camera's view height
+     *
      * @return the camera's view height
      */
     public float getViewHeight() {
@@ -139,7 +146,8 @@ public abstract class State {
     }
 
     /**
-     * unproject the touch coordinates
+     * Unproject the touch coordinates
+     *
      * @param touch the touch coordinates
      */
     public void unproject(Vector3 touch) {

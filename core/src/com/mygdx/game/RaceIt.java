@@ -1,3 +1,7 @@
+/*
+ * This class is the main class!
+ * 
+ */
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -26,12 +30,10 @@ public class RaceIt extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1); // colour to clear the screen with
-
+        // Creating the state manager
         stateManager = new StateManager();
+        // Creating the first screen (menu state)
         State firstScreen = new MenuState(stateManager, 1);
-//            State firstScreen = new RaceState(stateManager);
-
-        
         stateManager.push(firstScreen); // load the first screen
     }
 
