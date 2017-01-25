@@ -4,11 +4,9 @@
  */
 package com.mygdx.game.states;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -26,31 +24,36 @@ import java.awt.image.PixelGrabber;
 public class RaceState extends State {
 
     // Create the constant variables
-    private final Car car1;
-    private final Car car2;
-    private Texture bg;
+    private final Car car1; // Car 1
+    private final Car car2; // Car 2
+    private Texture bg; // Background texture
 
-    private boolean accelerate;
-    private boolean stop;
-    private boolean turnLeft;
-    private boolean turnRight;
-    private float velocity;
-    private float speedX;
-    private float speedY;
-    private int track;
-    private int carType1;
-    private int carType2;
-    private float PlayTime;
-    private float countTimer;
+    private boolean accelerate; // Is the car accelerating
+    private boolean stop; // Is the car stopped
+    private boolean turnLeft; // Is the cur turning left
+    private boolean turnRight; // Is the car turning right
+    private float velocity; // The current velocity of the car
+    private float speedX; // The current X speed of the car
+    private float speedY; // The current Y speed of the car
+    private int track; // The track the players selected
+    private int carType1; // The type of car for car 1
+    private int carType2; // The type of car for car 2
+    
+    private float PlayTime; // The current play time (once the racers start moving)
+    private float countTimer; // The amount of time left before the race starts
 
-    private TrackFeature[] boundaryMap;
-    private int boundaryMapWidth;
-    private int boundaryMapHeight;
+    private TrackFeature[] boundaryMap; // The checkpoints, walls, finish lines, etc for the track
+    private int boundaryMapWidth; // The width of the track
+    private int boundaryMapHeight; // The height of the track
 
-    private StateManager sm;
-    private Sound countDown;
-    private boolean countDownOn = false;
+    private StateManager sm; // Statemanager for the game
+    
+    private Sound countDown; // The sound that will be played during the countdown
+    private boolean countDownOn = false; // Is the countdown playing
 
+    /**
+     * load in the different track features
+     */
     public enum TrackFeature {
 
         UNKNOWN, ROAD, GRASS, BARRIER, FINISHLINE,
@@ -58,37 +61,42 @@ public class RaceState extends State {
         CHECKPOINT5, CHECKPOINT6, CHECKPOINT7, CHECKPOINT8
     };
 
-    /**
-     * Constructor for the race state
-     *
-     * @param sm
-     */
     public RaceState(StateManager sm, int track, int car1Type, int car2Type) {
+        // Call the super class for the statemanager
         super(sm);
-        sm.stopMusic();
-        setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
-        this.track = track;
-        this.carType1 = car1Type;
-        this.carType2 = car2Type;
-        PlayTime = 0.0f;
-        this.sm = sm;
-        countDown = Gdx.audio.newSound(Gdx.files.internal("321.mp3"));
-        if (track == 1) {
+        sm.stopMusic(); // Stop the menu music from being played
+        setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2); // Set up the split screen views
+        this.track = track; // Get the chosen track
+        this.carType1 = car1Type; // Get the chosen player 1 car
+        this.carType2 = car2Type; // Get the chosen player 2 car
+        PlayTime = 0.0f; // Current playtime is 0.0 seconds
+        this.sm = sm; // Assign the statemanager
+        countDown = Gdx.audio.newSound(Gdx.files.internal("321.mp3")); // Get the countdown audio file
+        if (track == 1) { // If the chosen track is 1 
+            // Place car 1 and car 2 in their designated spots
             car1 = new Car(600, 400, carType2, 270, 220, 800);
             car2 = new Car(600, 400, carType1, 270, 220, 750);
+            // Load in the track texture and the track boundaries
             bg = new Texture("Track1.jpg");
             loadBoundaryMap("Track1-boundaries.png");
-        } else {
+        } else { // Otherwise if the chose track is 2
+            // Place car 1 and car 2 in their designated spots
             car1 = new Car(600, 400, carType2, 0, 855, 535);
             car2 = new Car(600, 400, carType1, 0, 930, 535);
+            // Load in the track texture and boundaries
             bg = new Texture("Track2.1.jpg");
             loadBoundaryMap("Track2.1-boundaries.png");
         }
         
-        countTimer = 0;
+        countTimer = 0; // Count timer is 0
 
     }
 
+    /**
+     * Move the camera view
+     * @param batch spriteBatch being used
+     * @param car the car the camera is on
+     */
     public void moveCamView(SpriteBatch batch, Car car) {
         // Update the camera view
         moveCameraX(car.getX());
@@ -113,7 +121,6 @@ public class RaceState extends State {
         batch.setProjectionMatrix(getCombinedCamera());
     }
 
-    // Comment this!
     public void render(SpriteBatch batch) {
 
         setCameraView(RaceIt.WIDTH / 4, RaceIt.HEIGHT / 2);
@@ -154,38 +161,49 @@ public class RaceState extends State {
 
     }
 
+    /**
+     * update the game
+     * @param deltaTime 
+     */
     @Override
     public void update(float deltaTime) {
-        countTimer += Gdx.graphics.getDeltaTime();
-        System.out.println("RaceState: " + countTimer);
-        if(countTimer > 4 && !countDownOn){
-            sm.play();
-            countDown.play();
-            countDownOn = true;
+        countTimer += Gdx.graphics.getDeltaTime(); // Counttimer begins to count up using delta time
+        if(countTimer > 4 && !countDownOn){ // If the countTimer is greater than 4 and the count down is not on
+            sm.play(); // Play the music
+            countDown.play(); // Play the countdown timer
+            countDownOn = true; // The countdown is now on
         }
         
-        if (countTimer > 8) {
-            PlayTime += deltaTime;
+        if (countTimer > 7) { // If the count timer is greater than 7 the race is on 
+            PlayTime += deltaTime; // Start adding delta time to playtime
 
+            // Update the two cars and staemanager
             car1.update(deltaTime, this);
             car2.update(deltaTime, this);
             StateManager gsm = getStateManager();
 
+            // Check to see if either of the cars have completed the 6 laps needed in order to win
             if (car1.getLap() == 6) {
                 gsm.push(new WinnerState(gsm, carType1, 1));
             } else if (car2.getLap() == 6) {
                 gsm.push(new WinnerState(gsm, carType2, 2));
             }
 
+            // Check for collisions between the two cars
             car1.checkCollision(car2);
             car2.checkCollision(car1);
         }
 
     }
 
+    /**
+     * handle the input the users have entered
+     */
     @Override
     public void handleInput() {
 
+        //                  PLAYER 1
+        // If the up key is pressed, player 1 is accelerating
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             car1.acceleratorPedal(true);
 
@@ -193,65 +211,78 @@ public class RaceState extends State {
             car1.acceleratorPedal(false);
         }
 
+        // If the up left is pressed, player 1 is turning left
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             car1.turnLeft(true);
         } else {
             car1.turnLeft(false);
         }
 
+        // If the right key is pressed, player 1 is turning right
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             car1.turnRight(true);
         } else {
             car1.turnRight(false);
         }
             
+        // If the down key is pressed, player 1 is breaking / revering once stopped
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             car1.brakePedal(true);
         } else {
             car1.brakePedal(false);
         }
 
+        // If the right shift key is pressed, player 1 is using their nitro
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
             car1.nitroPushed(true);
         } else {
             car1.nitroPushed(false);
         }
 
+        // If the w key is pressed, player 2 is accelerating
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             car2.acceleratorPedal(true);
         } else {
             car2.acceleratorPedal(false);
         }
 
+        // If the a key is pressed, player 2 is turning left
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             car2.turnLeft(true);
         } else {
             car2.turnLeft(false);
         }
 
+        // If the d key is pressed, player 2 is turning right
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             car2.turnRight(true);
         } else {
             car2.turnRight(false);
         }
 
+        // If the s key is pressed, player 2 is braking / reversing once stopped
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             car2.brakePedal(true);
         } else {
             car2.brakePedal(false);
         }
 
+        // If the left shift key is pressed, player 2 is using their nitro
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             car2.nitroPushed(true);
         } else {
             car2.nitroPushed(false);
         }
 
+        // If the alt key is pressed, the game will pause until the alt key is pressed again
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
             sm.push(new PauseState(sm, track, carType1, carType2));
         }
     }
 
+    /**
+     * dispose the two cars
+     */
     @Override
     public void dispose() {
         car1.dispose();
@@ -397,19 +428,6 @@ public class RaceState extends State {
                         boundaryMap[y * boundaryMapWidth + x] = feature;
                     }
                 }
-//                for (int y = 0; y < boundaryMapHeight; y += 30) {
-//                    for (int x = 0; x < boundaryMapWidth; x += 30) {
-//                        TrackFeature imgPixel = boundaryMap[x + y * boundaryMapWidth];
-//                        if (imgPixel == TrackFeature.GRASS) {
-//                            System.out.print("x");
-//                        } else {
-//                            System.out.print(".");
-//                        }
-//
-//                    }
-//                    System.out.println("x");
-//                }
-                int test = 1;    // need a line to put breakpoint on
             }
 
             // boundary map loaded
