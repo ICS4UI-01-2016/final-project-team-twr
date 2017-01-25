@@ -5,9 +5,7 @@
  */
 package com.mygdx.game;
 import  com.badlogic.gdx.math.Circle;
-import  com.badlogic.gdx.math.Rectangle;
 import  com.badlogic.gdx.math.Vector3;
-import  java.lang.Math;
 
 /**
   * @author whitb0039, richj0985, and tatad6701
