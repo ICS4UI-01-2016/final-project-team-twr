@@ -71,6 +71,7 @@ public class Car {
     private boolean carScreech1;         // if the car screech for the left wheel is being played
     private boolean carScreech2;         // if the car screech for the right wheel is being played
     private boolean nitroSound1;         // If the nitro sound was put into affect
+    private boolean pause;               // If the game is paused or not
 
     /**
      * Constructor of Car
@@ -129,6 +130,7 @@ public class Car {
         this.accelSound1 = false;
         this.carScreech1 = false;
         this.nitroSound1 = false;
+        this.pause       = false;
     }
 
     /**
@@ -468,12 +470,16 @@ public class Car {
         }
 
         // SOUND (REACH END)
-        // If it has hit the end then stop the sound
-        if (carLap == 6) {
+        // If it has hit the end or has been paused then stop the sound
+        if (carLap == 6 || pause) {
             tireScreach1.stop();
             tireScreach2.stop();
             accelerationEffect1.stop();
             nitroEffect.stop();
+            accelSound1 = false;
+            carScreech1 = false;
+            carScreech2 = false;
+            nitroSound1 = false;
         }
     }
 
@@ -518,7 +524,6 @@ public class Car {
         String text = "Lap: " + carLap + " CheckPoint: " + carCheckPoint + " Time: " + df.format(playTime);
         font.draw(batch, text, state.getCameraX() - 105, state.getCameraY() + 200);
         countTimer += Gdx.graphics.getDeltaTime();
-        System.out.println("Car: " + countTimer);
 
         // At the start of the race, draw the race count down 
         if (countTimer > 4 && countTimer < 5) {
@@ -807,9 +812,25 @@ public class Car {
     /**
      * Method to return the number of successful laps that the car has completed
      *
-     * @return
+     * @return the lap the car is on
      */
     public int getLap() {
         return carLap;
+    }
+    
+    /**
+     * Method to determine if the game is paused or not
+     * @param pause is the game paused
+     */
+    public void pause(boolean pause){
+        this.pause = pause;
+    }
+    
+    
+    /**
+     * Method to output if the car is paused or not
+     */
+    public boolean pause(){
+        return pause;
     }
 }

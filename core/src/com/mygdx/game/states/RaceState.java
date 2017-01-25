@@ -46,6 +46,7 @@ public class RaceState extends State {
     private float countTimer;                // Count Down Time at start of race
     private Sound countDown;                 // Sound to play at count down
     private boolean countDownOn = false;     // Count down sound played
+    private boolean pause = false;           // Determine if the game is paused
 
     // Track features that are supported in the TrackFeaturesMap arrage
     public enum TrackFeature {
@@ -282,17 +283,37 @@ public class RaceState extends State {
         } else {
             car2.nitroPushed(false);
         }
-
+        
         // GAME PAUSE
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
+            pause = true;       
+            car1.pause(pause);
+            car2.pause(pause);
+            if(pause){
+                car1.update(playTime, this);
+                car2.update(playTime, this);
+            }
             sm.push(new PauseState(sm, track, carType1, carType2));
+        } else{
+            boolean pauseTemp = pause;
+            pause = false;
+            car1.pause(pause);
+            car2.pause(pause);
+            if(pauseTemp){
+                car1.update(playTime, this);
+                car2.update(playTime, this);
+            }
         }
     }
-
+    
+    /**
+     * Method to dispose everything
+     */
     @Override
     public void dispose() {
         car1.dispose();
         car2.dispose();
+        bg.dispose();
     }
     // RGB constants used in the track features PNG file to
     // mark/map out the different features of the supported tracks
