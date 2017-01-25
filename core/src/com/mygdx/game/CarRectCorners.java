@@ -4,59 +4,51 @@
  * and open the template in the editor.
  */
 package com.mygdx.game;
-import com.badlogic.gdx.math.Circle;
-import java.lang.Math;
-import com.badlogic.gdx.math.Vector3;
+import  com.badlogic.gdx.math.Circle;
+import  com.badlogic.gdx.math.Rectangle;
+import  com.badlogic.gdx.math.Vector3;
+import  java.lang.Math;
 
 /**
- *
- * @author whitb0039, richj0985, and tatad6701
+  * @author whitb0039, richj0985, and tatad6701
+ */
+
+/*
+ * CarRectCorners class - class used to hold and compute all points 
+ *     along the outside of edge of the car.   The points are used
+ *     to determine when the car is contact with the opponent car
+ *     or other objects on the track and in the world.
  */
 public class CarRectCorners {
-    public  Vector3 frontLeft;
-    public  Vector3 frontRight;
-    public  Vector3 backLeft;
-    public  Vector3 backRight;
-    public  Vector3 front;
-    public  Vector3 right;
-    public  Vector3 left;
-    public  Vector3 back;
-    private int carWidth;
-    private int carHeight;
-//    public Rectangle front;
-//    public Rectangle back;
-//    public Rectangle left;
-//    public Rectangle right;
-    public Circle frontC;
-    public Circle backC;
-    public Circle leftC;
-    public Circle rightC;
-    public Circle frontLeftCornerC;
-    public Circle backLeftCornerC;
-    public Circle frontRightCornerC;
-    public Circle backRightCornerC;
+    private int     carWidth;
+    private int     carHeight;
+    public  Circle  front;       // front of car (in middle)
+    public  Circle  right;       // right sode of car (in middle)
+    public  Circle  left;        // left side of car (in middle)
+    public  Circle  back;        // back side of car (in middle)
+    public  Circle  frontLeft;   // front left corner of the car
+    public  Circle  frontRight;  // front rightt corner of the car
+    public  Circle  backLeft;    // back left corner of the car 
+    public  Circle  backRight;   // back right corner of the car
     
     public CarRectCorners( int width, int height ) {
-        front     = new Vector3(0,0,0);
-        back    = new Vector3(0,0,0);
-        left  = new Vector3(0,0,0);
-        right = new Vector3(0,0,0);
-        
-        frontLeft     = new Vector3(0,0,0);
-        frontRight    = new Vector3(0,0,0);
-        backLeft  = new Vector3(0,0,0);
-        backRight = new Vector3(0,0,0);
-       
-        frontC = new Circle(0,0,8); 
-        backC = new Circle(0,0,8); 
-        leftC = new Circle(0,0,8);
-        rightC = new Circle(0,0,8);
-        
-        frontLeftCornerC = new Circle(0,0,8); 
-        backLeftCornerC = new Circle(0,0,8); 
-        frontRightCornerC = new Circle(0,0,8);
-        backRightCornerC = new Circle(0,0,8);
-        
+        //
+        // Initialize the circles that will be used to hold the points 
+        // along the ended of the car.   The circles are given 
+        // a small radius to allow the circles to be tested with
+        // the overlap method in order to determine when the car
+        // has contact with other objects in the world
+        front      = new Circle(0,0,8);
+        back       = new Circle(0,0,8);
+        left       = new Circle(0,0,8);
+        right      = new Circle(0,0,8);        
+        frontLeft  = new Circle(0,0,8);
+        frontRight = new Circle(0,0,8);
+        backLeft   = new Circle(0,0,8);
+        backRight  = new Circle(0,0,8);
+
+        // Capture the width and height of the car to be used
+        // when updating the car corner.
         carWidth  = width;
         carHeight = height;
         
@@ -64,14 +56,26 @@ public class CarRectCorners {
         Vector3 pos = new Vector3(0,0,0);
         updateCornerPos( pos, 0);   
     }
-                
+ 
+
+    /**
+     * Method used to update all of the computed points on the 
+     * outside edges of the car.   These points are used 
+     * to determine collisions and contact of the car with 
+     * the opposing car or with objects on the track.
+     * 
+     * @param carPos - position of the car in world in terms of center of the car
+     * @param rotation - current rotation value of car in world (0-360)
+     */
     public void updateCornerPos( Vector3 carPos, float rotation) {
-        // compute the car's 4 corners without rotation
-        // then rotate them and then offset them
-        // based on the new cars position
+        //
+        // compute the car's 4 corners.   The points will 
+        // be used to determine intersection with 
+        // the opponent car and also with objects on the track.
+        //
         backLeft.x = carPos.x - carWidth/2;
         backLeft.y = carPos.y - carHeight/2;
-
+        
         backRight.x = carPos.x + carWidth/2;
         backRight.y = carPos.y - carHeight/2;
 
@@ -80,89 +84,49 @@ public class CarRectCorners {
 
         frontRight.x = carPos.x + carWidth/2;
         frontRight.y = carPos.y + carHeight/2;
-        
-        backLeftCornerC.x = carPos.x - carWidth/2;
-        backLeftCornerC.y = carPos.y - carHeight/2;
 
-        backRightCornerC.x = carPos.x + carWidth/2;
-        backRightCornerC.y = carPos.y - carHeight/2;
+        //
+        // Compute a center points on the front, 
+        // back, right and left sides of the car
+        // The points are used to determine the rough
+        // 4 outside edges of the car
+        //
+        back.x = carPos.x;
+        back.y = carPos.y - carHeight/2;
 
-        frontLeftCornerC.x = carPos.x - carWidth/2;
-        frontLeftCornerC.y = carPos.y + carHeight/2;
+        front.x = carPos.x;
+        front.y = carPos.y + carHeight/2;
 
-        frontRightCornerC.x = carPos.x + carWidth/2;
-        frontRightCornerC.y = carPos.y + carHeight/2;
+        right.x = carPos.x + carWidth/2;
+        right.y = carPos.y;
         
-        frontC.x = carPos.x;
-        frontC.y = carPos.y + carHeight/2;
-        
-        backC.x = carPos.x;
-        backC.y = carPos.y - carHeight/2;
+        left.x = carPos.x - carWidth/2;
+        left.y = carPos.y;
+      
+        //
+        // Adjust all points on the car based on the current rotation 
+        // of the car.   The allowed rotations of the car are
+        // 0-360 direction on the track.
+        //
+        backLeft   = rotateCircleAroundCarCentre( backLeft, rotation,  carPos);
+        backRight  = rotateCircleAroundCarCentre( backRight, rotation, carPos);
+        frontLeft  = rotateCircleAroundCarCentre( frontLeft, rotation,  carPos );
+        frontRight = rotateCircleAroundCarCentre( frontRight, rotation, carPos);
 
-        leftC.x = carPos.x - carWidth/2;
-        leftC.y = carPos.y;
-        
-        rightC.x = carPos.x + carWidth/2;
-        rightC.y = carPos.y;
-
-
-   
-        // with new cars corners computed, rotate them according 
-        // to the cars current rotation
-        backLeft  = rotatePoint( backLeft, rotation,  carPos);
-        backRight = rotatePoint( backRight, rotation, carPos);
-        frontLeft     = rotatePoint( frontLeft, rotation,  carPos );
-        frontRight    = rotatePoint( frontRight, rotation, carPos);
-        
-        backLeftCornerC  = rotateCircleAroundCarCentre( backLeftCornerC, rotation,  carPos);
-        backRightCornerC = rotateCircleAroundCarCentre( backRightCornerC, rotation, carPos);
-        frontLeftCornerC     = rotateCircleAroundCarCentre( frontLeftCornerC, rotation,  carPos );
-        frontRightCornerC   = rotateCircleAroundCarCentre( frontRightCornerC, rotation, carPos);
-        
-        
-        frontC    = rotateCircleAroundCarCentre( frontC, rotation,  carPos);
-        backC     = rotateCircleAroundCarCentre( backC, rotation, carPos);
-        leftC     = rotateCircleAroundCarCentre( leftC, rotation,  carPos );
-        rightC    = rotateCircleAroundCarCentre( rightC, rotation, carPos);
-    }
+        front      = rotateCircleAroundCarCentre( front, rotation,  carPos );
+        back       = rotateCircleAroundCarCentre( back, rotation,  carPos);
+        right      = rotateCircleAroundCarCentre( right, rotation, carPos);
+        left       = rotateCircleAroundCarCentre( left, rotation,  carPos );
+}
     
-//    public Rectangle getFront(){
-//        return front = new Rectangle(frontLeft.x, frontLeft.y, carWidth, 10);
-//    }
-//    
-//    public Rectangle getBack(){
-//        return back = new Rectangle(backLeft.x, backLeft.y, carWidth, 10);
-//    }
-//    
-//    public Rectangle getLeft(){
-//        return left = new Rectangle(backLeft.x, backLeft.y, 10, carHeight);
-//    }
-//        
-//    public Rectangle getRight(){
-//        return right = new Rectangle(backRight.x, backRight.y, 10, carHeight);
-//    }
-    
-     private Vector3 rotatePoint( Vector3 pt, float rotation, Vector3 origin ) {
-        rotation = rotation * (float)Math.PI / 180f;
-        
-        double s = Math.sin( (double)rotation );
-        double c = Math.cos( (double)rotation );
-
-        // translate point back to origin:
-        pt.x -= origin.x;
-        pt.y -= origin.y;
-
-        // rotate point
-        float xnew = (int) ((double)pt.x * c - (double)pt.y * s);
-        float ynew = (int) ((double)pt.x * s + (double)pt.y * c);
-
-        // translate point back:
-        pt.x = xnew + origin.x;
-        pt.y = ynew + origin.y;
-
-        return pt;
-    }
-     
+    /**
+     * Method used to compute new coordinates of a circle/point in the world
+     *     based on the current rotation of the car in the world
+     * 
+     * @param circle    - point to be rotated around the center of the car
+     * @param rotation  - current rotation of the car in the world
+     * @param carCentre - x,y coordinates of the center of the car in the world
+     */
     private Circle rotateCircleAroundCarCentre( Circle circle, float rotation, Vector3 carCentre ) {
         rotation = rotation * (float)Math.PI / 180f;
         
@@ -183,23 +147,5 @@ public class CarRectCorners {
 
         return circle;
     }
-    
-/*
-    POINT rotate_point(float cx,float cy,float angle,POINT p){
-        float s = sin(angle);
-        float c = cos(angle);
-
-        // translate point back to origin:
-        p.x -= cx;
-        p.y -= cy;
-
-        // rotate point
-        float xnew = p.x * c - p.y * s;
-        float ynew = p.x * s + p.y * c;
-
-        return p;
-    }
-*/
-     
 }
     
