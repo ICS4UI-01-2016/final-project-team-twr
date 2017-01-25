@@ -1,5 +1,6 @@
 /*
  * This class deals with the players being able to choose a track they wish to race on!
+ Our game offers two unique tracks!
  * 
  */
 package com.mygdx.game.states;
