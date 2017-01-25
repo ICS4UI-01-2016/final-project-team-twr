@@ -55,19 +55,7 @@ public class RaceState extends State {
         CHECKPOINT1, CHECKPOINT2, CHECKPOINT3, CHECKPOINT4,
         CHECKPOINT5, CHECKPOINT6, CHECKPOINT7, CHECKPOINT8
     };
-
-/*
-    private boolean accelerate;
-    private boolean stop;
-    private boolean turnLeft;
-    private boolean turnRight;
-    private float velocity;
-    private float speedX;
-    private float speedY;
-*/
-
-
-    
+  
     
     /**
      * Constructor for the race state
