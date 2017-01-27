@@ -33,6 +33,7 @@ public class MenuState extends State {
     private Rectangle playButton;
 
     /**
+     * Constructor for the menu state
      *
      * @param sm the state manager
      * @param loop the loop that the game is on for the music to play correctly

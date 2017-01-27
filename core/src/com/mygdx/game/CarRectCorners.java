@@ -32,6 +32,12 @@ public class CarRectCorners {
     public Circle backLeft;    // back left corner of the car 
     public Circle backRight;   // back right corner of the car
 
+    /**
+     * Constructor method for the car rectangle corners
+     *
+     * @param width
+     * @param height
+     */
     public CarRectCorners(int width, int height) {
         //
         // Initialize the circles that will be used to hold the points 
